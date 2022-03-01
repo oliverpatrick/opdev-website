@@ -1,21 +1,17 @@
-name: Build and Release opdev.co.uk
+name: Build Next.js web application
 
-on: 
+on:
   push:
     branches: main
 
 jobs:
-  build-deploy:
-    name: Build Next.js Application
-    runs-on: ubuntu-latest
-    steps:
-      name: Checkout
-      - uses: actions/checkout@v2
-      name: Setup Node
-      uses: actions/setup-node@v1
-      with:
-        node-version: 16
-      - name: Install NPM dependencies
-        run: npm install
-      - name: Build website
-        run: npm run build
+build-project:
+  name: Build Project
+  runs-on: ubuntu-latest
+  steps:
+  - name: Checkout code
+    uses: actions/checkout@v2
+  - name: Install NPM dependencies
+    run: npm install
+  - name: Build project assets
+    run: npm run build
