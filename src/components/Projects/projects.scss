@@ -1,0 +1,146 @@
+@import '../../utils.scss';
+
+.projects{
+  box-sizing: border-box;
+  will-change: transform;
+  
+  #title{
+    position: relative;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -10%);
+    width: fit-content;
+    font-size: 50px;
+    font-weight: 600;
+  }
+
+  #description{
+    position: relative;
+    top: 11%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    width: 80%;
+    font-size: 19px;
+    font-weight: 400;
+    text-align: center;
+    color: var(--gray2);
+    transition: color 0.5s linear;
+  }
+
+  .filter-list{
+    width: 70%;
+    position: relative;
+    top: 13%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    height: 35px;
+
+    .tag{
+      margin-right: 15px;
+      text-align: center;
+      vertical-align: middle;
+    }
+  }
+
+  .cards{
+    position: relative;
+    top: 14%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    width: 95%;
+    height: vh(70);
+
+    .row{
+      display: flex;
+      align-items: flex-start ;
+      justify-content: center;
+    }
+  }
+  
+  $phoneBreakpoint: 481px;
+
+  @media (max-width: $phoneBreakpoint) {
+    #title{
+      position: relative;
+      top: 6%;
+    }
+
+    #description{
+      position: relative;
+      top: 7%;
+    }
+
+    .filter-list{
+      position: relative;
+      top: 9%;
+    }
+
+    .cards {
+      height: fit-content;
+      position: relative;
+      top: 10%;
+      margin-bottom: vh(20);
+
+      .row {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .project-card {
+          width: 90%;
+
+          .tags{
+            .tag{
+              font-size: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+
+  $tabletBreakpoint: 991px;
+
+  @media (max-width: $tabletBreakpoint) {
+
+    #title{
+      font-size: 34px;
+    }
+
+    #description{
+      font-size: 14px;
+    }
+
+    .filter-list{
+      width: 90%;
+      height: 55px;
+      flex-wrap: wrap;
+
+    }
+
+    .cards {
+      width: 90%;
+      height: fit-content;
+
+      .row {
+        align-items: center;
+        justify-content: center;
+        .project-card {
+          width: 240px;
+          
+          &:hover {
+            transform: none;
+          }
+
+        }
+      }
+    }
+  }
+
+
+}
