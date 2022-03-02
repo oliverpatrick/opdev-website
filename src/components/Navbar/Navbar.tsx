@@ -1,19 +1,15 @@
-import Link from "next/link";
-import React from "react";
-import { IconButton } from "../Button/IconButton";
+import Link from 'next/link';
+import React from 'react';
+import { IconButton } from '../Button/IconButton';
 
 function Navbar() {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <nav
-      className={
-        "fixed w-full flex flex-wrap items-center justify-between px-2 py-3"
-      }
-    >
+    <nav className="fixed w-full flex flex-wrap items-center justify-between px-2 py-3 bg-gray-900">
       <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
         <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
-        <Link href="/" passHref>
+          <Link href="/" passHref>
             <div className="flex items-center cursor-pointer text-black dark:text-white">
               OLIVER
               <span className="self-center text-xl font-semibold whitespace-nowrap text-black dark:text-white">
@@ -59,7 +55,7 @@ function Navbar() {
 
         <div
           className={
-            "lg:flex flex-grow items-center" + (open ? " flex" : " hidden")
+            'lg:flex flex-grow items-center' + (open ? ' flex' : ' hidden')
           }
           id="example-navbar-danger"
         >

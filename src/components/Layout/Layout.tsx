@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
-import Navbar from "../Navbar/Navbar";
-import Switch from "../Switch/Switch";
+import Navbar from '../Navbar/Navbar';
+import Switch from '../Switch/Switch';
 
 type ILayout = {
   children: any;

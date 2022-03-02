@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
 export default function Switch() {
-  let theme = "light";
+  let theme = 'light';
 
   return (
     <div className="cursor-pointer w-10 h-10 flex items-center justify-center rounded-full">
-      {theme === "dark" ? (
+      {theme === 'dark' ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-10 w-10 text-yellow-600 shadow-lg hover:text-yellow-200"

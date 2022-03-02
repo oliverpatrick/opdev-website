@@ -1,6 +1,6 @@
-import React from "react";
-import Typewriter from "typewriter-effect";
-import { Button } from "../Button/Button";
+import React from 'react';
+import Typewriter from 'typewriter-effect';
+import { Button } from '../Button/Button';
 
 type Props = {};
 
@@ -9,6 +9,9 @@ function IntroHero({}: Props) {
     <div className="w-full h-screen bg-banff dark:bg-nightsky bg-cover bg-center bg-clip-border">
       <div className="w-full h-full flex flex-col justify-center items-center">
         <div className="z-1 m-10 border-4 rounded-full w-52 h-52">
+          <span className="absolute origin-top-left skew-y-6 text-green-600 bg-white text-xl">
+            Available for freelance!
+          </span>
           <img
             className="rounded-full"
             src="/images/avatar.jpg"
@@ -24,7 +27,7 @@ function IntroHero({}: Props) {
             }}
           />
         </div>
-        <p className="text-4xl mobile:text-2xl text-yellow-300">
+        <p className="text-4xl mobile:text-2xl text-gray-300">
           Full Stack Developer
         </p>
         <div className="flex flex-row items-center">

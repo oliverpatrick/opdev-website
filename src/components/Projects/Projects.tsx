@@ -1,195 +1,71 @@
-import React, { useState, useEffect } from "react";
-import ProjectCard from "./ProjectCard";
-import Tag from "../tag/Tag";
-import { projectsData } from "../../data";
-import "./projects.scss";
+import React from 'react';
+import { Button } from '../Button/Button';
 
-// Row component for the flex table
-const Row = ({ data, showCards, selectedTags }) => {
+interface IProjectCardProps {
+  title: string;
+  techStack: string[];
+  exerpt: string;
+  href: string;
+  live: boolean;
+  liveHref: string;
+}
+
+interface IProjectProps {
+  projects: IProjectCardProps[] | any;
+}
+
+function ProjectCard({
+  title,
+  techStack,
+  exerpt,
+  href,
+  live,
+  liveHref
+}: IProjectCardProps) {
   return (
-    <div className="row">
-      {data.map((el) => (
-        <ProjectCard
-          key={el.id}
-          data={el}
-          show={showCards}
-          selectedTags={selectedTags}
-        />
-      ))}
-    </div>
-  );
-};
-
-// Filter list component
-const FilterList = ({ tags, selectedTags, setSelectedTags }) => {
-  const updateSelectedTags = (t) => {
-    let selectedTagsCopy = Object.assign({}, selectedTags);
-    selectedTagsCopy[t.text] = !selectedTags[t.text];
-
-    // If tag is updated to active, unset the All tag
-    if (!selectedTags[t.text]) {
-      selectedTagsCopy["All"] = false;
-    } else {
-      if (!Object.values(selectedTagsCopy).some((val) => val === true)) {
-        selectedTagsCopy["All"] = true;
-      }
-    }
-
-    setSelectedTags(selectedTagsCopy);
-  };
-
-  const updateAllTag = (t) => {
-    let selectedTagsCopy = Object.assign({}, selectedTags);
-
-    // If All tag is updated to active, unset every other tag
-    if (!selectedTags["All"]) {
-      Object.keys(selectedTags).forEach((k) => (selectedTagsCopy[k] = false));
-    }
-
-    selectedTagsCopy["All"] = !selectedTags["All"];
-    setSelectedTags(selectedTagsCopy);
-  };
-
-  const allTagData = {
-    text: "All",
-    color: "var(--gray2)",
-    backgroundColor: "var(--gray5)",
-  };
-
-  return (
-    <div className="filter-list">
-      <Tag
-        key={-1}
-        data={allTagData}
-        onClick={() => updateAllTag(allTagData)}
-        active={selectedTags["All"]}
-      />
-      {tags.map((t, idx) => {
-        return (
-          <Tag
-            key={idx}
-            data={t}
-            onClick={() => updateSelectedTags(t)}
-            active={selectedTags[t.text]}
-          />
-        );
-      })}
-    </div>
-  );
-};
-
-export default function Projects({ isTablet }) {
-  const getTags = (data) => {
-    let totTags = data.map((el) => el.tags);
-    totTags = [].concat.apply([], totTags);
-
-    let totLabels = [];
-    totTags = totTags.filter((el) => {
-      if (!totLabels.includes(el.text)) {
-        totLabels.push(el.text);
-        return true;
-      }
-      return false;
-    });
-
-    return { totTags, totLabels };
-  };
-
-  const { totTags, totLabels } = getTags(projectsData);
-  totTags.sort((a, b) => -a.text.localeCompare(b.text));
-
-  let tags = Object.fromEntries(totLabels.map((l) => [l, false]));
-  tags = { ...tags, All: true };
-
-  const [selectedTags, setSelectedTags] = useState(tags);
-  const [selectedYears, setSelectedYears] = useState([]);
-  const [showCards, setShowCards] = useState(true);
-
-  // On tags update, launch animation, update years and sort new data
-  useEffect(() => {
-    const animLength = 300;
-    setShowCards(false);
-    setTimeout(() => setShowCards(true), animLength);
-
-    setSelectedYears(
-      Object.keys(selectedTags).filter((t) => selectedTags[t] && parseInt(t))
-    );
-
-    projectsData.sort((a, b) => {
-      const yearA = parseInt(a.tags[a.tags.length - 1].text);
-      const yearB = parseInt(b.tags[b.tags.length - 1].text);
-      return yearA < yearB ? 1 : -1;
-    });
-  }, [selectedTags]);
-
-  // Cut a list in chunks of given size
-  const chunk = (arr, size) => {
-    let result = [];
-    for (let i = 0; i < arr.length; i += size) {
-      let chunk = arr.slice(i, i + size);
-      result.push(chunk);
-    }
-    return result;
-  };
-
-  const projectFilter = (project) => {
-    const projectLabels = project.tags.map((t) => t.text);
-    const textTags = Object.keys(selectedTags).filter(
-      (t) => selectedTags[t] && !parseInt(t)
-    );
-
-    // Filter none if All tag is set
-    if (selectedTags["All"]) {
-      return true;
-    }
-
-    // Only years -> overlook text tags
-    if (textTags.length === 0) {
-      return projectLabels.some((l) => selectedTags[l]);
-    }
-
-    // Years + text -> filter by year first than by text
-    if (
-      selectedYears.length !== 0 &&
-      !projectLabels.some((l) => selectedYears.includes(l))
-    ) {
-      return false;
-    }
-    return projectLabels.some(
-      (l) => selectedTags[l] && !selectedYears.includes(l)
-    );
-  };
-
-  const renderCards = (data) => {
-    const filteredData = data.filter((p) => projectFilter(p));
-    const chunks = chunk(filteredData, isTablet ? 2 : 3);
-    return chunks.map((el, idx) => (
-      <Row
-        key={idx}
-        data={el}
-        showCards={showCards}
-        selectedTags={selectedTags}
-      />
-    ));
-  };
-
-  return (
-    <div className="projects" id="projects">
-      <h1 id="title" className="">
-        A few <span className="blue">projects</span>
-      </h1>
-      <div id="description">
-        <p>
-          Here is a list of projects I have done on my personal time or for
-          work/studies
-        </p>
+    <div className="flex flex-col m-5 p-4 w-80 border-2 border-gray-300 bg-gray-500 text-white">
+      <h3 className="pt-4 text-xl font-semibold">{title}</h3>
+      <p>
+        {techStack.map((stack: string, id: number) => (
+          <li key={id}>{stack}</li>
+        ))}
+      </p>
+      <p className="my-4">{exerpt}</p>
+      <div className="flex flex-row">
+        <a href={href}>
+          <Button text="Source" />
+        </a>
+        {live ? (
+          <a href={liveHref}>
+            <Button text="Live" />
+          </a>
+        ) : null}
       </div>
-      <FilterList
-        tags={totTags}
-        selectedTags={selectedTags}
-        setSelectedTags={setSelectedTags}
-      />
-      <div className="cards">{renderCards(projectsData)}</div>
     </div>
   );
 }
+
+function Projects({ projects }: IProjectProps) {
+  return (
+    <div className="flex w-full justify-center items-center flex-col bg-gray-200">
+      <h1 className="uppercase text-center text-4xl my-8 font-semibold">
+        Projects
+      </h1>
+      <div className="flex justify-center flex-wrap max-w-5xl">
+        {projects.map((project: IProjectCardProps, id: number) => (
+          <ProjectCard
+            key={id}
+            title={project.title}
+            techStack={project.techStack}
+            exerpt={project.exerpt}
+            href={project.href}
+            live={project.live}
+            liveHref={project.liveHref}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default Projects;
