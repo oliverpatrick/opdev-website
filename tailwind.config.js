@@ -4,7 +4,7 @@ module.exports = {
     './src/components/**/*.{js,ts,jsx,tsx}'
   ],
   theme: {
-    darkMode: 'class',
+    darkMode: 'media',
     screen: {
       sx: '350px',
       sm: '480px',

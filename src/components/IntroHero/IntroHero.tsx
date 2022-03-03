@@ -1,16 +1,11 @@
 import React from 'react';
 import Typewriter from 'typewriter-effect';
-import { Button } from '../Button/Button';
-
-// import background from '../../../public/images/nightsky.jpg';
-// import videoBg from '../../../public/videos/Typing_dark.mp4';
 
 type Props = {};
 
 function IntroHero({}: Props) {
   return (
     <div className="w-full h-screen bg-cover bg-center bg-clip-border">
-      {/* <img src={'../../../public/images/nightsky.jpg'} alt="Background" /> */}
       <video
         loop
         autoPlay
@@ -91,7 +86,6 @@ function IntroHero({}: Props) {
             </svg>
           </a>
         </div>
-        <Button text="Want A Bespoke Website?"></Button>
       </div>
     </div>
   );

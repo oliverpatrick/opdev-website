@@ -32,6 +32,23 @@ const projects = [
     href: 'https://oliverpatrick.github.io/python_webscraper_gpu_stock_check /',
     live: false,
     liveHref: ''
+  },
+  {
+    title: 'Work Assistant',
+    techStack: ['React', 'Electron', 'Redux'],
+    exerpt: 'A React TS Electron desktop based application fit with Dashboard.',
+    href: 'https://oliverpatrick.github.io/work-assistant-desktop/',
+    live: false,
+    liveHref: ''
+  },
+  {
+    title: 'Webpack 5 - React',
+    techStack: ['React', 'Webpack 5'],
+    exerpt:
+      'A simple boilerplate for react built in webpack 5. Room for added TS support and tailwindcss',
+    href: 'https://oliverpatrick.github.io/python_webscraper_gpu_stock_check /',
+    live: false,
+    liveHref: ''
   }
 ];
 

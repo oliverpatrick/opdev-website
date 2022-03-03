@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 
 interface IPostProps {
   post: any;
@@ -8,17 +7,29 @@ interface IPostProps {
 
 function Post({ post }: IPostProps) {
   return (
-    <div className="card">
-      <Image src={post.frontmatter.cover_image} alt="" />
+    <div className="p-2 m-2 max-w-sm bg-gray-100 shadow-md">
+      <Link href={`/blog/${post.slug}`}>
+        <img
+          className="cursor-pointer"
+          src={post.frontmatter.cover_image}
+          alt=""
+        />
+      </Link>
 
-      <div className="post-date">Posted on {post.frontmatter.date}</div>
-
-      <h3>{post.frontmatter.title}</h3>
-
-      <p>{post.frontmatter.excerpt}</p>
+      <div className="text-gray-500 font-light text-sm">
+        Posted on {post.frontmatter.date}
+      </div>
 
       <Link href={`/blog/${post.slug}`}>
-        <a className="btn">Read More</a>
+        <h3 className="font-semibold cursor-pointer">
+          {post.frontmatter.title}
+        </h3>
+      </Link>
+
+      <p className="my-3">{post.frontmatter.excerpt}</p>
+
+      <Link href={`/blog/${post.slug}`}>
+        <a className="text-purple-700">Read More...</a>
       </Link>
     </div>
   );
