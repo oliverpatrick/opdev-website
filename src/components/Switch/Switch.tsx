@@ -1,11 +1,17 @@
 import React from 'react';
 
-export default function Switch() {
-  let theme = 'light';
-
+// eslint-disable-next-line no-unused-vars
+export default function Switch({ darkMode, setDarkMode }: any) {
   return (
-    <div className="cursor-pointer w-10 h-10 flex items-center justify-center rounded-full">
-      {theme === 'dark' ? (
+    // <div className="" onClick={() => setDarkMode(!darkMode)}>
+    //   <input type="checkbox" defaultChecked={false} checked={darkMode} />
+    // </div>
+
+    <div
+      className="cursor-pointer w-10 h-10 flex items-center justify-center rounded-full"
+      onClick={() => setDarkMode(!darkMode)}
+    >
+      {darkMode === true ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-10 w-10 text-yellow-600 shadow-lg hover:text-yellow-200"
