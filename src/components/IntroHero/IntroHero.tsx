@@ -2,16 +2,25 @@ import React from 'react';
 import Typewriter from 'typewriter-effect';
 import { Button } from '../Button/Button';
 
+// import background from '../../../public/images/nightsky.jpg';
+// import videoBg from '../../../public/videos/Typing_dark.mp4';
+
 type Props = {};
 
 function IntroHero({}: Props) {
   return (
-    <div className="w-full h-screen bg-banff dark:bg-nightsky bg-cover bg-center bg-clip-border">
-      <div className="w-full h-full flex flex-col justify-center items-center">
+    <div className="w-full h-screen bg-cover bg-center bg-clip-border">
+      {/* <img src={'../../../public/images/nightsky.jpg'} alt="Background" /> */}
+      <video
+        loop
+        autoPlay
+        muted
+        className="object-cover h-full w-full absolute"
+      >
+        <source src="/videos/Typing_dark.mp4" />
+      </video>
+      <div className="relative w-full h-full flex flex-col justify-center items-center">
         <div className="z-1 m-10 border-4 rounded-full w-52 h-52">
-          <span className="absolute origin-top-left skew-y-6 text-green-600 bg-white text-xl">
-            Available for freelance!
-          </span>
           <img
             className="rounded-full"
             src="/images/avatar.jpg"

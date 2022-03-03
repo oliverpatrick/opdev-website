@@ -6,13 +6,13 @@ function Navbar() {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <nav className="fixed w-full flex flex-wrap items-center justify-between px-2 py-3 bg-gray-900">
+    <nav className="fixed w-full flex flex-wrap items-center justify-between px-2 py-3 bg-gray-900 dark:bg-gray-900 z-10">
       <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
         <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
           <Link href="/" passHref>
-            <div className="flex items-center cursor-pointer text-black dark:text-white">
+            <div className="flex items-center cursor-pointer text-gray-900 dark:text-white">
               OLIVER
-              <span className="self-center text-xl font-semibold whitespace-nowrap text-black dark:text-white">
+              <span className="self-center text-xl font-semibold whitespace-nowrap text-gray-900 dark:text-white">
                 PATRICK
               </span>
               <p>Dev</p>
@@ -65,7 +65,7 @@ function Navbar() {
                 <IconButton text="Contact Me">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="pr-1 h-5 w-5 text-lg leading-lg text-white opacity-75"
+                    className="pr-1 h-5 w-5 text-lg leading-lg text-gray-900 dark:text-white opacity-75"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -80,9 +80,9 @@ function Navbar() {
                 </IconButton>
               </a>
             </li>
-            <li className="drop-shadow-2xl">
+            <li className="">
               <a
-                className="mx-3 py-2 flex items-center border-b border-gray-100 text-xs uppercase font-bold leading-snug text-black dark:text-white hover:opacity-75"
+                className="mx-3 py-2 flex items-center border-b border-gray-100 text-xs uppercase font-bold leading-snug text-gray-900 dark:text-white hover:opacity-75"
                 href="#pablo"
               >
                 <svg
@@ -99,7 +99,7 @@ function Navbar() {
                     d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
                   />
                 </svg>
-                <Link href="/projects">Projects</Link>
+                <Link href="/portfolio">Portfolio</Link>
               </a>
             </li>
             <li className="drop-shadow-2xl">
@@ -125,10 +125,7 @@ function Navbar() {
               </a>
             </li>
             <li className="drop-shadow-2xl">
-              <a
-                className="mx-3 py-2 flex items-center border-b border-gray-100 text-xs uppercase font-bold leading-snug text-black dark:text-white hover:opacity-75"
-                href="#pablo"
-              >
+              <a className="mx-3 py-2 flex items-center border-b border-gray-100 text-xs uppercase font-bold leading-snug text-black dark:text-white hover:opacity-75">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="pr-1 h-5 w-5 text-lg leading-lg text-black dark:text-white hover:opacity-75"
