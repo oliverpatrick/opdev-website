@@ -6,20 +6,20 @@ function Navbar() {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <nav className="fixed w-full flex flex-wrap items-center justify-between px-2 py-3 bg-gray-100 dark:bg-gray-900 z-50">
+    <nav className="fixed w-full flex flex-wrap items-center justify-between px-2 py-3 bg-gray-800 z-50">
       <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
         <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
           <Link href="/" passHref>
-            <div className="flex items-center cursor-pointer text-gray-900 dark:text-white">
+            <div className="flex items-center cursor-pointer text-slate-50">
               OLIVER
-              <span className="self-center text-xl font-semibold whitespace-nowrap text-gray-900 dark:text-white">
+              <span className="stroke-slate-100 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 text-xl font-extrabold whitespace-nowrap">
                 PATRICK
               </span>
               <p>Dev</p>
             </div>
           </Link>
           <button
-            className="cursor-pointer p-2 ml-3 text-xl text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 border-transparent focus:outline-none focus:outline-none outline-none dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            className="cursor-pointer p-2 ml-3 text-xl text-slate-50 rounded-full lg:hidden hover:bg-gradient-to-r from-pink-600 to-violet-700 border-transparent focus:outline-none outline-none"
             type="button"
             onClick={() => setOpen(!open)}
           >
@@ -59,14 +59,18 @@ function Navbar() {
         >
           <ul className="z-40 flex flex-end flex-col lg:flex-row list-none lg:ml-auto">
             <li className="drop-shadow-2xl">
-              <a href="mailto:opphdev@gmail.com" onBlur={() => setOpen(false)}>
+              <a
+                href="mailto:opphdev@gmail.com"
+                onFocus={() => setOpen(true)}
+                onBlur={() => setOpen(false)}
+              >
                 <IconButton
                   text="Contact Me"
-                  className="text-center uppercase border bg-transparent dark:hover:bg-gray-700 font-bold py-2 px-4 inline-flex items-center"
+                  className="text-center uppercase border bg-transparent hover:bg-gray-700 font-bold py-2 px-4 inline-flex items-center rounded-3xl"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="pr-1 h-5 w-5 text-lg leading-lg text-gray-900 dark:text-white opacity-75"
+                    className="pr-1 h-5 w-5 text-lg leading-lg text-slate-50 opacity-75"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -85,11 +89,12 @@ function Navbar() {
               <Link href="/">
                 <a
                   onBlur={() => setOpen(false)}
-                  className="mx-3 py-2 flex items-center border-b border-gray-100 text-xs uppercase font-bold leading-snug text-black dark:text-white hover:opacity-75"
+                  onFocus={() => setOpen(true)}
+                  className="mx-3 py-2 flex items-center border-b border-gray-100 text-xs uppercase font-bold leading-snug text-slate-50 hover:opacity-75"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="pr-1 h-5 w-5 text-lg leading-lg text-black dark:text-white hover:opacity-75"
+                    className="pr-1 h-5 w-5 text-lg leading-lg text-slate-50 hover:opacity-75"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -109,11 +114,12 @@ function Navbar() {
               <Link href="/portfolio">
                 <a
                   onBlur={() => setOpen(false)}
-                  className="mx-3 py-2 flex items-center border-b border-gray-100 text-xs uppercase font-bold leading-snug text-gray-900 dark:text-white hover:opacity-75"
+                  onFocus={() => setOpen(true)}
+                  className="mx-3 py-2 flex items-center border-b border-gray-100 text-xs uppercase font-bold leading-snug text-slate-50 hover:opacity-75"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="pr-1 h-5 w-5 text-lg leading-lg text-black dark:text-white hover:opacity-75"
+                    className="pr-1 h-5 w-5 text-lg leading-lg text-slate-50 hover:opacity-75"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -133,11 +139,12 @@ function Navbar() {
               <Link href="/blog" passHref>
                 <a
                   onBlur={() => setOpen(false)}
-                  className="mx-3 py-2 flex items-center border-b border-gray-100 text-xs uppercase font-bold leading-snug text-black dark:text-white hover:opacity-75"
+                  onFocus={() => setOpen(true)}
+                  className="mx-3 py-2 flex items-center border-b border-gray-100 text-xs uppercase font-bold leading-snug text-slate-50 hover:opacity-75"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="pr-1 h-5 w-5 text-lg leading-lg text-black dark:text-white hover:opacity-75"
+                    className="pr-1 h-5 w-5 text-lg leading-lg text-slate-50 hover:opacity-75"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"

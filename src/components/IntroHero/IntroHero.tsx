@@ -27,7 +27,9 @@ function IntroHero({}: Props) {
           />
         </div>
         <p className="text-4xl mobile:text-2xl text-gray-300">
-          Full Stack Developer
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+            Full Stack Developer
+          </span>
         </p>
         <div className="flex flex-row items-center">
           <a href="mailto:opphdev@gmail.com">

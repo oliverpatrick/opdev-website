@@ -11,7 +11,8 @@ const projects = [
   {
     title: 'Utility Tool',
     techStack: ['C#', 'Winforms', '.NET'],
-    exerpt: 'Desktop utility application built in winforms.',
+    exerpt:
+      'Desktop utility application built in winforms. Complete with disc formatter. Cache cleaner. Temporary file remover. Disc Defragger.',
     href: 'https://github.com/oliverpatrick/utility-tool',
     live: false,
     liveHref: ''
@@ -19,7 +20,8 @@ const projects = [
   {
     title: 'Discord Bot',
     techStack: ['Node', 'Javascript', 'Discord.js'],
-    exerpt: 'Discord bot, build from the discord.js library.',
+    exerpt:
+      'Discord bot, build from the discord.js library. Youtube support, Weather and Recipe API integration. Inclusion of coinflip and dice roll randomiser',
     href: 'https://github.com/oliverpatrick/landscape-discord-bot',
     live: false,
     liveHref: ''
@@ -36,7 +38,8 @@ const projects = [
   {
     title: 'Work Assistant',
     techStack: ['React', 'Electron', 'Redux'],
-    exerpt: 'A React TS Electron desktop based application fit with Dashboard.',
+    exerpt:
+      'A React TS Electron desktop based application fit with Dashboard, Timer and Notes.',
     href: 'https://github.com/oliverpatrick/work-assistant-desktop/',
     live: false,
     liveHref: ''

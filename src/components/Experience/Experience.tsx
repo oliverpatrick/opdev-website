@@ -6,8 +6,10 @@ type Props = {};
 export default function Experience({}: Props) {
   return (
     <div className="flex flex-col w-full justify-center items-center bg-gray-200">
-      <h1 className="uppercase text-center text-4xl my-8 font-semibold">
-        Experience
+      <h1 className="uppercase text-center text-5xl my-8 font-extrabold">
+        <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+          Experience
+        </span>
       </h1>
 
       <div className="flex flex-col md:grid grid-cols-9 mx-auto p-2 text-blue-50">

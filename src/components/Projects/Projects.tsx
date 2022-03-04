@@ -14,6 +14,14 @@ interface IProjectProps {
   projects: IProjectCardProps[] | any;
 }
 
+function Tag({ text }: any) {
+  return (
+    <div className="drop-shadow-lg m-1 p-1 px-2 text-xs h-auto w-auto border-green-600 border-2 bg-lime-600 bg-opacity-30">
+      {text}
+    </div>
+  );
+}
+
 function ProjectCard({
   title,
   techStack,
@@ -23,14 +31,14 @@ function ProjectCard({
   liveHref
 }: IProjectCardProps) {
   return (
-    <div className="flex flex-col m-5 p-4 w-80 border-2 border-gray-300 bg-gray-500 text-white">
-      <h3 className="pt-4 text-xl font-semibold">{title}</h3>
-      <p>
+    <div className="flex flex-col justify-between m-5 p-4 w-80 border-6 border-white bg-slate-400 text-slate-50 drop-shadow-xl">
+      <h3 className="text-xl font-semibold drop-shadow-md">{title}</h3>
+      <div className="flex flex-wrap">
         {techStack.map((stack: string, id: number) => (
-          <li key={id}>{stack}</li>
+          <Tag key={id} text={stack}></Tag>
         ))}
-      </p>
-      <p className="my-4">{exerpt}</p>
+      </div>
+      <p className="my-4 drop-shadow-lg">{exerpt}</p>
       <div className="flex flex-row">
         <a href={href}>
           <Button text="Source" />
@@ -47,9 +55,11 @@ function ProjectCard({
 
 function Projects({ projects }: IProjectProps) {
   return (
-    <div className="flex w-full justify-center items-center flex-col bg-gray-200">
-      <h1 className="uppercase text-center text-4xl my-8 font-semibold">
-        Projects
+    <div className="flex w-full justify-center items-center flex-col bg-slate-300">
+      <h1 className="uppercase text-center text-5xl my-8 font-extrabold">
+        <span className="drop-shadow-xl bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+          Projects
+        </span>
       </h1>
       <div className="flex justify-center flex-wrap max-w-5xl">
         {projects.map((project: IProjectCardProps, id: number) => (

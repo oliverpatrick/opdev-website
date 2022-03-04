@@ -1,3 +1,5 @@
+const typography = require('@tailwindcss/typography');
+
 module.exports = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx}',
@@ -14,11 +16,8 @@ module.exports = {
       xl: '1440px'
     },
     extend: {
-      backgroundImage: {
-        banff: "url('../../public/images/background-banff.jpg')",
-        nightsky: "url('../../public/images/nightsky.jpg')"
-      }
+      backgroundImage: {}
     }
   },
-  plugins: []
+  plugins: [typography]
 };

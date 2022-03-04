@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import { IconButton } from '../components/Button/IconButton';
 
 const Home: NextPage = () => {
   return (
@@ -16,27 +17,26 @@ const Home: NextPage = () => {
       <div className="pt-24">
         <div className="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
           <div className="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
-            <p className="uppercase tracking-loose w-full">
+            <p className="uppercase tracking-loose w-full font-semibold">
               Looking to build your online presence?
             </p>
-            <h1 className="my-4 text-5xl font-bold leading-tight text-green-700">
-              <span className="uppercase text-6xl font-extrabold text-gray-900">
-                Bespoke
-              </span>{' '}
-              Website Built To Your Vision!
+            <h1 className="my-4 text-5xl font-bold leading-tight">
+              <span className="uppercase stroke-slate-100 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 text-6xl font-extrabold">
+                Bespoke Websites
+              </span>
             </h1>
             <p className="leading-normal text-2xl mb-8">
-              Contact me, for a quotation today!
+              Contact me for a quotation today!
             </p>
             <a href="mailto:opphdev@gmail.com">
-              <button className="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+              <IconButton className="mx-auto lg:mx-0 hover:underline bg-gradient-to-r from-pink-500 to-violet-500 text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
                 Contact
-              </button>
+              </IconButton>
             </a>
           </div>
           <div className="w-full md:w-3/5 py-6 text-center flex justify-center">
             <img
-              className="w-full md:w-4/5 z-40"
+              className="w-full md:w-4/5 z-40 hue-rotate-60"
               src="/images/hero.webp"
               alt="hero picture"
             />
@@ -95,11 +95,13 @@ const Home: NextPage = () => {
           <div className="flex flex-wrap">
             <div className="w-5/6 sm:w-1/2 p-6">
               <h3 className="text-3xl text-gray-800 font-bold leading-none mb-3">
-                Open yourselft upto the world
+                <span className="stroke-slate-100 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 text-3xl font-extrabold">
+                  Open yourself up to the world
+                </span>
               </h3>
               <p className="text-gray-600 mb-8">
                 Step into the digital age with your own place on the internet.
-                Make from the ground up for your business.
+                Made from the ground up for your business.
               </p>
             </div>
 
@@ -217,14 +219,16 @@ const Home: NextPage = () => {
             <div className="w-full sm:w-1/2 p-6 mt-6">
               <div className="align-middle">
                 <h3 className="text-3xl text-gray-800 font-bold leading-none mb-3">
-                  Industry Accreditted Developer
+                  <span className="stroke-slate-100 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 text-3xl font-extrabold">
+                    Industry Accredited Developer
+                  </span>
                 </h3>
                 <p className="text-gray-600 mb-8">
                   Accreditted in the industry, three years of development
-                  experience. Tranfering my industry secrets to your custom
+                  experience. Tranferring my industry secrets to your custom
                   bespoke website.
                   <br />
-                  <br />⚡ Lightning ⚡ fast websites built in the latest
+                  <br />⚡ Lightning ⚡ fast websites: Built with the latest
                   technologies available.
                 </p>
               </div>
@@ -305,21 +309,27 @@ const Home: NextPage = () => {
         <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
           <g transform="translate(-1.000000, -14.000000)" fillRule="nonzero">
             <g className="wave bg-white">
-              <path d="M1440,84 C1383.555,64.3 1342.555,51.3 1317,45 C1259.5,30.824 1206.707,25.526 1169,22 C1129.711,18.326 1044.426,18.475 980,22 C954.25,23.409 922.25,26.742 884,32 C845.122,37.787 818.455,42.121 804,45 C776.833,50.41 728.136,61.77 713,65 C660.023,76.309 621.544,87.729 584,94 C517.525,105.104 484.525,106.438 429,108 C379.49,106.484 342.823,104.484 319,102 C278.571,97.783 231.737,88.736 205,84 C154.629,75.076 86.296,57.743 0,32 L0,0 L1440,0 L1440,84 Z"></path>
+              <path
+                fill="white"
+                d="M1440,84 C1383.555,64.3 1342.555,51.3 1317,45 C1259.5,30.824 1206.707,25.526 1169,22 C1129.711,18.326 1044.426,18.475 980,22 C954.25,23.409 922.25,26.742 884,32 C845.122,37.787 818.455,42.121 804,45 C776.833,50.41 728.136,61.77 713,65 C660.023,76.309 621.544,87.729 584,94 C517.525,105.104 484.525,106.438 429,108 C379.49,106.484 342.823,104.484 319,102 C278.571,97.783 231.737,88.736 205,84 C154.629,75.076 86.296,57.743 0,32 L0,0 L1440,0 L1440,84 Z"
+              ></path>
             </g>
             <g transform="translate(1.000000, 15.000000)" fill="#FFFFFF">
               <g transform="translate(719.500000, 68.500000) rotate(-180.000000) translate(-719.500000, -68.500000) ">
                 <path
                   d="M0,0 C90.7283404,0.927527913 147.912752,27.187927 291.910178,59.9119003 C387.908462,81.7278826 543.605069,89.334785 759,82.7326078 C469.336065,156.254352 216.336065,153.6679 0,74.9732496"
                   opacity="0.100000001"
+                  fill="#5b21b6"
                 ></path>
                 <path
                   d="M100,104.708498 C277.413333,72.2345949 426.147877,52.5246657 546.203633,45.5787101 C666.259389,38.6327546 810.524845,41.7979068 979,55.0741668 C931.069965,56.122511 810.303266,74.8455141 616.699903,111.243176 C423.096539,147.640838 250.863238,145.462612 100,104.708498 Z"
                   opacity="0.100000001"
+                  fill="#5b21b6"
                 ></path>
                 <path
                   d="M1046,51.6521276 C1130.83045,29.328812 1279.08318,17.607883 1439,40.1656806 L1439,120 C1271.17211,77.9435312 1140.17211,55.1609071 1046,51.6521276 Z"
                   opacity="0.200000003"
+                  fill="#5b21b6"
                 ></path>
               </g>
             </g>
@@ -328,23 +338,25 @@ const Home: NextPage = () => {
       </svg>
       <section className="container mx-auto text-center py-6 mb-12">
         <h1 className="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-400">
-          Get in touch
+          <span className="uppercase stroke-slate-100 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 text-5xl font-extrabold">
+            Get in touch
+          </span>
         </h1>
         <div className="w-full mb-4">
           <div className="h-1 mx-auto bg-white w-1/6 opacity-25 my-0 py-0 rounded-t"></div>
         </div>
         <h3 className="my-4 text-3xl leading-tight">
-          Call: <span className="font-semibold">07891 381401</span> or click the
-          button below
+          Call: <span className="font-semibold">07891 381401</span>
         </h3>
+        <h3 className="my-4 text-xl leading-tight">Email: opphdev@gmail.com</h3>
         <a href="mailto:opphdev@gmail.com">
-          <button className="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
-            Contact Me!
-          </button>
+          <IconButton className="mx-auto lg:mx-0 hover:underline bg-gradient-to-r from-pink-500 to-violet-500 text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+            Contact
+          </IconButton>
         </a>
       </section>
 
-      <footer className="w-full text-center text-white bg-gray-100">
+      <footer className="w-full text-center text-white bg-gray-200">
         <div className="w-full pt-9">
           <div className="flex justify-center mb-9">
             <a href="https://twitter.com/dev_op" className="mr-9 text-gray-800">
@@ -427,7 +439,7 @@ const Home: NextPage = () => {
           </div>
         </div>
 
-        <div className="text-center text-gray-700 p-4">
+        <div className="text-center text-gray-700 p-4 bg-slate-300">
           © 2022 Copyright -{' '}
           <a className="text-gray-800" href="https://opdev.co.uk/">
             OPDev
