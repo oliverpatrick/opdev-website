@@ -13,8 +13,6 @@
   "author": "Oliver Patrick",
   "license": "MIT",
   "dependencies": {
-    "@types/showdown": "^1.9.4",
-    "firebase": "^9.6.7",
     "framer-motion": "^6.2.8",
     "gray-matter": "^4.0.3",
     "marked": "^4.0.0",
