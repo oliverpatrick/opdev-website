@@ -39,7 +39,10 @@ const PostPage: NextPage<IPost> = ({
       <div className="mb-10">Posted on {date}</div>
       <img src={cover_image} alt="" />
       <div className="mt-10 max-w-5xl min-w-min mb-40">
-        <div dangerouslySetInnerHTML={{ __html: marked(content) }}></div>
+        <div
+          className="md-content"
+          dangerouslySetInnerHTML={{ __html: marked(content) }}
+        ></div>
       </div>
     </div>
   );

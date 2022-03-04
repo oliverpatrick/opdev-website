@@ -13,13 +13,15 @@
   "author": "Oliver Patrick",
   "license": "MIT",
   "dependencies": {
+    "@types/showdown": "^1.9.4",
     "firebase": "^9.6.7",
     "framer-motion": "^6.2.8",
     "gray-matter": "^4.0.3",
-    "marked": "^4.0.12",
+    "marked": "^4.0.0",
     "next": "12.1.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "showdown": "^2.0.2",
     "typewriter-effect": "^2.18.2"
   },
   "devDependencies": {

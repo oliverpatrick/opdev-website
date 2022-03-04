@@ -6,7 +6,7 @@ function Navbar() {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <nav className="fixed w-full flex flex-wrap items-center justify-between px-2 py-3 bg-gray-100 dark:bg-gray-900 z-10">
+    <nav className="fixed w-full flex flex-wrap items-center justify-between px-2 py-3 bg-gray-100 dark:bg-gray-900 z-50">
       <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
         <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
           <Link href="/" passHref>
@@ -59,7 +59,7 @@ function Navbar() {
         >
           <ul className="z-40 flex flex-end flex-col lg:flex-row list-none lg:ml-auto">
             <li className="drop-shadow-2xl">
-              <a href="mailto:opphdev@gmail.com">
+              <a href="mailto:opphdev@gmail.com" onBlur={() => setOpen(false)}>
                 <IconButton
                   text="Contact Me"
                   className="text-center uppercase border bg-transparent dark:hover:bg-gray-700 font-bold py-2 px-4 inline-flex items-center"
@@ -83,7 +83,10 @@ function Navbar() {
             </li>
             <li className="drop-shadow-2xl">
               <Link href="/">
-                <a className="mx-3 py-2 flex items-center border-b border-gray-100 text-xs uppercase font-bold leading-snug text-black dark:text-white hover:opacity-75">
+                <a
+                  onBlur={() => setOpen(false)}
+                  className="mx-3 py-2 flex items-center border-b border-gray-100 text-xs uppercase font-bold leading-snug text-black dark:text-white hover:opacity-75"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="pr-1 h-5 w-5 text-lg leading-lg text-black dark:text-white hover:opacity-75"
@@ -104,7 +107,10 @@ function Navbar() {
             </li>
             <li className="drop-shadow-2xl">
               <Link href="/portfolio">
-                <a className="mx-3 py-2 flex items-center border-b border-gray-100 text-xs uppercase font-bold leading-snug text-gray-900 dark:text-white hover:opacity-75">
+                <a
+                  onBlur={() => setOpen(false)}
+                  className="mx-3 py-2 flex items-center border-b border-gray-100 text-xs uppercase font-bold leading-snug text-gray-900 dark:text-white hover:opacity-75"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="pr-1 h-5 w-5 text-lg leading-lg text-black dark:text-white hover:opacity-75"
@@ -125,7 +131,10 @@ function Navbar() {
             </li>
             <li className="drop-shadow-2xl">
               <Link href="/blog" passHref>
-                <a className="mx-3 py-2 flex items-center border-b border-gray-100 text-xs uppercase font-bold leading-snug text-black dark:text-white hover:opacity-75">
+                <a
+                  onBlur={() => setOpen(false)}
+                  className="mx-3 py-2 flex items-center border-b border-gray-100 text-xs uppercase font-bold leading-snug text-black dark:text-white hover:opacity-75"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="pr-1 h-5 w-5 text-lg leading-lg text-black dark:text-white hover:opacity-75"

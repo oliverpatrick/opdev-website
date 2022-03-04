@@ -5,20 +5,15 @@ type Props = {};
 
 function IntroHero({}: Props) {
   return (
-    <div className="w-full h-screen bg-cover bg-center bg-clip-border">
-      <video
-        loop
-        autoPlay
-        muted
-        className="object-cover h-full w-full absolute"
-      >
-        <source src="/videos/Typing_dark.mp4" />
+    <section className="w-full h-screen bg-cover bg-center bg-clip-border">
+      <video autoPlay muted className="object-cover h-full w-full absolute">
+        <source src="/videos/background_video.webm" />
       </video>
       <div className="relative w-full h-full flex flex-col justify-center items-center">
         <div className="z-1 m-10 border-4 rounded-full w-52 h-52">
           <img
             className="rounded-full"
-            src="/images/avatar.jpg"
+            src="/images/avatar.webp"
             height="208px"
             width="208px"
             alt="Profile Picture"
@@ -51,7 +46,7 @@ function IntroHero({}: Props) {
               />
             </svg>
           </a>
-          <a href="https://www.linkedin.com/in/oliver-holroyd-4b6bb4ba/">
+          <a href="https://www.linkedin.com/in/oliver-patrick-4b6bb4ba/">
             <svg
               className="m-2 p-1 h-10 w-10 text-lg leading-lg text-white hover:opacity-75 hover:border-b-2"
               xmlns="http://www.w3.org/2000/svg"
@@ -69,7 +64,7 @@ function IntroHero({}: Props) {
               <circle cx="4" cy="4" r="2"></circle>
             </svg>
           </a>
-          <a href="https://github.com/opholroyd">
+          <a href="https://github.com/oliverpatrick">
             <svg
               className="m-2 p-1 h-10 w-10 text-lg leading-lg text-white hover:opacity-75 hover:border-b-2"
               xmlns="http://www.w3.org/2000/svg"
@@ -87,7 +82,7 @@ function IntroHero({}: Props) {
           </a>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
