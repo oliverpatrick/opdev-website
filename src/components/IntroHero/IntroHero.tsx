@@ -4,7 +4,13 @@ import Typewriter from 'typewriter-effect';
 function IntroHero() {
   return (
     <section className="w-full h-screen">
-      <video autoPlay muted className="object-cover h-full w-full absolute">
+      <video
+        autoPlay
+        muted
+        playsInline
+        className="object-cover h-full w-full absolute"
+        poster="/images/poster.webp"
+      >
         <source src="/videos/background_video.webm" />
       </video>
       <div className="relative w-full h-full flex flex-col justify-center items-center">
