@@ -6,7 +6,7 @@ type ProgressBarProps = {
 
 const ProgressBar = ({ progressPercentage }: ProgressBarProps) => {
   return (
-    <div className="h-4 w-80 md:w-40 bg-gray-300">
+    <div className="h-4 max-w-80 bg-gray-300">
       <div
         style={{ width: `${progressPercentage.toString()}%` }}
         className={`h-full ${

@@ -55,13 +55,13 @@ function ProjectCard({
 
 function Projects({ projects }: IProjectProps) {
   return (
-    <div className="flex w-full justify-center items-center flex-col bg-slate-300">
+    <div className="flex w-full justify-center flex-col bg-slate-300">
       <h1 className="uppercase text-center text-5xl my-8 font-extrabold">
         <span className="drop-shadow-xl bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
           Projects
         </span>
       </h1>
-      <div className="flex justify-center flex-wrap max-w-5xl">
+      <div className="flex justify-center flex-wrap">
         {projects.map((project: IProjectCardProps, id: number) => (
           <ProjectCard
             key={id}

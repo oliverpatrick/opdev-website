@@ -1,9 +1,7 @@
 import React from 'react';
 import Typewriter from 'typewriter-effect';
 
-type Props = {};
-
-function IntroHero({}: Props) {
+function IntroHero() {
   return (
     <section className="w-full h-screen bg-cover bg-center bg-clip-border">
       <video autoPlay muted className="object-cover h-full w-full absolute">

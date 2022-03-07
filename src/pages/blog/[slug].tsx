@@ -13,8 +13,8 @@ const PostPage: NextPage<IPost> = ({
 }: IPost) => {
   console.log(slug);
   return (
-    <div className="absolute top-16 p-4 flex jusitfy-center items-center flex-col w-full">
-      <div className="absolute top-20 left-4 md:top-4">
+    <div className="absolute top-16 p-4 flex jusitfy-center flex-col w-full">
+      <div className="top-20 left-4 md:top-4">
         <Link href="/blog">
           <a className="flex flex-row items-center text-purple-700 hover:text-purple-900">
             <svg
@@ -38,7 +38,7 @@ const PostPage: NextPage<IPost> = ({
       <h1 className="font-semibold text-2xl">{title}</h1>
       <div className="mb-10">Posted on {date}</div>
       <img className="" src={cover_image} alt="" />
-      <div className="mt-10 max-w-5xl mb-40 md:max-w-2xl sm:max-w-lg h-auto sx:max-w-sm">
+      <div className="mt-10 max-w-5xl mb-40 md:max-w-2xl h-auto sx:max-w-sm">
         <div
           className="prose prose-sm sm:prose-sm md:prose-xl lg:prose-xl"
           dangerouslySetInnerHTML={{ __html: marked(content) }}

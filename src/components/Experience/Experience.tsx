@@ -1,11 +1,9 @@
 import React from 'react';
 import ProgressBar from '../ProgressBar/ProgressBar';
 
-type Props = {};
-
-export default function Experience({}: Props) {
+export default function Experience() {
   return (
-    <div className="flex flex-col w-full justify-center items-center bg-gray-200">
+    <div className="flex flex-col w-full justify-center bg-gray-200">
       <h1 className="uppercase text-center text-5xl my-8 font-extrabold">
         <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
           Experience

@@ -28,7 +28,7 @@ const Home: NextPage = () => {
             <p className="leading-normal text-2xl mb-8">
               Contact me for a quotation today!
             </p>
-            <a href="mailto:opphdev@gmail.com">
+            <a href="mailto:opphdev@gmail.com" className="justify-self-center">
               <IconButton className="mx-auto lg:mx-0 hover:underline bg-gradient-to-r from-pink-500 to-violet-500 text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
                 Contact
               </IconButton>
