@@ -91,8 +91,8 @@ const Home: NextPage = () => {
             <div className="h-1 mx-auto w-64 opacity-25 my-0 py-0 rounded-t"></div>
           </div>
 
-          <div className="flex flex-wrap">
-            <div className="w-5/6 sm:w-1/2 p-6">
+          <div className="flex flex-col sm:flex-row">
+            <div className="text-center sm:w-1/2 p-6">
               <h3 className="text-3xl text-gray-800 font-bold mb-3">
                 <span className="stroke-slate-100 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 text-3xl font-extrabold break-words">
                   Open yourself up to the world
@@ -204,9 +204,9 @@ const Home: NextPage = () => {
             </div>
           </div>
 
-          <div className="flex flex-wrap flex-col-reverse sm:flex-row">
-            <div className="w-full sm:w-1/2 p-6 mt-6">
-              <svg className="w-5/6 sm:h-64 mx-auto" viewBox="0 0 36 36">
+          <div className="flex flex-col-reverse sm:flex-row">
+            <div className="w-full sm:w-5/6 p-6 mt-6">
+              <svg className="w-1/2 mx-auto" viewBox="0 0 36 36">
                 <path d="M18.1,11c-3.9,0-7,3.1-7,7s3.1,7,7,7c3.9,0,7-3.1,7-7S22,11,18.1,11z M18.1,23c-2.8,0-5-2.2-5-5s2.2-5,5-5c2.8,0,5,2.2,5,5S20.9,23,18.1,23z" />
                 <path d="M32.8,14.7L30,13.8l-0.6-1.5l1.4-2.6c0.3-0.6,0.2-1.4-0.3-1.9l-2.4-2.4c-0.5-0.5-1.3-0.6-1.9-0.3l-2.6,1.4l-1.5-0.6l-0.9-2.8C21,2.5,20.4,2,19.7,2h-3.4c-0.7,0-1.3,0.5-1.4,1.2L14,6c-0.6,0.1-1.1,0.3-1.6,0.6L9.8,5.2C9.2,4.9,8.4,5,7.9,5.5L5.5,7.9C5,8.4,4.9,9.2,5.2,9.8l1.3,2.5c-0.2,0.5-0.4,1.1-0.6,1.6l-2.8,0.9C2.5,15,2,15.6,2,16.3v3.4c0,0.7,0.5,1.3,1.2,1.5L6,22.1l0.6,1.5l-1.4,2.6c-0.3,0.6-0.2,1.4,0.3,1.9l2.4,2.4c0.5,0.5,1.3,0.6,1.9,0.3l2.6-1.4l1.5,0.6l0.9,2.9c0.2,0.6,0.8,1.1,1.5,1.1h3.4c0.7,0,1.3-0.5,1.5-1.1l0.9-2.9l1.5-0.6l2.6,1.4c0.6,0.3,1.4,0.2,1.9-0.3l2.4-2.4c0.5-0.5,0.6-1.3,0.3-1.9l-1.4-2.6l0.6-1.5l2.9-0.9c0.6-0.2,1.1-0.8,1.1-1.5v-3.4C34,15.6,33.5,14.9,32.8,14.7z M32,19.4l-3.6,1.1L28.3,21c-0.3,0.7-0.6,1.4-0.9,2.1l-0.3,0.5l1.8,3.3l-2,2l-3.3-1.8l-0.5,0.3c-0.7,0.4-1.4,0.7-2.1,0.9l-0.5,0.1L19.4,32h-2.8l-1.1-3.6L15,28.3c-0.7-0.3-1.4-0.6-2.1-0.9l-0.5-0.3l-3.3,1.8l-2-2l1.8-3.3l-0.3-0.5c-0.4-0.7-0.7-1.4-0.9-2.1l-0.1-0.5L4,19.4v-2.8l3.4-1l0.2-0.5c0.2-0.8,0.5-1.5,0.9-2.2l0.3-0.5L7.1,9.1l2-2l3.2,1.8l0.5-0.3c0.7-0.4,1.4-0.7,2.2-0.9l0.5-0.2L16.6,4h2.8l1.1,3.5L21,7.7c0.7,0.2,1.4,0.5,2.1,0.9l0.5,0.3l3.3-1.8l2,2l-1.8,3.3l0.3,0.5c0.4,0.7,0.7,1.4,0.9,2.1l0.1,0.5l3.6,1.1V19.4z" />
                 <polygon
@@ -215,22 +215,20 @@ const Home: NextPage = () => {
                 />
               </svg>
             </div>
-            <div className="w-full sm:w-1/2 p-6 mt-6">
-              <div className="">
-                <h3 className="text-3xl text-gray-800 font-bold leading-none mb-3">
-                  <span className="stroke-slate-100 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 text-3xl font-extrabold break-words">
-                    Industry Accredited Developer
-                  </span>
-                </h3>
-                <p className="text-gray-600 mb-8">
-                  Accreditted in the industry, three years of development
-                  experience. Tranferring my industry secrets to your custom
-                  bespoke website.
-                  <br />
-                  <br />⚡ Lightning ⚡ fast websites: Built with the latest
-                  technologies available.
-                </p>
-              </div>
+            <div className="w-full p-6 mt-6 text-center">
+              <h3 className="text-3xl text-gray-800 font-bold leading-none mb-3">
+                <span className="stroke-slate-100 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 text-3xl font-extrabold break-words">
+                  Industry Accredited Developer
+                </span>
+              </h3>
+              <p className="text-gray-600 mb-8">
+                Accreditted in the industry, three years of development
+                experience. Tranferring my industry secrets to your custom
+                bespoke website.
+                <br />
+                <br />⚡ Lightning ⚡ fast websites: Built with the latest
+                technologies available.
+              </p>
             </div>
           </div>
         </div>

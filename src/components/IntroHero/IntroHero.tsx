@@ -3,7 +3,7 @@ import Typewriter from 'typewriter-effect';
 
 function IntroHero() {
   return (
-    <section className="w-full h-screen bg-cover bg-center bg-clip-border">
+    <section className="w-full h-screen">
       <video autoPlay muted className="object-cover h-full w-full absolute">
         <source src="/videos/background_video.webm" />
       </video>
