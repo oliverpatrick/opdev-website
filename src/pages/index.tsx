@@ -33,7 +33,7 @@ const Home: NextPage = () => {
               </IconButton>
             </a>
           </div>
-          <div className="w-full md:w-3/5 py-6 text-center flex justify-center">
+          <div className="w-full md:w-3/5 py-6 flex justify-center">
             <img
               className="w-full md:w-4/5 z-40 hue-rotate-60"
               src="/images/hero.webp"
@@ -216,7 +216,7 @@ const Home: NextPage = () => {
               </svg>
             </div>
             <div className="w-full p-6 mt-6 text-center">
-              <h3 className="text-3xl text-gray-800 font-bold leading-none mb-3">
+              <h3 className="text-3xl text-gray-800 font-bold mb-3">
                 <span className="stroke-slate-100 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 text-3xl font-extrabold break-words">
                   Industry Accredited Developer
                 </span>
@@ -334,7 +334,7 @@ const Home: NextPage = () => {
         </g>
       </svg>
       <section className="container mx-auto text-center py-6 mb-12">
-        <h1 className="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-400">
+        <h1 className="w-full my-2 text-5xl font-bold leading-tight text-gray-400">
           <span className="uppercase stroke-slate-100 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 text-5xl font-extrabold">
             Get in touch
           </span>
@@ -345,7 +345,7 @@ const Home: NextPage = () => {
         <h3 className="my-4 text-3xl leading-tight">
           Call: <span className="font-semibold">07891 381401</span>
         </h3>
-        <h3 className="my-4 text-xl leading-tight">Email: opphdev@gmail.com</h3>
+        <h3 className="my-4 text-xl break-words">Email: opphdev@gmail.com</h3>
         <a href="mailto:opphdev@gmail.com">
           <IconButton className="mx-auto lg:mx-0 hover:underline bg-gradient-to-r from-pink-500 to-violet-500 text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
             Contact
