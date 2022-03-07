@@ -16,7 +16,7 @@ const PostPage: NextPage<IPost> = ({
     <div className="absolute top-16 p-4 flex jusitfy-center flex-col w-full">
       <div className="top-20 left-4 md:top-4">
         <Link href="/blog">
-          <a className="flex flex-row items-center text-purple-700 hover:text-purple-900">
+          <a className="flex flex-row text-purple-700 hover:text-purple-900">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5 mr-1"
@@ -38,12 +38,10 @@ const PostPage: NextPage<IPost> = ({
       <h1 className="font-semibold text-2xl">{title}</h1>
       <div className="mb-10">Posted on {date}</div>
       <img className="" src={cover_image} alt="" />
-      <div className="mt-10 max-w-5xl mb-40 md:max-w-2xl h-auto sx:max-w-sm">
-        <div
-          className="prose prose-sm sm:prose-sm md:prose-xl lg:prose-xl"
-          dangerouslySetInnerHTML={{ __html: marked(content) }}
-        ></div>
-      </div>
+      <div
+        className="mt-10 max-w-5xl mb-40 prose prose-sm"
+        dangerouslySetInnerHTML={{ __html: marked(content) }}
+      ></div>
     </div>
   );
 };

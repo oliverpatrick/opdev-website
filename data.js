@@ -30,7 +30,7 @@ const projects = [
     title: 'Python Webscraper',
     techStack: ['Python', 'Beautiful Soup', 'SMTP'],
     exerpt:
-      'A quick mockup of a coffee shop website using the Next.js framework.',
+      'A web scraper designed to scan the currys website for graphic power units that come into stock and send an email to my inbox.',
     href: 'https://github.com/oliverpatrick/python_webscraper_gpu_stock_check/',
     live: false,
     liveHref: ''
