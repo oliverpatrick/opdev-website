@@ -93,10 +93,8 @@ const Home: NextPage = () => {
 
           <div className="flex flex-col sm:flex-row">
             <div className="text-center sm:w-1/2 p-6">
-              <h3 className="text-3xl text-gray-800 font-bold mb-3">
-                <span className="stroke-slate-100 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 text-3xl font-extrabold break-words">
-                  Open yourself up to the world
-                </span>
+              <h3 className="leading-none stroke-slate-100 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 text-3xl font-extrabold break-words mb-3">
+                Open yourself up to the world
               </h3>
               <p className="text-gray-600 mb-8">
                 Step into the digital age with your own place on the internet.
@@ -216,10 +214,8 @@ const Home: NextPage = () => {
               </svg>
             </div>
             <div className="w-full p-6 mt-6 text-center">
-              <h3 className="text-3xl text-gray-800 font-bold mb-3">
-                <span className="stroke-slate-100 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 text-3xl font-extrabold break-words">
-                  Industry Accredited Developer
-                </span>
+              <h3 className="leading-none stroke-slate-100 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 text-3xl font-extrabold break-words mb-3">
+                Industry Accredited Developer
               </h3>
               <p className="text-gray-600 mb-8">
                 Accreditted in the industry, three years of development
