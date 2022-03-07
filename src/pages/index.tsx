@@ -94,7 +94,7 @@ const Home: NextPage = () => {
           <div className="flex flex-wrap">
             <div className="w-5/6 sm:w-1/2 p-6">
               <h3 className="text-3xl text-gray-800 font-bold mb-3">
-                <span className="stroke-slate-100 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 text-3xl font-extrabold">
+                <span className="stroke-slate-100 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 text-3xl font-extrabold break-words">
                   Open yourself up to the world
                 </span>
               </h3>
@@ -218,7 +218,7 @@ const Home: NextPage = () => {
             <div className="w-full sm:w-1/2 p-6 mt-6">
               <div className="">
                 <h3 className="text-3xl text-gray-800 font-bold leading-none mb-3">
-                  <span className="stroke-slate-100 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 text-3xl font-extrabold">
+                  <span className="stroke-slate-100 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 text-3xl font-extrabold break-words">
                     Industry Accredited Developer
                   </span>
                 </h3>
