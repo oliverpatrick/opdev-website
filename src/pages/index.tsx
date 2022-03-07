@@ -218,8 +218,8 @@ const Home: NextPage = () => {
                 Industry Accredited Developer
               </h3>
               <p className="text-gray-600 mb-8">
-                Accreditted in the industry, three years of development
-                experience. Tranferring my industry secrets to your custom
+                Accredited in the industry, three years of development
+                experience. Transferring my industry secrets to your custom
                 bespoke website.
                 <br />
                 <br />⚡ Lightning ⚡ fast websites: Built with the latest
