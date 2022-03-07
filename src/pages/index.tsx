@@ -15,15 +15,14 @@ const Home: NextPage = () => {
       </Head>
 
       <div className="pt-24">
-        <div className="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
-          <div className="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
-            <p className="uppercase tracking-loose w-full font-semibold">
+        <div className="container px-3 mx-auto flex flex-col md:flex-row">
+          <div className="flex flex-col w-full md:w-2/5 justify-center text-center md:text-left">
+            <p className="uppercase w-full font-semibold">
               Looking to build your online presence?
             </p>
-            <h1 className="my-4 text-5xl font-bold leading-tight">
-              <span className="uppercase stroke-slate-100 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 text-6xl font-extrabold">
-                Bespoke Websites
-              </span>
+            <h1 className="my-4 font-extrabold leading-tight uppercase text-transparent text-5xl stroke-slate-100 bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500 break-words">
+              Bespoke
+              <span className="text-4xl"> Websites</span>
             </h1>
             <p className="leading-normal text-2xl mb-8">
               Contact me for a quotation today!
@@ -89,12 +88,12 @@ const Home: NextPage = () => {
           </h1>
 
           <div className="w-full mb-4">
-            <div className="h-1 mx-auto gradient w-64 opacity-25 my-0 py-0 rounded-t"></div>
+            <div className="h-1 mx-auto w-64 opacity-25 my-0 py-0 rounded-t"></div>
           </div>
 
           <div className="flex flex-wrap">
             <div className="w-5/6 sm:w-1/2 p-6">
-              <h3 className="text-3xl text-gray-800 font-bold leading-none mb-3">
+              <h3 className="text-3xl text-gray-800 font-bold mb-3">
                 <span className="stroke-slate-100 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 text-3xl font-extrabold">
                   Open yourself up to the world
                 </span>
@@ -217,7 +216,7 @@ const Home: NextPage = () => {
               </svg>
             </div>
             <div className="w-full sm:w-1/2 p-6 mt-6">
-              <div className="align-middle">
+              <div className="">
                 <h3 className="text-3xl text-gray-800 font-bold leading-none mb-3">
                   <span className="stroke-slate-100 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 text-3xl font-extrabold">
                     Industry Accredited Developer
