@@ -35,7 +35,7 @@ const Home: NextPage = () => {
           </div>
           <div className="w-full md:w-3/5 py-6 flex justify-center">
             <img
-              className="w-full md:w-4/5 z-40 hue-rotate-60"
+              className="z-40 hue-rotate-60"
               src="/images/hero.webp"
               alt="hero picture"
             />
