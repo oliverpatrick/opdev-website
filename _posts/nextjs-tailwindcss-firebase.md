@@ -1,11 +1,21 @@
 ---
-title: 'Building with Next.js, TailwindCSS and Firebase'
+title: 'Next.js, TailwindCSS and Firebase'
 date: 'March 3, 2022'
 excerpt: 'Combining Next.js and TailwindCSS to make an incredibly fast website with CI/CD to Firebase Hosting'
 cover_image: '/images/Next.webp'
 ---
 
 Starting my journey into commerical web development I thought I'd start with my very own website to showcase my abilities and test my knowledge. I chose to go with Next.js as it runs incredibly fast giving me rapid response times on my website and making it an all around pleasant experience for my users.
+
+**_Example code segment_**
+
+```
+if (code === true) {
+  return code
+} else {
+  return "Please fix code"
+}
+```
 
 My previous experience with Next.js and CSS Modules was a tiresome one, I decided to go with [TailwindCSS](https://tailwindcss.com/) for styling. At first glace I found Tailwind disgusting. However after playing around with the module I grew to love its simplicity. The addons for VSCode were incredibly helpful for their use of intellisense on the classnames. After everything I think its safe to say, I have fallen in love with the library and will likely use it in upcoming projects. Stay Tuned.
 
