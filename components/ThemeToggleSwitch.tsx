@@ -16,7 +16,7 @@ function ThemeToggleSwitch() {
       >
         <IconButton
           aria-label="Toggle theme"
-          variant="outline"
+          variant="ghost"
           colorScheme={useColorModeValue('grey', 'yellow')}
           icon={useColorModeValue(
             <svg
