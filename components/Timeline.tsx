@@ -55,8 +55,8 @@ function Timeline() {
       <TimelineItem
         title="EMIS Health - Apr 2019 - Feb 2022 (2 years 8 months)"
         description="Building EMIS-X, A flagship medical software in the United Kingdom to
-          assist General Practioners in giving appointments and managing
-          patients"
+          assist General Practioners in managing
+          medications, presciptions and patient data."
         stack={
           <Box
             display="flex"

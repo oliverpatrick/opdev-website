@@ -12,6 +12,13 @@ interface IPostGridItem {
   timestamp: ReactNode;
 }
 
+interface IWorkGridItem {
+  children?: ReactNode;
+  title: string;
+  thumbnail: string;
+  href?: string;
+}
+
 export const PostGridItem = ({
   children,
   href,
@@ -44,17 +51,24 @@ export const PostGridItem = ({
   </Box>
 );
 
-export const WorkGridItem = ({ children, id, title, thumbnail }: any) => (
+export const WorkGridItem = ({
+  children,
+  title,
+  thumbnail,
+  href
+}: IWorkGridItem) => (
   <Box w="100%" textAlign="center">
-    <NextLink href={`/works/${id}`} passHref scroll={false}>
+    <NextLink href={href ? href : `/projects/${title}`} passHref scroll={false}>
       <LinkBox cursor="pointer">
         <Image
+          width={230}
+          height={130}
           src={thumbnail}
           alt={title}
+          loading="lazy"
           className="grid-item-thumbnail"
-          placeholder="blur"
         />
-        <LinkOverlay href={`/works/${id}`}>
+        <LinkOverlay href={href ? href : `/projects/${title}`}>
           <Text mt={2} fontSize={20}>
             {title}
           </Text>
