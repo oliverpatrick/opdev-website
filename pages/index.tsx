@@ -38,7 +38,7 @@ const ProfileImage = chakra(Image, {
 const Home: NextPage<IPagePostsProps> = ({ posts }: IPagePostsProps) => {
   return (
     <Layout title="Home">
-      <Container>
+      <Container maxW="container.md">
         <Box
           borderRadius="lg"
           mb={6}

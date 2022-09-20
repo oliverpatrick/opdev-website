@@ -5,7 +5,7 @@ import { withProse } from '@nikolovlazar/chakra-ui-prose';
 const styles = {
   global: (props: any) => ({
     body: {
-      bg: mode('#f0e7db', '#202023')(props)
+      bg: mode('#e3e3e3', '#202023')(props)
     }
   })
 };
@@ -25,14 +25,13 @@ const components = {
   },
   Link: {
     baseStyle: (props: any) => ({
-      color: mode('#3d7aed', '#ff63c3')(props),
+      color: mode('#b802cc', '#ff63c3')(props),
       textUnderlineOffset: 3
     })
   }
 };
 
 const colors = {
-  grassTeal: '#88ccca',
   pink: '#ff30ba',
   violet: '#b330ff'
 };
