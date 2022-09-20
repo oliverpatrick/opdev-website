@@ -103,7 +103,7 @@ const Home: NextPage<IPagePostsProps> = ({ posts }: IPagePostsProps) => {
           <Timeline />
 
           <Box alignItems="center" my={4}>
-            <NextLink href="/works" passHref scroll={false}>
+            <NextLink href="/projects" passHref scroll={false}>
               <Button
                 rightIcon={
                   <svg
