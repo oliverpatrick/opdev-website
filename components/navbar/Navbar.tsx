@@ -1,8 +1,12 @@
+import React from 'react';
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+
 import {
   Box,
+  Button,
   Container,
   Flex,
-  Heading,
   IconButton,
   Link,
   Menu,
@@ -12,13 +16,16 @@ import {
   Stack,
   useColorModeValue
 } from '@chakra-ui/react';
-import NextLink from 'next/link';
-import React from 'react';
 import Logo from '../Logo';
 import ThemeToggleSwitch from '../ThemeToggleSwitch';
 import NavItem from './NavItem';
 
+import { useAuth } from '../../context/AuthContext';
+
 function Navbar({ path }: any) {
+  const { user, logout } = useAuth();
+  const router = useRouter();
+
   return (
     <Box
       position="fixed"
@@ -51,6 +58,62 @@ function Navbar({ path }: any) {
           flexGrow={1}
           mt={{ base: 4, md: 0 }}
         >
+          {user ? (
+            <Button
+              variant="ghost"
+              _hover={{
+                bgGradient: 'none',
+                bgColor: 'purple'
+              }}
+              onClick={() => {
+                logout();
+                router.push('/');
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                style={{ height: '24px', width: '24px' }}
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </Button>
+          ) : (
+            <NextLink href="/auth/login">
+              <Button
+                variant="ghost"
+                _hover={{
+                  bgGradient: 'none',
+                  bgColor: 'purple'
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{ height: '24px', width: '24px' }}
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  fill="none"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+              </Button>
+            </NextLink>
+          )}
+          {user && (
+            <NavItem href="/auth/helpful" path={path}>
+              Helpful
+            </NavItem>
+          )}
           <NavItem href="/projects" path={path}>
             Projects
           </NavItem>
@@ -105,6 +168,56 @@ function Navbar({ path }: any) {
               />
 
               <MenuList>
+                {user ? (
+                  <MenuItem
+                    onClick={() => {
+                      logout();
+                      router.push('/');
+                    }}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      style={{
+                        height: '24px',
+                        width: '24px',
+                        paddingRight: '5px'
+                      }}
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    Logout
+                  </MenuItem>
+                ) : (
+                  <NextLink href="/auth/login">
+                    <MenuItem>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        style={{
+                          height: '24px',
+                          width: '24px',
+                          paddingRight: '5px'
+                        }}
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        fill="none"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                      </svg>
+                      Login
+                    </MenuItem>
+                  </NextLink>
+                )}
                 <NextLink href="/" passHref>
                   <MenuItem as={Link}>About</MenuItem>
                 </NextLink>
@@ -117,6 +230,11 @@ function Navbar({ path }: any) {
                 <MenuItem as={Link} href="https://github.com/oliverpatrick">
                   View Source
                 </MenuItem>
+                {user && (
+                  <MenuItem as={Link} href="/auth/helpful" passhref>
+                    Helpful
+                  </MenuItem>
+                )}
               </MenuList>
             </Menu>
           </Box>

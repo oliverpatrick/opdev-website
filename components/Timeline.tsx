@@ -1,17 +1,23 @@
 import React, { ReactElement, ReactNode } from 'react';
 
-import { Box, Heading } from '@chakra-ui/react';
+import { Box, Heading, Text } from '@chakra-ui/react';
 import Paragraph from './Paragraph';
 
 interface ITimelineItemProps {
   title: string;
   description: string;
   stack: ReactElement<any, any>;
+  year: string;
 }
 
-function TimelineItem({ title, description, stack }: ITimelineItemProps) {
+function TimelineItem({ title, description, stack, year }: ITimelineItemProps) {
   return (
     <Box display="flex" flexDirection="row">
+      <Box>
+        <Text mr="1" pt="1" fontSize="0.75rem" opacity={0.5}>
+          {year}
+        </Text>
+      </Box>
       <Box
         display="flex"
         alignItems="center"
@@ -24,7 +30,7 @@ function TimelineItem({ title, description, stack }: ITimelineItemProps) {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          style={{ height: '30px', width: '30px' }}
+          style={{ height: '30px', width: '30px', opacity: 0.8 }}
         >
           <path
             strokeLinecap="round"
@@ -40,7 +46,7 @@ function TimelineItem({ title, description, stack }: ITimelineItemProps) {
         </Heading>
         <Paragraph>{description}</Paragraph>
         <Paragraph style={{ fontSize: '12px', opacity: 0.5, textAlign: 'end' }}>
-          Stack{' '}
+          Stack
         </Paragraph>
 
         {stack}
@@ -107,6 +113,7 @@ function Timeline() {
             </svg>
           </Box>
         }
+        year="2019"
       />
       <TimelineItem
         title="Promatica Digital - Feb 2022 - Present"
@@ -155,6 +162,7 @@ function Timeline() {
             </svg>
           </Box>
         }
+        year="2022"
       />
     </Box>
   );
