@@ -24,6 +24,12 @@ import {
 } from '@chakra-ui/react';
 import Section from '../../components/Section';
 import { useAuth } from '../../context/AuthContext';
+import { GoogleIcon } from '../../components/SVG';
+import {
+  auth,
+  GoogleAuthProvider,
+  signInWithPopup
+} from '../../config/firebase';
 
 const Login: NextPage = () => {
   const router = useRouter();
@@ -50,6 +56,16 @@ const Login: NextPage = () => {
     }
   };
 
+  const signInWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+      router.push('/');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <Layout title="login">
       <Container
@@ -64,6 +80,16 @@ const Login: NextPage = () => {
         </Heading>
         <Divider my={6} />
         <Box my={6} alignItems="center">
+          <Box
+            display="flex"
+            flexDirection="row"
+            py={5}
+            justifyContent="center"
+          >
+            <Button onClick={signInWithGoogle}>
+              <GoogleIcon height="20px" width="20px" />
+            </Button>
+          </Box>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={4} w={280}>
               <FormControl id="email" isInvalid={errors.email ? true : false}>
@@ -73,6 +99,8 @@ const Login: NextPage = () => {
                   {...register('email', {
                     required: true
                   })}
+                  variant="outline"
+                  placeholder="Email"
                 />
                 <FormErrorMessage>
                   {errors.email && (
@@ -90,6 +118,8 @@ const Login: NextPage = () => {
                   {...register('password', {
                     required: true
                   })}
+                  variant="outline"
+                  placeholder="Password"
                 />
                 <FormErrorMessage>
                   {errors.password && (

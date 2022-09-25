@@ -79,6 +79,8 @@ const Register: NextPage = () => {
                   {...register('email', {
                     required: true
                   })}
+                  variant="outline"
+                  placeholder="Email"
                 />
                 <FormErrorMessage>
                   {errors.email && <Text fontSize={12}></Text>}
@@ -97,6 +99,8 @@ const Register: NextPage = () => {
                       min: 8,
                       pattern: /(?=.*d)(?=.*[a-z])(?=.*[A-Z]).{8,}/g
                     })}
+                    variant="outline"
+                    placeholder="Password"
                   />
                   <InputRightElement h={'full'}>
                     <Button
