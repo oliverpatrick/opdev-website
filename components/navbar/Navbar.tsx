@@ -112,7 +112,7 @@ function Navbar({ path }: any) {
           </NavItem>
           <NavItem
             target="_blank"
-            href="https://github.com/oliverpatrick"
+            href="https://github.com/oliverpatrick/opdev-website"
             path={path}
             display="inline-flex"
             alignItems="center"
@@ -206,7 +206,10 @@ function Navbar({ path }: any) {
                 <NextLink href="/posts" passHref>
                   <MenuItem as={Link}>Posts</MenuItem>
                 </NextLink>
-                <MenuItem as={Link} href="https://github.com/oliverpatrick">
+                <MenuItem
+                  as={Link}
+                  href="https://github.com/oliverpatrick/opdev-website"
+                >
                   View Source
                 </MenuItem>
                 {user && (
