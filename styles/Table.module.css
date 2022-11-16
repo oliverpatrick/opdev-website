@@ -1,0 +1,40 @@
+.tableCell {
+  padding: 0.5rem;
+  background-color: #202023;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  border-width: 1px;
+  border-color: #9ca3af;
+  color: #f4f4f4;
+  width: fit-content;
+}
+
+.selected {
+  background: #38383d;
+}
+
+.columnHeader {
+  padding: 0.5rem;
+  background-color: #830091;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  text-align: left;
+  border: 1px solid #9ca3af;
+  color: #f1f1f1;
+}
+
+.checkboxColumn {
+  padding: 0.5rem;
+  background-color: #830091;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  text-align: center;
+  width: 3rem;
+  border: 1px solid #9ca3af;
+}
+
+.columnText {
+  color: #6b7280;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}

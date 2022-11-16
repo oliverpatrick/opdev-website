@@ -40,20 +40,6 @@ const Home: NextPage<IPagePostsProps> = ({ posts }: IPagePostsProps) => {
     <Layout title="Home">
       <Container maxW="container.md">
         <Box
-          borderRadius="lg"
-          mb={6}
-          p={3}
-          textAlign="center"
-          bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
-          css={{ backdropFilter: 'blur(10px)' }}
-        >
-          <Text as="cite">
-            “A jack of all trades is a master of none, but oftentimes better
-            than a master of one.”
-          </Text>
-        </Box>
-
-        <Box
           display={{ md: 'flex' }}
           background={"url('../public/images/hero.webp')"}
           backgroundPosition="center"
@@ -96,7 +82,47 @@ const Home: NextPage<IPagePostsProps> = ({ posts }: IPagePostsProps) => {
           </Box>
         </Box>
 
-        <Section delay={0.1}>
+        <Section delay={0.3}>
+          <Heading as="h3" variant="section-title">
+            Interests
+          </Heading>
+          <Paragraph>
+            Art, Music,{' '}
+            <Link
+              href="https://www.instagram.com/lifeinorangeart"
+              target="_blank"
+            >
+              Drawing
+            </Link>
+            , Playing Guitar, Electric Skating, PC Building, Tinkering, Fitness,
+            Climbing and Getting Dopamine.
+          </Paragraph>
+        </Section>
+
+        <Section delay={0.2}>
+          <Heading as="h3" variant="section-title">
+            Life Story
+          </Heading>
+          <Paragraph>
+            Going to further education after finishing high school in 2011 to
+            study Art & Design. After the year was complete I found myself back
+            to my roots with working on and near computers with my second and
+            third year being in Creative Media Studies. Here I found myself
+            working with 3DS Max, Maya, Photoshop and dabbling in Unreal Engine.
+          </Paragraph>
+          <Paragraph>
+            However. This was not to last as I hit the employment world and
+            spent four long years jumping from labourer, to salesman, to banker.
+            Whilst this allowed me to pick a multitude of useful skills. This
+            would all leads me to the chapter we all would like to know; "How
+            did I get into coding" I joined a bootcamp in early 2019 and landed
+            my first developer job at EMIS. Starting in April of the same year
+            I've been working with React.js ever since and have goals to become
+            an expert!
+          </Paragraph>
+        </Section>
+
+        <Section delay={0.3}>
           <Heading as="h3" variant="section-title">
             Work
           </Heading>
@@ -134,51 +160,55 @@ const Home: NextPage<IPagePostsProps> = ({ posts }: IPagePostsProps) => {
           </Box>
         </Section>
 
-        <Section delay={0.2}>
-          <Heading as="h3" variant="section-title">
-            Life Story
-          </Heading>
-          <Paragraph>
-            Going to further education after finishing high school in 2011 to
-            study Art & Design. After the year was complete I found myself back
-            to my roots with working on and near computers with my second and
-            third year being in Creative Media Studies. Here I found myself
-            working with 3DS Max, Maya, Photoshop and dabbling in Unreal Engine.
-          </Paragraph>
-          <Paragraph>
-            However. This was not to last as I hit the employment world and
-            spent four long years jumping from labourer, to salesman, to banker.
-            Whilst this allowed me to pick a multitude of useful skills, this
-            would all lead me to the chapter we all would like to know; "How did
-            I get into coding" I joined a bootcamp in early 2019 and landed my
-            first developer job at EMIS. Starting in April of the same year I've
-            been working with React.js ever since and have goals to become an
-            expert!
-          </Paragraph>
-        </Section>
+        <SimpleGrid columns={[1, 2, 2]} gap={6}>
+          {posts.slice(0.2).map((post, idx) => (
+            <PostGridItem
+              key={idx}
+              href={`/posts/${post.slug}`}
+              title={post.frontmatter.title}
+              thumbnail={post.frontmatter.cover_image}
+              timestamp={post.frontmatter.date}
+            />
+          ))}
+        </SimpleGrid>
 
-        <Section delay={0.3}>
-          <Heading as="h3" variant="section-title">
-            Interests
-          </Heading>
-          <Paragraph>
-            Art, Music,{' '}
-            <Link
-              href="https://www.instagram.com/lifeinorangeart"
-              target="_blank"
+        <Box alignItems="center" my={4}>
+          <NextLink href="/posts" passHref scroll={false}>
+            <Button
+              rightIcon={
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  style={{ height: '1rem', width: '1rem' }}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                  />
+                </svg>
+              }
+              as="button"
+              bgGradient="linear(to-l, #7928CA, #FF0080)"
+              color="#f4f4f4"
+              _hover={{
+                bgGradient: 'none',
+                bgColor: 'purple'
+              }}
             >
-              Drawing
-            </Link>
-            , Playing Guitar, Electric Skating, PC Building, Tinkering, Fitness,
-            Climbing and Getting Dopamine.
-          </Paragraph>
-        </Section>
+              Recent posts
+            </Button>
+          </NextLink>
+        </Box>
 
-        <Section delay={0.3}>
+        <Section delay={0.1}>
           <Heading as="h3" variant="section-title">
             Find me on the internet
           </Heading>
-          <List>
+          <List display="flex">
             <ListItem>
               <Link href="https://github.com/oliverpatrick" target="_blank">
                 <Button
@@ -278,50 +308,6 @@ const Home: NextPage<IPagePostsProps> = ({ posts }: IPagePostsProps) => {
               </Link>
             </ListItem>
           </List>
-
-          <SimpleGrid columns={[1, 2, 2]} gap={6}>
-            {posts.slice(0.2).map((post, idx) => (
-              <PostGridItem
-                key={idx}
-                href={`/posts/${post.slug}`}
-                title={post.frontmatter.title}
-                thumbnail={post.frontmatter.cover_image}
-                timestamp={post.frontmatter.date}
-              />
-            ))}
-          </SimpleGrid>
-
-          <Box alignItems="center" my={4}>
-            <NextLink href="/posts" passHref scroll={false}>
-              <Button
-                rightIcon={
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    style={{ height: '1rem', width: '1rem' }}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M8.25 4.5l7.5 7.5-7.5 7.5"
-                    />
-                  </svg>
-                }
-                as="button"
-                bgGradient="linear(to-l, #7928CA, #FF0080)"
-                color="#f4f4f4"
-                _hover={{
-                  bgGradient: 'none',
-                  bgColor: 'purple'
-                }}
-              >
-                Recent posts
-              </Button>
-            </NextLink>
-          </Box>
         </Section>
       </Container>
     </Layout>

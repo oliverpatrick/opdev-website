@@ -99,11 +99,9 @@ function Navbar({ path }: any) {
               </Button>
             </NextLink>
           )}
-          {user && (
-            <NavItem href="/auth/helpful" path={path}>
-              Helpful
-            </NavItem>
-          )}
+          <NavItem href="/ui" path={path}>
+            UI
+          </NavItem>
           <NavItem href="/projects" path={path}>
             Projects
           </NavItem>
@@ -212,11 +210,6 @@ function Navbar({ path }: any) {
                 >
                   View Source
                 </MenuItem>
-                {user && (
-                  <MenuItem as={Link} href="/auth/helpful" passhref>
-                    Helpful
-                  </MenuItem>
-                )}
               </MenuList>
             </Menu>
           </Box>
