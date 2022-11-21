@@ -40,7 +40,7 @@ const LinkTag = ({ text, href }: any) => {
 const Posts: NextPage<IPagePostsProps> = ({ posts }: IPagePostsProps) => {
   return (
     <Layout title="Posts">
-      <Container>
+      <Container maxW="container.md">
         <Section delay={0.1}>
           <SimpleGrid columns={[1, 2, 2]} gap={6}>
             {posts.map((post: IPost, idx: number) => (

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../styles/Table.module.css';
 
-interface ITableRow {
+export interface ITableRow {
   [key: string]: string | number;
 }
 

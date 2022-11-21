@@ -99,8 +99,8 @@ function Navbar({ path }: any) {
               </Button>
             </NextLink>
           )}
-          <NavItem href="/ui" path={path}>
-            UI
+          <NavItem href="/services" path="#">
+            Services
           </NavItem>
           <NavItem href="/projects" path={path}>
             Projects
@@ -203,6 +203,9 @@ function Navbar({ path }: any) {
                 </NextLink>
                 <NextLink href="/posts" passHref>
                   <MenuItem as={Link}>Posts</MenuItem>
+                </NextLink>
+                <NextLink href="/" passHref>
+                  <MenuItem as={Link}>Services</MenuItem>
                 </NextLink>
                 <MenuItem
                   as={Link}
