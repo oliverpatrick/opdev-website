@@ -19,9 +19,9 @@ const projects = [
     title: 'Work Admin Panel',
     exerpt:
       'Professional dashboard for booking holidays, employee information and, team information with chain of command.',
-    href: '',
-    liveHref: '',
-    thumbnail: ''
+    href: 'https://github.com/oliverpatrick/employee-dashboard.git',
+    liveHref: 'https://oliverpatrick.github.io/employee-dashboard/',
+    thumbnail: '/images/work-dashboard.webp'
   },
   {
     title: 'Gym App/Day by Day Social',
