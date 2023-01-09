@@ -26,7 +26,6 @@ function MyApp({ Component, pageProps, router }: MyAppProps) {
         <Fonts />
         <Layout seoTitle={'Oliver Patrick'} router={router}>
           <AnimatePresence
-            exitBeforeEnter
             initial={true}
             onExitComplete={() => {
               if (typeof window !== 'undefined') {

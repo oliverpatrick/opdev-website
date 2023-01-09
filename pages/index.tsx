@@ -208,7 +208,7 @@ const Home: NextPage<IPagePostsProps> = ({ posts }: IPagePostsProps) => {
           <Heading as="h3" variant="section-title">
             Find me on the internet
           </Heading>
-          <List display="flex">
+          <List>
             <ListItem>
               <Link href="https://github.com/oliverpatrick" target="_blank">
                 <Button
