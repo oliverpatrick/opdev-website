@@ -1,28 +1,27 @@
-import { MacbookScrollDemo } from '@/components/MacBook/MacBook';
-import { HeroParallax } from '@/components/Projects/Projects';
-import Image from 'next/image';
+import { sortPosts, allCoreContent } from 'pliny/utils/contentlayer';
+import { allBlogs } from 'contentlayer/generated';
+import Main from './main';
+import Background from '@/components/homepage/background';
+import SectionContainer from '@/components/SectionContainer';
+import { ProfileCard } from '@/components/profile-card/profile-card';
+import MobileNav from '@/components/navbar/mobile-nav';
+import ThemeSwitch from '@/components/navbar/theme-switch';
 
-import { products } from '../src/data/products';
-
-export default function Home() {
+export default async function Page() {
+  const sortedPosts = sortPosts(allBlogs);
+  const posts = allCoreContent(sortedPosts);
   return (
     <>
-      <div className="p-4 mx-6">
-        <h2 className="text-2xl">I'm Oliver Patrick</h2>
-        <p>Full Stack Engineer</p>
-        <p>I talk to computers. 🗣💻</p>
-        <div>
-          <Image
-            className="animate-morph border-2"
-            src="https://picsum.photos/200"
-            alt="Profile"
-            width={400}
-            height={400}
-          ></Image>
-        </div>
+      <div className="absolute left-0 top-0 z-40 flex w-full flex-row justify-end">
+        <ThemeSwitch></ThemeSwitch>
+        <MobileNav />
       </div>
-      <MacbookScrollDemo />
-      <HeroParallax products={products} />
+      <Background poster={'/static/images/canada/mountains.jpg'}>
+        <ProfileCard />
+      </Background>
+      <SectionContainer>
+        <Main posts={posts} />
+      </SectionContainer>
     </>
   );
 }
