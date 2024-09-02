@@ -4,7 +4,7 @@ import { Java, MaterialUI, NextJS } from '../stack-icons/icons';
 interface ITimelineItemProps {
   title: string;
   description: string;
-  stack: ReactElement<any, any>;
+  stack: ReactNode;
   year: string;
 }
 
