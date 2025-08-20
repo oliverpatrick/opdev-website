@@ -1,10 +1,54 @@
 <script lang="ts">
-  import NavMenu from '$lib/components/nav-menu.svelte';
-  import Carousel from '$lib/components/carousel.svelte';
-  import FooterControls from '$lib/components/footer.svelte';
+	import NavMenu from '$lib/components/nav-menu.svelte';
+	import Carousel from '$lib/components/carousel.svelte';
+	import FooterControls from '$lib/components/footer.svelte';
 	import Avatar from '$lib/components/avatar.svelte';
+	import { githubAPI, type GitHubRepo } from '$lib/utils/github';
 
-  const cardItemsMap = {
+	import { onMount } from 'svelte';
+
+	let pRepos: GitHubRepo[] = [];
+	let fRepos: GitHubRepo[] = [];
+
+	onMount(async () => {
+    try {
+      const { personalRepos, forkedRepos } = await githubAPI.getUserStats();
+			pRepos = personalRepos;
+			fRepos = forkedRepos;
+
+		} catch (error) {
+			console.error('Error fetching repositories:', error);
+		}
+	});
+
+  interface WelcomeCards {
+    title: string;
+    link: string;
+    icon: string;
+  }
+
+  interface WorkExperienceCards {
+    title: string;
+    employer: string;
+    durationOfEmployment: string;
+    description: string;
+    stack: string;
+  }
+
+  interface GithubRepoCards {
+    title: string;
+    description: string;
+    stack: string;
+    forks: string | number;
+    stars: string | number;
+  }
+
+  interface GamesCards {
+    title: string;
+    
+  }
+
+  $: cardItemsMap = {
     "Welcome": [
       { title: "Contact", image: "/games/dashboard.jpg" },
       { title: "Github", image: "/games/recent.jpg" },
@@ -17,24 +61,20 @@
       { title: "Mid-Level Software Engineer", image: "/community/party.jpg" },
       { title: "Senior Software Engineer", image: "/community/feed.jpg" }
     ],
-    "Github Projects": [
-      { title: "Online Friends", image: "/friends/online.jpg" },
-      { title: "Recently Played", image: "/friends/recent.jpg" },
-      { title: "Friend Requests", image: "/friends/requests.jpg" },
-      { title: "Find Friends", image: "/friends/find.jpg" }
-    ],
-    "Github Contributions": [
-      { title: "New Releases", image: "/video/new.jpg" },
-      { title: "Popular Movies", image: "/video/movies.jpg" },
-      { title: "TV Shows", image: "/video/tv.jpg" },
-      { title: "My Videos", image: "/video/mine.jpg" }
-    ],
-    "Marketplace": [
-      { title: "Call of Duty Black Ops", image: "/games/blackops.jpg" },
-      { title: "Gears of War", image: "/games/gearsofwar.jpg" },
-      { title: "Red Dead Redemption", image: "/games/rdr.jpg" },
-      { title: "Halo Reach", image: "/games/halo.jpg" },
-      { title: "FIFA 11", image: "/games/fifa.jpg" }
+    "Github Projects": pRepos.map((personal: GitHubRepo) => {
+      return {
+        title: personal.name, 
+        image: "/github/repo.jpg"
+      };
+    }),
+    "Github Contributions": fRepos.map((forked: GitHubRepo) => {
+      return {
+        title: forked.name, 
+        image: "/github/repo.jpg"
+      };
+    }),
+    "Games": [
+      { title: "Wordle", image: "/games/blackops.jpg" },
     ],
     "My Blog": [
       { title: "System Settings", image: "/system/settings.jpg" },
@@ -44,16 +84,15 @@
     ]
   };
 
-  let activeNavIndex = 0;
+	let activeNavIndex = 0;
 
-  // Get the current nav item name and corresponding card items
-  const navItems = Object.keys(cardItemsMap);
-  $: currentNavItem = navItems[activeNavIndex];
-  $: currentCardItems = cardItemsMap[currentNavItem as keyof typeof cardItemsMap] || [];
+	$: navItems = Object.keys(cardItemsMap || {});
+	$: currentNavItem = navItems[activeNavIndex] || '';
+	$: currentCardItems = cardItemsMap?.[currentNavItem as keyof typeof cardItemsMap] || [];
 </script>
 
-<div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white space-y-6 w-full">
-  <div class="flex flex-col gap-6">
+<div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white w-full">
+  <div class="flex flex-col gap-2 sm:gap-4 lg:gap-6 relative">
     <NavMenu items={navItems} bind:activeIndex={activeNavIndex} />
     <Carousel cardItems={currentCardItems} />
     <Avatar />

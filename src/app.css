@@ -1,3 +1,44 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+
+/* Mobile-first responsive base styles */
+@layer base {
+  html {
+    @apply text-sm;
+  }
+  
+  @media (min-width: 640px) {
+    html {
+      @apply text-base;
+    }
+  }
+
+  body {
+    @apply overflow-x-hidden;
+  }
+
+  /* Ensure touch-friendly button sizes on mobile */
+  button {
+    @apply min-h-11 min-w-11;
+  }
+  
+  @media (min-width: 640px) {
+    button {
+      @apply min-h-auto min-w-auto;
+    }
+  }
+}
+
+/* Mobile-specific utilities */
+@layer utilities {
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+  
+  /* Better mobile scrolling */
+  .scroll-smooth-mobile {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+}
