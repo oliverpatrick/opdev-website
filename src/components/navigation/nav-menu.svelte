@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { onMount, onDestroy } from "svelte";
-  import { fly, fade } from "svelte/transition";
-  import { quintOut } from "svelte/easing";
+  import { onMount, onDestroy } from 'svelte';
+  import { fly, fade } from 'svelte/transition';
+  import { quintOut } from 'svelte/easing';
 
   import NavigationItem from './NavigationItem.svelte';
 
@@ -17,8 +17,8 @@
   }
 
   function handleKey(e: KeyboardEvent): void {
-    if (e.key === "ArrowUp") moveUp();
-    if (e.key === "ArrowDown") moveDown();
+    if (e.key === 'ArrowUp') moveUp();
+    if (e.key === 'ArrowDown') moveDown();
   }
 
   function handleClick(index: number): void {
@@ -27,13 +27,13 @@
 
   onMount(() => {
     if (typeof window !== 'undefined') {
-      window.addEventListener("keydown", handleKey);
+      window.addEventListener('keydown', handleKey);
     }
   });
 
   onDestroy(() => {
     if (typeof window !== 'undefined') {
-      window.removeEventListener("keydown", handleKey);
+      window.removeEventListener('keydown', handleKey);
     }
   });
 
@@ -44,9 +44,11 @@
 </script>
 
 <!-- Container -->
-<div class="container flex flex-col items-start justify-end h-auto p-4 pb-2 overflow-hidden select-none sm:p-8 lg:p-16 sm:h-84 sm:pb-4">
+<div
+  class="container flex h-auto flex-col items-start justify-end overflow-hidden p-4 pb-2 select-none sm:h-84 sm:p-8 sm:pb-4 lg:p-16"
+>
   {#each displayItems as item, i (item)}
-  <!-- <a href="/xbox"> -->
+    <!-- <a href="/xbox"> -->
     <!-- <button
     type="button"
     on:click={() => handleClick((i + activeIndex + 1) % items.length)}
@@ -67,13 +69,13 @@
       >
       {item}
     </button> -->
-    <NavigationItem 
-        text={item} 
-        on:click={() => handleClick((i + activeIndex + 1) % items.length)} 
-        index={i}
-        itemsLength={displayItems.length}
-        isActive={i === displayItems.length - 1}
+    <NavigationItem
+      text={item}
+      on:click={() => handleClick((i + activeIndex + 1) % items.length)}
+      index={i}
+      itemsLength={displayItems.length}
+      isActive={i === displayItems.length - 1}
     />
-  <!-- </a> -->
+    <!-- </a> -->
   {/each}
 </div>
