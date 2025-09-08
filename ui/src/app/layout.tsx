@@ -7,7 +7,7 @@ import {
 import { ReactNode } from "react";
 
 import { AppProvider } from "./provider";
-import { getUserQueryOptions } from "@/lib/auth";
+// import { getUserQueryOptions } from "@/lib/auth";
 
 import MobileNav from "@/components/mobile-nav";
 
@@ -25,7 +25,7 @@ export default async function RootLayout({
 }>) {
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery(getUserQueryOptions());
+  // await queryClient.prefetchQuery(getUserQueryOptions());
 
   const dehydratedState = dehydrate(queryClient);
 
