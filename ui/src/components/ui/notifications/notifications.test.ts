@@ -1,28 +1,31 @@
 import { renderHook, act } from "@testing-library/react";
-
-import { useNotifications, Notification } from "./notifications-store";
+import { useNotifications } from "./notifications-store"; // adjust path if needed
 
 test("should add and remove notifications", () => {
   const { result } = renderHook(() => useNotifications());
 
-  expect(result.current.notifications.length).toBe(0);
+  expect(result.current.notifications).toEqual([]);
 
-  const notification: Notification = {
-    id: "123",
+  act(() => {
+    result.current.addNotification({
+      title: "Hello World",
+      type: "info",
+      message: "This is a notification",
+    });
+  });
+
+  expect(result.current.notifications).toHaveLength(1);
+  expect(result.current.notifications[0]).toMatchObject({
     title: "Hello World",
     type: "info",
     message: "This is a notification",
-  };
-
-  act(() => {
-    result.current.addNotification(notification);
   });
 
-  expect(result.current.notifications).toContainEqual(notification);
+  const id = result.current.notifications[0].id;
 
   act(() => {
-    result.current.dismissNotification(notification.id);
+    result.current.dismissNotification(id);
   });
 
-  expect(result.current.notifications).not.toContainEqual(notification);
+  expect(result.current.notifications).toEqual([]);
 });
