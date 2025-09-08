@@ -9,10 +9,7 @@ import { ReactNode } from "react";
 import { AppProvider } from "./provider";
 // import { getUserQueryOptions } from "@/lib/auth";
 
-import MobileNav from "@/components/ui/mobile-nav";
-
 import "@/styles/globals.css";
-import TopBar from "@/components/ui/top-bar";
 
 export const metadata: Metadata = {
   title: "Oliver Patrick",
