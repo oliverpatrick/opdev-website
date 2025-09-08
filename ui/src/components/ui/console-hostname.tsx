@@ -43,16 +43,36 @@ export default function ConsoleHostname() {
   }, [currentCommandIndex, mounted]);
 
   return (
-    <h1 className="flex items-center font-mono text-[10px]">
-      <span style={{ color: "black" }}>guest</span>
-      <span style={{ color: "black" }}>@</span>
-      <span style={{ color: "black" }}>{hostname}</span>
-      <span style={{ color: "black" }}> ~ %</span>
+    <pre className="flex items-center font-mono">
+      <span
+        className="text-[9px] sm:text-xs md:text-sm"
+        style={{ color: "black" }}
+      >
+        guest
+      </span>
+      <span
+        className="text-[9px] sm:text-xs md:text-sm"
+        style={{ color: "black" }}
+      >
+        @
+      </span>
+      <span
+        className="text-[9px] sm:text-xs md:text-sm"
+        style={{ color: "black" }}
+      >
+        {hostname}
+      </span>
+      <span
+        className="text-[9px] sm:text-xs md:text-sm"
+        style={{ color: "black" }}
+      >
+        ~ %
+      </span>
       <span
         ref={commandRef}
         style={{ color: "black" }}
-        className="ml-1 min-w-0"
+        className="ml-1 min-w-0 text-[9px] sm:text-xs md:text-sm"
       />
-    </h1>
+    </pre>
   );
 }

@@ -3,9 +3,9 @@
 import { useState, useEffect } from "react";
 import { getTimeAndDate } from "@/utils/helpers/formatting";
 import ConsoleHostname from "./console-hostname";
-import packageJson from "../../package.json";
+import packageJson from "../../../package.json";
 
-export default function Header() {
+export default function MacTerminal() {
   const [mounted, setMounted] = useState(false);
   const [loginTime, setLoginTime] = useState("");
 
@@ -15,7 +15,7 @@ export default function Header() {
   }, []);
 
   return (
-    <div className="h-full border-2 rounded-md overflow-auto">
+    <div className="h-full border-[0.5] border-gray-300 rounded-md overflow-auto shadow-2xl max-w-3xl">
       <div className="w-full h-auto flex justify-start p-2 bg-gray-100 border-b border-gray-300">
         <div className="flex flex-row space-x-1">
           <div className="h-3 w-3 bg-red-600 rounded-full hover:bg-red-400"></div>
@@ -23,8 +23,11 @@ export default function Header() {
           <div className="h-3 w-3 bg-green-600 rounded-full hover:bg-green-400"></div>
         </div>
       </div>
-      <div className="p-4">
-        <p className="whitespace-pre text-[9px] sm:text-xs md:text-sm">
+      <div className="p-4" style={{ backgroundColor: "#ffffff" }}>
+        <pre
+          className="whitespace-pre text-[9px] sm:text-xs md:text-sm"
+          style={{ color: "black" }}
+        >
           {mounted
             ? `Last login: ${loginTime} on ttys000
 
@@ -53,7 +56,7 @@ export default function Header() {
 ╚═╝      ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝ ╚═════╝╚═╝  ╚═╝ v${packageJson.version}
 
 `}
-        </p>
+        </pre>
 
         <ConsoleHostname />
       </div>

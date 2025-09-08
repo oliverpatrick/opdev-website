@@ -9,9 +9,10 @@ import { ReactNode } from "react";
 import { AppProvider } from "./provider";
 // import { getUserQueryOptions } from "@/lib/auth";
 
-import MobileNav from "@/components/mobile-nav";
+import MobileNav from "@/components/ui/mobile-nav";
 
 import "@/styles/globals.css";
+import TopBar from "@/components/ui/top-bar";
 
 export const metadata: Metadata = {
   title: "Oliver Patrick",
@@ -31,12 +32,17 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className="min-h-screen font-mono antialiased">
+      <body className="w-full min-h-screen font-mono antialiased absolute">
         <AppProvider>
           <HydrationBoundary state={dehydratedState}>
+            {/* <Background
+              poster="/images/mountains.jpg"
+              video={true}
+              alt="Hero background"
+            > */}
             {children}
 
-            <MobileNav />
+            {/* </Background> */}
           </HydrationBoundary>
         </AppProvider>
       </body>
