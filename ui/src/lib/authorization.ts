@@ -1,30 +1,17 @@
-import { Comment, User } from "../types/api";
+// import { User } from "../types/api";
 
-export const canCreateDiscussion = (user: User | null | undefined) => {
-  return user?.role === "ADMIN";
-};
-export const canDeleteDiscussion = (user: User | null | undefined) => {
-  return user?.role === "ADMIN";
-};
-export const canUpdateDiscussion = (user: User | null | undefined) => {
-  return user?.role === "ADMIN";
-};
+// export const canCreate = (user: User | null | undefined) => {
+//   return user?.role === "ADMIN";
+// };
 
-export const canViewUsers = (user: User | null | undefined) => {
-  return user?.role === "ADMIN";
-};
+// export const canDelete = (user: User | null | undefined, item: any) => {
+//   if (user?.role === "ADMIN") {
+//     return true;
+//   }
 
-export const canDeleteComment = (
-  user: User | null | undefined,
-  comment: Comment
-) => {
-  if (user?.role === "ADMIN") {
-    return true;
-  }
+//   if (user?.role === "USER" && item.author?.id === user.id) {
+//     return true;
+//   }
 
-  if (user?.role === "USER" && comment.author?.id === user.id) {
-    return true;
-  }
-
-  return false;
-};
+//   return false;
+// };

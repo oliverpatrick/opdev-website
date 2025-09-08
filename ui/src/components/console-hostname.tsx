@@ -3,11 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import { TypeWriter } from "@/utils/helpers/typerwrite.helper";
 
+const commands = ["npm run dev", "dotnet run", "go run main.go"];
+
 export default function ConsoleHostname() {
   const [hostname, setHostname] = useState("localhost");
   const [mounted, setMounted] = useState(false);
-
-  const commands = ["npm run dev", "dotnet run", "go run main.go"];
   const commandRef = useRef<HTMLSpanElement>(null);
   const [currentCommandIndex, setCurrentCommandIndex] = useState(0);
   const typeWriterRef = useRef<TypeWriter>(new TypeWriter(100));
@@ -40,7 +40,7 @@ export default function ConsoleHostname() {
 
     const timer = setTimeout(startTyping, 1000); // Initial delay
     return () => clearTimeout(timer);
-  }, [currentCommandIndex, commands, mounted]);
+  }, [currentCommandIndex, mounted]);
 
   return (
     <h1 className="flex items-center font-mono text-[10px]">

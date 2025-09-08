@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const WORD_LENGTH = 5;
 const MAX_GUESSES = 6;
@@ -34,7 +34,7 @@ export default function Wordle() {
     }
   };
 
-  const getLetterStatus = (letter: string, index: number, word: string) => {
+  const getLetterStatus = (letter: string, index: number) => {
     if (targetWord[index] === letter) return "correct";
     if (targetWord.includes(letter)) return "present";
     return "absent";
@@ -50,7 +50,7 @@ export default function Wordle() {
         <div key={i} className="flex gap-2">
           {Array.from({ length: WORD_LENGTH }).map((_, j) => {
             const letter = guess[j] || "";
-            const status = letter ? getLetterStatus(letter, j, guess) : "";
+            const status = letter ? getLetterStatus(letter, j) : "";
             return (
               <div
                 key={j}

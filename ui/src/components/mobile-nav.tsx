@@ -12,9 +12,7 @@ import {
   LuNotepadText,
 } from "react-icons/lu";
 
-type Props = {};
-
-function MobileNav({}: Props) {
+function MobileNav() {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
   const navItems = [
