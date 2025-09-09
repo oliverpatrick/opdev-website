@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from "react";
 import { useGithubRepos } from "./api/get-github-repos";
 import { GitHubRepo } from "@/types/api";
-import RepoCard from "@/components/ui/repo-card";
+import RepoCard from "@/components/ui/cards/repo-card";
 
 function Play() {
   const [searchTerm, setSearchTerm] = useState("");

@@ -1,38 +1,50 @@
 @import "tailwindcss";
 
-/* Light Mode Colors */
-:root {
-  --shadow-color: 0deg 0% 63%;
-  --primary: white;
-  --secondary: rgb(44, 44, 44);
-  --inactive: orange;
-  --duration: 0.22;
-  --drop-off: 0.4;
-  --ease: ease-out;
-  --ease: linear(
-    0 0%,
-    0.2342 12.49%,
-    0.4374 24.99%,
-    0.6093 37.49%,
-    0.6835 43.74%,
-    0.7499 49.99%,
-    0.8086 56.25%,
-    0.8593 62.5%,
-    0.9023 68.75%,
-    0.9375 75%,
-    0.9648 81.25%,
-    0.9844 87.5%,
-    0.9961 93.75%,
-    1 100%
-  );
-  --border: light-dark(hsl(0 0% 80%), hsl(0 0% 60%));
-  @media (prefers-color-scheme: dark) {
-    --shadow-color: 0deg 0% 0%;
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary: #f9edcc;
+  --color-secondary: #292f36;
+  --color-accent: #ea2b1f;
+  --color-accent-secondary: #7765e3;
+}
+
+@layer theme {
+  :root,
+  :host {
+    @variant dark {
+      --color-primary: #292f36;
+      --color-secondary: #f9edcc;
+      --color-accent: #ea2b1f;
+      --color-accent-secondary: #7765e3;
+    }
   }
 }
+
+:root {
+  --shadow-color: 0deg 0% 63%;
+  --primary: #f9edcc;
+  --secondary: #292f36;
+  --accent: #ea2b1f;
+  --accent-secondary: #7765e3;
+  --duration: 0.22;
+  --ease: ease-out;
+
+  --border: light-dark(hsl(0 0% 80%), hsl(0 0% 60%));
+
+  @media (prefers-color-scheme: dark) {
+    --shadow-color: 0deg 0% 0%;
+    --primary: #292f36;
+    --secondary: #f9edcc;
+    --accent: #ea2b1f;
+    --accent-secondary: #7765e3;
+  }
+}
+
 [data-theme="dark"] {
   --shadow-color: 0deg 0% 0%;
 }
+
 [data-theme="light"] {
   --shadow-color: 0deg 0% 63%;
 }
@@ -88,8 +100,8 @@ code {
     clip-path: inset(0 0 0 0 round 100px);
   }
   .premium:has(:checked) label {
-    color: var(--inactive);
-    opacity: 0.75;
+    color: var(--accent);
+    font-weight: 600;
   }
   .premium:has(:nth-of-type(1):checked) label:nth-of-type(1),
   .premium:has(:nth-of-type(2):checked) label:nth-of-type(2) {
@@ -111,7 +123,7 @@ code {
 
   .control__track:not(:has(> :checked)) > label {
     color: var(--primary);
-    opacity: var(--drop-off);
+    font-weight: 600;
   }
   .control__track:not(:has(> :checked)) > .indicator {
     translate: 100% 0;
@@ -132,11 +144,10 @@ code {
     transition-duration: calc(var(--duration) * 1s);
     transition-timing-function: var(--ease);
   }
-  .control__track:has(> :checked) .premium .indicator {
-    background: var(--inactive);
-  }
+
   .control__track:has(> :checked) .premium label {
-    color: var(--inactive);
+    color: var(--accent);
+    font-weight: 600;
   }
 }
 
@@ -200,6 +211,7 @@ code {
       font-size: 0.75rem;
       color: var(--primary);
       z-index: 2;
+      font-weight: 600;
     }
 
     .control__track > label {

@@ -6,7 +6,7 @@ import { Tabs, TabPanels, TabPanel } from "@/components/ui/tabs";
 
 export default function Home() {
   return (
-    <main className="p-4 pt-16">
+    <main className="p-4">
       <Tabs defaultIndex={0}>
         <div className="flex justify-center mb-8">
           <PillTabNav />

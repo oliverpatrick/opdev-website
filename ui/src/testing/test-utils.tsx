@@ -19,7 +19,7 @@ export const waitForLoadingToFinish = () =>
 
 export const renderApp = async (
   ui: any,
-  { user, ...renderOptions }: Record<string, any> = {}
+  { ...renderOptions }: Record<string, any> = {}
 ) => {
   const returnValue = {
     ...rtlRender(ui, {

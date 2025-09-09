@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { getTimeAndDate } from "@/utils/helpers/formatting";
 import ConsoleHostname from "./console-hostname";
-import packageJson from "../../../package.json";
+import packageJson from "../../../../package.json";
 
 export default function MacTerminal() {
   const [mounted, setMounted] = useState(false);
@@ -23,8 +23,8 @@ export default function MacTerminal() {
           <div className="h-3 w-3 bg-green-600 rounded-full hover:bg-green-400"></div>
         </div>
       </div>
-      <div className="p-4" style={{ backgroundColor: "#ffffff" }}>
-        <pre className="whitespace-pre text-[9px] sm:text-xs md:text-sm text-gray-700">
+      <div className="p-4 bg-secondary">
+        <pre className="whitespace-pre text-[9px] sm:text-xs md:text-sm text-primary">
           {mounted
             ? `Last login: ${loginTime} on ttys000
 
