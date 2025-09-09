@@ -63,11 +63,11 @@ export const Timeline: React.FC<TimelineProps> = ({
       case "completed":
         return "bg-green-500 border-green-500 text-white";
       case "current":
-        return "bg-blue-500 border-blue-500 text-white animate-pulse";
+        return "bg-accent border-accent text-white animate-pulse";
       case "upcoming":
         return "bg-gray-200 border-gray-300 text-gray-500";
       default:
-        return "bg-blue-500 border-blue-500 text-white";
+        return "bg-accent border-accent text-white";
     }
   };
 
@@ -93,7 +93,7 @@ export const Timeline: React.FC<TimelineProps> = ({
           {showConnector && (
             <div
               className={cn(
-                "absolute -left-3 top-0 rounded-full flex items-center justify-center border border-2 sm:border-2",
+                "absolute -left-3 top-0 rounded-full flex items-center justify-center border sm:border-2",
                 isCompact ? "w-3 h-3" : "w-4 h-4 sm:w-6 sm:h-6",
                 getStatusStyles(event.status)
               )}
