@@ -29,17 +29,10 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className="w-full min-h-screen font-mono antialiased absolute">
+      <body className="w-full min-h-screen font-mono antialiased absolute bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
         <AppProvider>
           <HydrationBoundary state={dehydratedState}>
-            {/* <Background
-              poster="/images/mountains.jpg"
-              video={true}
-              alt="Hero background"
-            > */}
             {children}
-
-            {/* </Background> */}
           </HydrationBoundary>
         </AppProvider>
       </body>

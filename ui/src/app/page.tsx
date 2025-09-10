@@ -1,8 +1,8 @@
 import Me from "@/features/me/me";
 import Play from "@/features/play/play";
 import Work from "@/features/work";
-import PillTabNav from "@/components/ui/pill-tab-nav/pill-tab-nav";
-import { Tabs, TabPanels, TabPanel } from "@/components/ui/tabs";
+
+import { Tabs, TabPanels, TabPanel, PillTabNav } from "@/components/ui/tabs";
 
 export default function Home() {
   return (

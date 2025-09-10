@@ -1,110 +1,73 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React from "react";
 import { useGithubRepos } from "./api/get-github-repos";
-import { GitHubRepo } from "@/types/api";
-import RepoCard from "@/components/ui/cards/repo-card";
+import { useRepoFilters } from "./hooks/use-repo-filters";
+import { RepoSearchFilters, RepoList } from "./components";
+import { Spinner } from "@/components/ui/loaders/spinner";
+import ErrorRetry from "@/components/error/error-retry";
+import Link from "next/link";
 
 function Play() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [sortBy, setSortBy] = useState<"name" | "stars" | "updated">("stars");
-  const [languageFilter, setLanguageFilter] = useState("");
-
   const reposQuery = useGithubRepos();
 
-  const filteredAndSortedRepos = useMemo(() => {
-    if (!reposQuery.data) return [];
-
-    const filtered = reposQuery.data.filter((repo: GitHubRepo) => {
-      const matchesSearch =
-        repo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (repo.description?.toLowerCase().includes(searchTerm.toLowerCase()) ??
-          false);
-      const matchesLanguage =
-        !languageFilter || repo.language === languageFilter;
-      return matchesSearch && matchesLanguage;
-    });
-
-    return filtered.sort((a: GitHubRepo, b: GitHubRepo) => {
-      switch (sortBy) {
-        case "stars":
-          return b.stargazers_count - a.stargazers_count;
-        case "updated":
-          return (
-            new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
-          );
-        default:
-          return a.name.localeCompare(b.name);
-      }
-    });
-  }, [reposQuery.data, searchTerm, sortBy, languageFilter]);
-
-  const availableLanguages = useMemo(() => {
-    if (!reposQuery.data) return [];
-    const languages = [
-      ...new Set(
-        reposQuery.data.map((repo: GitHubRepo) => repo.language).filter(Boolean)
-      ),
-    ];
-    return languages.sort();
-  }, [reposQuery.data]);
+  const {
+    searchTerm,
+    setSearchTerm,
+    sortBy,
+    setSortBy,
+    languageFilter,
+    setLanguageFilter,
+    filteredAndSortedRepos,
+    availableLanguages,
+  } = useRepoFilters({ repos: reposQuery.data });
 
   if (reposQuery.isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center py-8 w-full h-full">
+        <Spinner size="xl" message="Loading repositories..." />
+      </div>
+    );
   }
 
   if (reposQuery.isError) {
-    return <div>Error: {reposQuery.error.message}</div>;
+    return (
+      <ErrorRetry
+        message={`Error loading repositories: ${reposQuery.error.message}`}
+        onRetry={() => reposQuery.refetch()}
+      />
+    );
   }
 
   return (
-    <div>
-      <div className="mb-6 space-y-4">
-        <input
-          type="text"
-          placeholder="Search repositories..."
-          value={searchTerm}
-          onChange={e => setSearchTerm(e.target.value)}
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-
-        <div className="flex flex-wrap gap-4">
-          <select
-            value={sortBy}
-            onChange={e =>
-              setSortBy(e.target.value as "name" | "stars" | "updated")
-            }
-            className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="name">Sort by Name</option>
-            <option value="stars">Sort by Stars</option>
-            <option value="updated">Sort by Updated</option>
-          </select>
-
-          <select
-            value={languageFilter}
-            onChange={e => setLanguageFilter(e.target.value)}
-            className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">All Languages</option>
-            {availableLanguages.map(language => (
-              <option key={language} value={language!}>
-                {language}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="text-sm text-gray-600">
-          Showing {filteredAndSortedRepos.length} repositories
-        </div>
+    <div className="container mx-auto px-4 py-8">
+      {/* <div className="flex flex-col items-center mb-8">
+        Want to play a{" "}
+        <Link href="/wordle">
+          <span className="font-bold animate-pulse">game?</span>
+        </Link>
+      </div> */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          GitHub Repositories
+        </h1>
+        <p className="text-gray-600">
+          Explore my open source projects and contributions
+        </p>
       </div>
 
-      <div className="flex flex-wrap space-x-1 space-y-1">
-        {filteredAndSortedRepos.map((repo: GitHubRepo) => (
-          <RepoCard key={repo.id} repo={repo} />
-        ))}
-      </div>
+      <RepoSearchFilters
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+        sortBy={sortBy}
+        onSortChange={({ value }) => setSortBy(value)}
+        languageFilter={languageFilter}
+        onLanguageChange={setLanguageFilter}
+        availableLanguages={availableLanguages}
+        resultCount={filteredAndSortedRepos.length}
+      />
+
+      <RepoList repos={filteredAndSortedRepos} />
     </div>
   );
 }

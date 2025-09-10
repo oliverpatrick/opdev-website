@@ -4,7 +4,7 @@ import React from "react";
 export type TimelineEvent = {
   id?: string | number;
   date: string;
-  title: string;
+  title: string | React.ReactNode;
   description?: string | React.ReactNode;
   icon?: React.ReactNode;
   status?: "completed" | "current" | "upcoming";

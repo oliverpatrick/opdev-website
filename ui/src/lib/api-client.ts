@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useNotifications } from "@/components/ui/notifications/notifications-store";
+import { useNotifications } from "@/components/ui/notifications/use-notifications";
 // import { env } from "@/config/env";
 
 type RequestOptions = {

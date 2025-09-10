@@ -19,13 +19,13 @@ const variantIcons = {
   success: <SuccessIcon className="h-5 w-5" aria-hidden="true" />,
 };
 
-export function Alert({
+export const Alert: React.FC<AlertProps> = ({
   variant = "warning",
   position = "default",
   title,
   children,
   className,
-}: AlertProps) {
+}: AlertProps) => {
   const icon = variantIcons[variant];
 
   const [isVisible, setIsVisible] = useState(true);
@@ -111,4 +111,4 @@ export function Alert({
       </div>
     </div>
   );
-}
+};

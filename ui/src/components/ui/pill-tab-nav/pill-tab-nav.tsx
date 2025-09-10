@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useTabsContext } from "../tabs/tabs";
 
-const PillTabNav: React.FC = () => {
+export const PillTabNav: React.FC = () => {
   const { setSelectedIndex } = useTabsContext();
   const [selectedTab, setSelectedTab] = useState("me");
 
@@ -65,5 +65,3 @@ const PillTabNav: React.FC = () => {
     </div>
   );
 };
-
-export default PillTabNav;

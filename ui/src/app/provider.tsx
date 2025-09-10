@@ -5,9 +5,9 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import * as React from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
-// import { Notifications } from "@/components/ui/notifications";
 import { queryConfig } from "@/lib/react-query";
-import { MainErrorFallback } from "@/components/error/main";
+import { MainErrorFallback } from "@/components/error/main-error-fallback";
+import { Notifications } from "@/components/ui/notifications";
 
 type AppProviderProps = {
   children: React.ReactNode;
@@ -25,7 +25,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     <ErrorBoundary FallbackComponent={MainErrorFallback}>
       <QueryClientProvider client={queryClient}>
         {process.env.DEV && <ReactQueryDevtools />}
-        {/* <Notifications /> */}
+        <Notifications />
         {children}
       </QueryClientProvider>
     </ErrorBoundary>

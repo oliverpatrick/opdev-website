@@ -1,14 +1,19 @@
 "use client";
 
-import { Info, CircleAlert, CircleX, CircleCheck } from "lucide-react";
+import {
+  CloseIcon,
+  InformationIcon,
+  SuccessIcon,
+  WarningIcon,
+} from "../common/icons";
 
 const icons = {
-  info: <Info className="size-6 text-blue-500" aria-hidden="true" />,
-  success: <CircleCheck className="size-6 text-green-500" aria-hidden="true" />,
+  info: <InformationIcon className="size-6 text-blue-500" aria-hidden="true" />,
+  success: <SuccessIcon className="size-6 text-green-500" aria-hidden="true" />,
   warning: (
-    <CircleAlert className="size-6 text-yellow-500" aria-hidden="true" />
+    <WarningIcon className="size-6 text-yellow-500" aria-hidden="true" />
   ),
-  error: <CircleX className="size-6 text-red-500" aria-hidden="true" />,
+  error: <CloseIcon className="size-6 text-red-500" aria-hidden="true" />,
 };
 
 export type NotificationProps = {
@@ -43,7 +48,7 @@ export const Notification = ({
                 }}
               >
                 <span className="sr-only">Close</span>
-                <CircleX className="size-5" aria-hidden="true" />
+                <CloseIcon className="size-5" aria-hidden="true" />
               </button>
             </div>
           </div>
