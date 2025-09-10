@@ -21,7 +21,7 @@ function Socials({ className = "", size = "md" }: Props) {
         href="https://x.com/dev_op"
         target="_blank"
         rel="noopener noreferrer"
-        className="text-gray-600 hover:text-blue-500 transition-colors"
+        className="text-primary hover:text-blue-500 transition-colors"
       >
         <Twitter className={iconSize} fill="currentColor" />
       </a>
@@ -30,7 +30,7 @@ function Socials({ className = "", size = "md" }: Props) {
         href="https://github.com"
         target="_blank"
         rel="noopener noreferrer"
-        className="text-gray-600 hover:text-gray-900 transition-colors"
+        className="text-primary hover:text-gray-900 transition-colors"
       >
         <Github className={iconSize} fill="currentColor" />
       </a>
@@ -39,14 +39,14 @@ function Socials({ className = "", size = "md" }: Props) {
         href="https://www.linkedin.com/in/oliver-p-4b6bb4ba/"
         target="_blank"
         rel="noopener noreferrer"
-        className="text-gray-600 hover:text-blue-600 transition-colors"
+        className="text-primary hover:text-blue-600 transition-colors"
       >
         <Linkedin className={iconSize} fill="currentColor" />
       </a>
 
       <a
         href="mailto:oliver@opdev.co.uk"
-        className="text-gray-600 hover:text-accent transition-colors"
+        className="text-primary hover:text-accent transition-colors"
       >
         <Mail className={iconSize} fill="currentColor" />
       </a>

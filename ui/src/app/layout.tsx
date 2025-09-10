@@ -29,7 +29,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className="w-full min-h-screen font-mono antialiased absolute bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+      <body className="w-full min-h-screen font-mono antialiased absolute">
         <AppProvider>
           <HydrationBoundary state={dehydratedState}>
             {children}

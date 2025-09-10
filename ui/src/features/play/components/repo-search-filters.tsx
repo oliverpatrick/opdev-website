@@ -33,7 +33,7 @@ export const RepoSearchFilters: React.FC<RepoSearchFiltersProps> = ({
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           onSearchChange(e.target.value)
         }
-        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="bg-primary w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-secondary"
       />
 
       <div className="flex flex-wrap gap-4">
@@ -44,7 +44,7 @@ export const RepoSearchFilters: React.FC<RepoSearchFiltersProps> = ({
               value: value as "name" | "stars" | "updated",
             })
           }
-          className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="bg-primary px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-secondary"
           options={[
             { value: "name", label: "Sort by Name" },
             { value: "stars", label: "Sort by Stars" },
@@ -55,7 +55,7 @@ export const RepoSearchFilters: React.FC<RepoSearchFiltersProps> = ({
         <Select
           value={languageFilter}
           onChange={(value: string) => onLanguageChange(value)}
-          className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="bg-primary px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-secondary"
           options={[
             { value: "", label: "All Languages" },
             ...availableLanguages.map(language => ({
@@ -66,7 +66,7 @@ export const RepoSearchFilters: React.FC<RepoSearchFiltersProps> = ({
         />
       </div>
 
-      <div className="text-sm text-gray-600">
+      <div className="text-sm text-primary/80">
         Showing <span className="font-medium">{resultCount}</span> repositories
       </div>
     </div>

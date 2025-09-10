@@ -6,7 +6,9 @@ function Work() {
   return (
     <div className="px-4 md:px-[10%] lg:px-[20%]">
       <section className="mb-8">
-        <h2 className="text-2xl font-bold mb-4">Technologies & Tools</h2>
+        <h2 className="text-2xl font-bold mb-4 text-primary">
+          Technologies & Tools
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-secondary bg-primary p-4 rounded-b-lg drop-shadow-2xl">
           <div>
             <h3 className="font-semibold mb-2">Languages & Frameworks</h3>
@@ -51,7 +53,7 @@ function Work() {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-2xl font-bold mb-4">Projects</h2>
+        <h2 className="text-2xl font-bold mb-4 text-primary">Projects</h2>
         <Accordion
           items={[
             {
@@ -207,10 +209,10 @@ function Work() {
             {
               date: "Oct 2024 - Oct 2025",
               title: (
-                <p>
+                <p className="text-primary">
                   <a
                     href="https://www.iress.com/au/"
-                    className="underline hover:text-secondary/80"
+                    className="underline hover:text-primary/80"
                   >
                     Iress (Contract)
                   </a>
@@ -218,25 +220,23 @@ function Work() {
                 </p>
               ),
               description: (
-                <>
-                  <p>
-                    Led modernization of XPlan Mortgage Sourcing platform,
-                    migrating from Knockout.js to React Remix. Redesigned data
-                    models for AWS DynamoDB and implemented C# communication
-                    layer. Established containerized development environment
-                    with Docker and wrote comprehensive Playwright test suites
-                    achieving 90%+ reduction in regression issues.
-                  </p>
-                </>
+                <p className="text-primary">
+                  Led modernization of XPlan Mortgage Sourcing platform,
+                  migrating from Knockout.js to React Remix. Redesigned data
+                  models for AWS DynamoDB and implemented C# communication
+                  layer. Established containerized development environment with
+                  Docker and wrote comprehensive Playwright test suites
+                  achieving 90%+ reduction in regression issues.
+                </p>
               ),
             },
             {
               date: "June 2023 - Aug 2023",
               title: (
-                <p>
+                <p className="text-primary">
                   <a
                     href="https://www.valueselling.com"
-                    className="underline hover:text-secondary/80"
+                    className="underline hover:text-secondary/80 text-primary"
                   >
                     ValueSelling
                   </a>
@@ -244,22 +244,20 @@ function Work() {
                 </p>
               ),
               description: (
-                <>
-                  <p>
-                    Collaborated on Sales Learning Management System. Upgraded
-                    React 16 to 18, replaced Syncfusion with Ant Design saving
-                    $7,000, and developed custom rich text editor. Created
-                    PowerPoint print feature generating new revenue streams and
-                    implemented Node Express API with OpenAI Assistant
-                    integration.
-                  </p>
-                </>
+                <p className="text-primary">
+                  Collaborated on Sales Learning Management System. Upgraded
+                  React 16 to 18, replaced Syncfusion with Ant Design saving
+                  $7,000, and developed custom rich text editor. Created
+                  PowerPoint print feature generating new revenue streams and
+                  implemented Node Express API with OpenAI Assistant
+                  integration.
+                </p>
               ),
             },
             {
               date: "Feb 2022 - May 2023",
               title: (
-                <p>
+                <p className="text-primary">
                   <a
                     href="https://www.promaticadigital.co.uk/"
                     className="underline hover:text-secondary/80"
@@ -270,22 +268,19 @@ function Work() {
                 </p>
               ),
               description: (
-                <>
-                  <p>
-                    Led frontend development as React expert, mentoring
-                    colleagues and building frontend application from scratch.
-                    Set up codebase with linting, formatting, and testing
-                    configurations. Built consultation application in three
-                    weeks and implemented Mantine UI library to improve
-                    development time.
-                  </p>
-                </>
+                <p className="text-primary">
+                  Led frontend development as React expert, mentoring colleagues
+                  and building frontend application from scratch. Set up
+                  codebase with linting, formatting, and testing configurations.
+                  Built consultation application in three weeks and implemented
+                  Mantine UI library to improve development time.
+                </p>
               ),
             },
             {
               date: "Apr 2019 - Feb 2022",
               title: (
-                <p>
+                <p className="text-primary">
                   <a
                     href="https://www.emishealth.com/"
                     className="underline hover:text-secondary/80"
@@ -296,16 +291,13 @@ function Work() {
                 </p>
               ),
               description: (
-                <>
-                  <p>
-                    Developed EMIS-X Medications and Patient Data platforms for
-                    NHS professionals. Achieved 100% test coverage ensuring
-                    high-quality monthly releases. Contributed to EMIS UI Kit
-                    for reusable components and built backend services using
-                    AWS, Golang, and DynamoDB maintaining health industry
-                    compliance.
-                  </p>
-                </>
+                <p className="text-primary">
+                  Developed EMIS-X Medications and Patient Data platforms for
+                  NHS professionals. Achieved 100% test coverage ensuring
+                  high-quality monthly releases. Contributed to EMIS UI Kit for
+                  reusable components and built backend services using AWS,
+                  Golang, and DynamoDB maintaining health industry compliance.
+                </p>
               ),
             },
           ]}

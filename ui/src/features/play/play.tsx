@@ -6,7 +6,6 @@ import { useRepoFilters } from "./hooks/use-repo-filters";
 import { RepoSearchFilters, RepoList } from "./components";
 import { Spinner } from "@/components/ui/loaders/spinner";
 import ErrorRetry from "@/components/error/error-retry";
-import Link from "next/link";
 
 function Play() {
   const reposQuery = useGithubRepos();
@@ -48,10 +47,10 @@ function Play() {
         </Link>
       </div> */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <h1 className="text-3xl font-bold text-primary mb-2">
           GitHub Repositories
         </h1>
-        <p className="text-gray-600">
+        <p className="text-primary">
           Explore my open source projects and contributions
         </p>
       </div>

@@ -144,7 +144,7 @@ export const Timeline: React.FC<TimelineProps> = ({
               </div>
               <time
                 className={cn(
-                  "text-gray-500 font-medium sm:ml-4 flex-shrink-0 mt-0.5 sm:mt-0",
+                  "text-primary/80 font-medium sm:ml-4 flex-shrink-0 mt-0.5 sm:mt-0",
                   isCompact ? "text-[10px]" : "text-xs sm:text-sm"
                 )}
               >
