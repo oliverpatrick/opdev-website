@@ -1,19 +1,14 @@
 {
-  "extends": "@repo/typescript-config/nextjs.json",
+  "extends": "@repo/typescript-config/react-library.json",
   "compilerOptions": {
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "strictNullChecks": true
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "paths": {
+      "@repo/ui/components/*": ["../../packages/ui/src/components/*"],
+      "@repo/ui/styles.css": ["../../packages/ui/src/styles.css"],
+      "@repo/ui/cn": ["../../packages/ui/src/utils/cn.tsx"]
+    }
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "next-env.d.ts",
-    "next.config.ts",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": ["node_modules"]
+  "include": ["stories", ".storybook", "env.d.ts"],
+  "exclude": ["dist", "build", "node_modules"]
 }

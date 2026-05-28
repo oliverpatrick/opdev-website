@@ -1,7 +1,86 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  --color-blue-1000: #2a8af6;
-  --color-purple-1000: #a853ba;
-  --color-red-1000: #e92a67;
+  --color-primary: #f6f7eb;
+  --color-secondary: #343e3d;
+  --color-accent: #ef2917;
+  --color-accent-secondary: #343e3d;
+}
+
+@layer theme {
+  :root,
+  :host {
+    @variant dark {
+      --color-primary: #343e3d;
+      --color-secondary: #f6f7eb;
+      --color-accent: #ef2917;
+      --color-accent-secondary: #343e3d;
+    }
+  }
+}
+
+:root {
+  --shadow-color: 0deg 0% 63%;
+  --primary: #f6f7eb;
+  --secondary: #343e3d;
+  --accent: #ef2917;
+  --accent-secondary: #343e3d;
+  --duration: 0.22;
+  --ease: ease-out;
+
+  --border: light-dark(hsl(0 0% 80%), hsl(0 0% 60%));
+
+  @media (prefers-color-scheme: dark) {
+    --shadow-color: 0deg 0% 0%;
+    --primary: #343e3d;
+    --secondary: #f6f7eb;
+    --accent: #ef2917;
+    --accent-secondary: #343e3d;
+  }
+}
+
+[data-theme="dark"] {
+  --shadow-color: 0deg 0% 0%;
+}
+
+[data-theme="light"] {
+  --shadow-color: 0deg 0% 63%;
+}
+
+body {
+  margin: 0;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family:
+    source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
