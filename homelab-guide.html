@@ -1,0 +1,1706 @@
+
+<title>Homelab Setup Guide — opdev.co.uk</title>
+<style>
+:root {
+  --bg: #F4F7FB;
+  --surface: #FFFFFF;
+  --surface-alt: #EBF2FA;
+  --border: #C9D8EA;
+  --text: #0D1B2A;
+  --muted: #4E6070;
+  --light: #8299AC;
+  --accent: #0C7282;
+  --accent-dim: #D6EEF2;
+  --accent-bright: #0BB3C8;
+  --warn-bg: #FFF8E6;
+  --warn-border: #F59E0B;
+  --warn-text: #7C4A00;
+  --tip-bg: #E9F7F4;
+  --tip-border: #0C7282;
+  --tip-text: #0A4A42;
+  --code-bg: #0D1117;
+  --code-fg: #C9D6E3;
+  --sidebar-w: 265px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.7;font-size:16px;
+}
+
+/* Layout */
+.layout{display:flex;min-height:100vh}
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;background:var(--surface);
+  border-right:1px solid var(--border);position:fixed;top:0;left:0;
+  height:100vh;overflow-y:auto;padding:1.75rem 1.25rem;
+}
+.main{margin-left:var(--sidebar-w);flex:1;padding:3rem 3rem 6rem;max-width:calc(var(--sidebar-w) + 820px)}
+
+/* Sidebar */
+.sidebar-eyebrow{
+  font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:.4rem;
+}
+.sidebar-heading{
+  font-size:1rem;font-weight:800;color:var(--text);margin-bottom:1.75rem;line-height:1.3;
+}
+.nav-group{margin-bottom:1.25rem}
+.nav-group-label{
+  font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--light);margin-bottom:.35rem;padding-left:.25rem;
+}
+.nav-item{
+  display:flex;align-items:flex-start;gap:.5rem;padding:.28rem .25rem;
+  text-decoration:none;color:var(--muted);font-size:.82rem;line-height:1.4;
+  border-radius:4px;transition:color .15s,background .15s;
+}
+.nav-item:hover{color:var(--accent);background:var(--accent-dim)}
+.nav-num{font-size:.7rem;font-weight:700;color:var(--accent);width:1.4em;flex-shrink:0;margin-top:.05em;font-variant-numeric:tabular-nums}
+
+/* Hero */
+.hero{
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:2.5rem;margin-bottom:3rem;
+}
+.hero-eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.6rem}
+.hero-title{font-size:2rem;font-weight:900;color:var(--text);margin-bottom:.9rem;line-height:1.15;text-wrap:balance}
+.hero-desc{color:var(--muted);font-size:1rem;max-width:580px;line-height:1.7;margin-bottom:1.5rem}
+.stack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:.75rem}
+.stack-card{
+  background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;
+  padding:.875rem 1rem;
+}
+.stack-card-cat{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:.2rem}
+.stack-card-name{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:.15rem}
+.stack-card-desc{font-size:.75rem;color:var(--muted);line-height:1.4}
+
+/* Phase */
+.phase{margin-bottom:4.5rem;scroll-margin-top:2rem}
+.phase-header{display:flex;align-items:flex-start;gap:1.25rem;margin-bottom:1.75rem;padding-bottom:1.25rem;border-bottom:2px solid var(--border)}
+.phase-num{font-size:2.75rem;font-weight:900;color:var(--accent);line-height:1;flex-shrink:0;font-variant-numeric:tabular-nums;opacity:.55}
+.phase-title{font-size:1.5rem;font-weight:800;color:var(--text);text-wrap:balance}
+.phase-sub{font-size:.85rem;color:var(--muted);margin-top:.3rem}
+
+/* Steps */
+.step{margin-bottom:2rem}
+.step-title{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.6rem}
+p{color:var(--muted);margin-bottom:.6rem;line-height:1.7}
+p:last-child{margin-bottom:0}
+h4{font-size:.9rem;font-weight:700;color:var(--text);margin:.75rem 0 .4rem}
+
+/* Code */
+.code-block{background:var(--code-bg);border-radius:8px;overflow:hidden;margin:.75rem 0;font-size:.84rem}
+.code-header{
+  background:rgba(255,255,255,.04);padding:.45rem 1rem;
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.code-lang{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#4A9BB5}
+.copy-btn{
+  background:none;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.45);
+  font-size:.68rem;padding:.18rem .6rem;border-radius:3px;cursor:pointer;
+  font-family:inherit;transition:all .15s;
+}
+.copy-btn:hover{background:rgba(255,255,255,.1);color:rgba(255,255,255,.8)}
+.code-content{overflow-x:auto;padding:.9rem 1.1rem}
+.code-content pre{
+  color:var(--code-fg);
+  font-family:'SF Mono','Cascadia Code','Fira Code',Consolas,'Courier New',monospace;
+  white-space:pre;line-height:1.65;
+}
+.c{color:#546E7A}
+
+/* File block */
+.file-block{border:1px solid var(--border);border-radius:8px;overflow:hidden;margin:.75rem 0}
+.file-header{
+  background:var(--surface-alt);padding:.5rem 1rem;display:flex;align-items:center;
+  gap:.5rem;border-bottom:1px solid var(--border);
+}
+.file-name{font-family:'SF Mono',Consolas,monospace;font-size:.78rem;font-weight:600;color:var(--text)}
+.file-body{background:var(--code-bg);overflow-x:auto;padding:.9rem 1.1rem}
+.file-body pre{
+  color:var(--code-fg);
+  font-family:'SF Mono','Cascadia Code','Fira Code',Consolas,'Courier New',monospace;
+  font-size:.84rem;white-space:pre;line-height:1.65;
+}
+
+/* Callouts */
+.callout{border-radius:8px;padding:.9rem 1.1rem;margin:.9rem 0;display:flex;gap:.75rem;align-items:flex-start}
+.callout-warn{background:var(--warn-bg);border-left:3px solid var(--warn-border)}
+.callout-tip{background:var(--tip-bg);border-left:3px solid var(--tip-border)}
+.callout-icon{flex-shrink:0;font-size:.95rem;margin-top:.15rem}
+.callout-body{font-size:.84rem;line-height:1.6}
+.callout-warn .callout-body{color:var(--warn-text)}
+.callout-tip .callout-body{color:var(--tip-text)}
+.callout-body strong{font-weight:700}
+code{
+  font-family:'SF Mono',Consolas,monospace;font-size:.82em;
+  background:var(--accent-dim);color:var(--accent);padding:.1em .3em;border-radius:3px;
+}
+pre code{background:none;color:inherit;padding:0;font-size:inherit}
+ul,ol{padding-left:1.4rem;margin:.4rem 0;color:var(--muted)}
+li{margin:.2rem 0;font-size:.9rem}
+
+/* Table */
+.tbl-wrap{overflow-x:auto;margin:.75rem 0}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+th{text-align:left;font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--light);font-weight:700;padding:.5rem .75rem;border-bottom:2px solid var(--border)}
+td{padding:.55rem .75rem;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.badge{display:inline-block;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:.15em .5em;border-radius:3px}
+.k8s{background:#E8F0FE;color:#1A56DB}
+.sys{background:#F3F4F6;color:#374151}
+.net{background:#ECFDF5;color:#065F46}
+.mon{background:#FDF4FF;color:#6B21A8}
+
+/* Optional phase */
+.phase-optional .phase-header{border-bottom-color:#D97706}
+.phase-optional .phase-num{color:#D97706}
+.optional-badge{
+  display:inline-block;font-size:.6rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;padding:.2em .55em;border-radius:3px;
+  background:#FEF3C7;color:#92400E;border:1px solid #FDE68A;
+  vertical-align:middle;margin-left:.6rem;position:relative;top:-.15em;
+}
+.nav-item .opt-tag{
+  font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  background:#FEF3C7;color:#92400E;border-radius:2px;padding:.05em .3em;
+  margin-left:auto;flex-shrink:0;
+}
+
+/* Divider */
+.section-divider{border:none;border-top:1px solid var(--border);margin:2.5rem 0}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .main{margin-left:0;padding:1.5rem 1rem 4rem}
+  .hero-title{font-size:1.5rem}
+  .stack-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<nav class="sidebar" aria-label="Guide navigation">
+  <div class="sidebar-eyebrow">Homelab Guide</div>
+  <div class="sidebar-heading">opdev.co.uk Infrastructure</div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Foundation</div>
+    <a class="nav-item" href="#phase-1"><span class="nav-num">01</span>Install Ubuntu Server</a>
+    <a class="nav-item" href="#phase-2"><span class="nav-num">02</span>First Boot & Essentials</a>
+    <a class="nav-item" href="#phase-3"><span class="nav-num">03</span>Secure SSH Access</a>
+    <a class="nav-item" href="#phase-4"><span class="nav-num">04</span>Tailscale — Access Anywhere</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Container Platform</div>
+    <a class="nav-item" href="#phase-5"><span class="nav-num">05</span>Install Docker</a>
+    <a class="nav-item" href="#phase-6"><span class="nav-num">06</span>Install k3s (Kubernetes)</a>
+    <a class="nav-item" href="#phase-7"><span class="nav-num">07</span>Install Helm</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Services</div>
+    <a class="nav-item" href="#phase-8"><span class="nav-num">08</span>Gitea — Git Server</a>
+    <a class="nav-item" href="#phase-9"><span class="nav-num">09</span>Prometheus &amp; Grafana</a>
+    <a class="nav-item" href="#phase-10"><span class="nav-num">10</span>ArgoCD — GitOps</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Networking</div>
+    <a class="nav-item" href="#phase-11"><span class="nav-num">11</span>Public Subdomains</a>
+    <a class="nav-item" href="#phase-12"><span class="nav-num">12</span>Your Stack is Live</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Apps</div>
+    <a class="nav-item" href="#phase-13"><span class="nav-num">13</span>Homepage Dashboard</a>
+    <a class="nav-item" href="#phase-14"><span class="nav-num">14</span>Mealie via ArgoCD</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Going Further</div>
+    <a class="nav-item" href="#phase-15"><span class="nav-num">15</span>Terraform IaC<span class="opt-tag">opt</span></a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Reference</div>
+    <a class="nav-item" href="#gtkw">Good to Know</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Step-by-Step Setup Guide</div>
+    <div class="hero-title">Build your homelab from bare metal</div>
+    <div class="hero-desc">
+      You have a capable mini PC and want to turn it into a real infrastructure learning platform — your own Git server, Kubernetes cluster, monitoring stack, GitOps pipeline, and publicly accessible services via <strong>opdev.co.uk</strong>. This guide walks you through every step.
+    </div>
+
+    <div class="stack-grid">
+      <div class="stack-card"><div class="stack-card-cat">OS</div><div class="stack-card-name">Ubuntu Server 24.04</div><div class="stack-card-desc">Your base — stable LTS, huge community</div></div>
+      <div class="stack-card"><div class="stack-card-cat">Networking</div><div class="stack-card-name">Tailscale</div><div class="stack-card-desc">Secure SSH from anywhere, zero port forwarding</div></div>
+      <div class="stack-card"><div class="stack-card-cat">Containers</div><div class="stack-card-name">Docker + k3s</div><div class="stack-card-desc">Lightweight Kubernetes for your homelab</div></div>
+      <div class="stack-card"><div class="stack-card-cat">Git</div><div class="stack-card-name">Gitea</div><div class="stack-card-desc">Self-hosted GitHub alternative</div></div>
+      <div class="stack-card"><div class="stack-card-cat">Monitoring</div><div class="stack-card-name">Prometheus + Grafana</div><div class="stack-card-desc">Metrics collection and dashboards</div></div>
+      <div class="stack-card"><div class="stack-card-cat">GitOps</div><div class="stack-card-name">ArgoCD</div><div class="stack-card-desc">Deploy apps from Git automatically</div></div>
+      <div class="stack-card"><div class="stack-card-cat">Public Access</div><div class="stack-card-name">Cloudflare Tunnel</div><div class="stack-card-desc">No port forwarding, automatic HTTPS</div></div>
+      <div class="stack-card"><div class="stack-card-cat">Ingress</div><div class="stack-card-name">Traefik</div><div class="stack-card-desc">Built into k3s, routes traffic to services</div></div>
+    </div>
+  </div>
+
+  <!-- =================== PHASE 1 =================== -->
+  <section class="phase" id="phase-1">
+    <div class="phase-header">
+      <div class="phase-num">01</div>
+      <div>
+        <div class="phase-title">Install Ubuntu Server 24.04 LTS</div>
+        <div class="phase-sub">Wiping Proxmox and starting fresh on Ubuntu</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Download the ISO</div>
+      <p>Get Ubuntu Server 24.04 LTS from ubuntu.com/download/server. You want the <strong>Ubuntu Server 24.04 LTS</strong> ISO (not Desktop). It's around 2.6 GB.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Create a bootable USB</div>
+      <p>Download <strong>balenaEtcher</strong> (etcher.balena.io) on your existing computer. Open it, select the Ubuntu ISO, select your USB drive (8 GB+), and flash it. This will wipe the USB.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Boot from USB and install</div>
+      <p>Plug the USB into your mini PC and boot. You may need to press a key (F2, F12, Del, or Esc depending on your hardware) to enter the boot menu. Select the USB drive.</p>
+      <p>Work through the Ubuntu installer, making these choices:</p>
+      <ul>
+        <li><strong>Language &amp; keyboard:</strong> choose your locale</li>
+        <li><strong>Network:</strong> connect via ethernet if possible — more reliable than Wi-Fi</li>
+        <li><strong>Storage:</strong> use the entire disk (this wipes Proxmox)</li>
+        <li><strong>Profile setup:</strong> choose a username (e.g. <code>oliver</code>) and a strong password</li>
+        <li><strong>Server name:</strong> set to <code>homelab</code></li>
+        <li><strong>SSH setup:</strong> tick "Install OpenSSH server" — critical</li>
+        <li><strong>Featured snaps:</strong> skip all of them</li>
+      </ul>
+      <p>Confirm and let it install. When done, remove the USB and reboot.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Find your server's IP address</div>
+      <p>Once booted, log in at the console. Find your local IP:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>ip addr show
+<span class="c"># Look for inet x.x.x.x under eth0 or eno1</span>
+<span class="c"># It'll be something like 192.168.0.100</span></pre></div>
+      </div>
+      <p>Write this IP down — you'll use it from your other machine to SSH in.</p>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>You've already reserved 192.168.0.100.</strong> Your router's DHCP reservation means the server will always receive this address automatically. No extra configuration needed — just make sure the server is connected via ethernet when it boots and it will pick up the reserved IP.</div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 2 =================== -->
+  <section class="phase" id="phase-2">
+    <div class="phase-header">
+      <div class="phase-num">02</div>
+      <div>
+        <div class="phase-title">First Boot & Basic Setup</div>
+        <div class="phase-sub">Update the system, install tools, configure the firewall</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">SSH in from your main machine</div>
+      <p>From your laptop or desktop, open a terminal:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — your local machine</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>ssh oliver@192.168.0.100   <span class="c"># use your actual username and IP</span></pre></div>
+      </div>
+      <p>Type <code>yes</code> to accept the fingerprint and enter your password. You're now on your server.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Update everything</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — server</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>sudo apt update && sudo apt upgrade -y</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Install essential tools</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>sudo apt install -y curl wget git vim htop ufw fail2ban net-tools unzip</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Configure UFW firewall</div>
+      <p>UFW (Uncomplicated Firewall) is simple and effective. Allow SSH first so you don't lock yourself out:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>sudo ufw allow 22/tcp    <span class="c"># SSH</span>
+sudo ufw allow 80/tcp    <span class="c"># HTTP (needed for Traefik ingress)</span>
+sudo ufw allow 443/tcp   <span class="c"># HTTPS</span>
+sudo ufw allow 6443/tcp  <span class="c"># Kubernetes API</span>
+sudo ufw enable          <span class="c"># confirm with 'y'</span>
+sudo ufw status</pre></div>
+      </div>
+    </div>
+
+    <div class="callout callout-warn">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body"><strong>Always allow SSH before enabling UFW.</strong> If you enable the firewall without allowing port 22 first, you'll be locked out and will need to access the machine directly.</div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 3 =================== -->
+  <section class="phase" id="phase-3">
+    <div class="phase-header">
+      <div class="phase-num">03</div>
+      <div>
+        <div class="phase-title">Secure SSH Access</div>
+        <div class="phase-sub">SSH keys instead of passwords — much safer</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Generate an SSH key pair on your local machine</div>
+      <p>Run this on your laptop/desktop — not the server:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — your local machine</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>ssh-keygen -t ed25519 -C "homelab"
+<span class="c"># Press enter to accept default path (~/.ssh/id_ed25519)
+# Set a passphrase (recommended) or leave empty</span></pre></div>
+      </div>
+      <p>This creates two files: <code>~/.ssh/id_ed25519</code> (private — never share) and <code>~/.ssh/id_ed25519.pub</code> (public — safe to share).</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Copy your public key to the server</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — your local machine</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>ssh-copy-id oliver@192.168.0.100
+<span class="c"># Enter your server password one last time</span></pre></div>
+      </div>
+      <p>Test that key auth works before disabling passwords:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — local</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>ssh oliver@192.168.0.100   <span class="c"># should log in WITHOUT asking for password</span></pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Harden the SSH daemon</div>
+      <p>Now that key auth works, disable password login on the server:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — server</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>sudo nano /etc/ssh/sshd_config</pre></div>
+      </div>
+      <p>Find and change these lines (add them if they don't exist):</p>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">/etc/ssh/sshd_config</span></div>
+        <div class="file-body"><pre>PasswordAuthentication no
+PermitRootLogin no
+PubkeyAuthentication yes</pre></div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>sudo systemctl restart ssh
+sudo systemctl status ssh   <span class="c"># should show Active: running</span></pre></div>
+      </div>
+      <p>Open a <strong>new terminal window</strong> and test SSH still works before closing your current session.</p>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 4 =================== -->
+  <section class="phase" id="phase-4">
+    <div class="phase-header">
+      <div class="phase-num">04</div>
+      <div>
+        <div class="phase-title">Tailscale — SSH from Anywhere</div>
+        <div class="phase-sub">VPN mesh that lets you securely reach your server from any network</div>
+      </div>
+    </div>
+
+    <p>Tailscale creates an encrypted mesh network between your devices. Once set up, you can SSH into your homelab from a coffee shop, on holiday, anywhere — with no port forwarding, no dynamic DNS, and no VPN complexity.</p>
+
+    <div class="step">
+      <div class="step-title">Create a Tailscale account</div>
+      <p>Go to tailscale.com and sign up (free for personal use). You'll connect devices to your "tailnet."</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Install Tailscale on the server</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — server</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>curl -fsSL https://tailscale.com/install.sh | sh
+sudo tailscale up</pre></div>
+      </div>
+      <p>You'll see a URL — open it in your browser to authenticate the server with your Tailscale account.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Enable Tailscale SSH</div>
+      <p>Tailscale can manage SSH authentication for you, which is even more secure:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>sudo tailscale up --ssh</pre></div>
+      </div>
+      <p>In the Tailscale admin console (login.tailscale.com/admin), go to <strong>Machines</strong> and you'll see your server listed with a Tailscale IP (e.g. <code>100.x.x.x</code>) and a MagicDNS hostname like <code>homelab</code>.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Install Tailscale on your laptop</div>
+      <p>Download from tailscale.com/download for your OS. Sign in with the same account. Now from anywhere:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — your laptop, anywhere in the world</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>ssh oliver@greenlane          <span class="c"># MagicDNS hostname</span>
+<span class="c"># or</span>
+ssh oliver@100.x.x.x       <span class="c"># Your Tailscale IP</span></pre></div>
+      </div>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>Tailscale is your secure backbone.</strong> Even once your services are public via Cloudflare Tunnel later, you'll keep using Tailscale for SSH. It's zero-trust: your SSH port is invisible to the public internet.</div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 5 =================== -->
+  <section class="phase" id="phase-5">
+    <div class="phase-header">
+      <div class="phase-num">05</div>
+      <div>
+        <div class="phase-title">Install Docker</div>
+        <div class="phase-sub">Container runtime — also used by k3s under the hood</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Install Docker Engine</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — server</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>curl -fsSL https://get.docker.com | sh</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Add your user to the docker group</div>
+      <p>This lets you run <code>docker</code> commands without <code>sudo</code>:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>sudo usermod -aG docker $USER
+newgrp docker   <span class="c"># apply without logging out</span></pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Install Docker Compose and verify</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>sudo apt install -y docker-compose-plugin
+docker --version          <span class="c"># Docker version 27.x.x</span>
+docker compose version    <span class="c"># Docker Compose version v2.x.x</span>
+docker run hello-world    <span class="c"># should print "Hello from Docker!"</span></pre></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 6 =================== -->
+  <section class="phase" id="phase-6">
+    <div class="phase-header">
+      <div class="phase-num">06</div>
+      <div>
+        <div class="phase-title">Install k3s — Lightweight Kubernetes</div>
+        <div class="phase-sub">Production-grade Kubernetes that runs on a mini PC</div>
+      </div>
+    </div>
+
+    <p>k3s is a certified Kubernetes distribution that's packaged as a single binary. It's perfect for homelabs — it has everything you need including an ingress controller (Traefik) and storage provisioner built in.</p>
+
+    <div class="step">
+      <div class="step-title">Install k3s</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — server</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>curl -sfL https://get.k3s.io | sh -
+sudo systemctl status k3s   <span class="c"># should show Active: running</span></pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Configure kubectl for your user</div>
+      <p><code>kubectl</code> is the command-line tool for talking to Kubernetes. k3s installs it, but the config needs to be accessible:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>mkdir -p ~/.kube
+sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+sudo chown $(id -u):$(id -g) ~/.kube/config
+echo 'export KUBECONFIG=~/.kube/config' >> ~/.bashrc
+source ~/.bashrc</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Verify the cluster</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>kubectl get nodes
+<span class="c"># NAME       STATUS   ROLES                  AGE   VERSION
+# greenlane  Ready    control-plane,master   1m    v1.32.x
+
+</span>kubectl get pods -A
+<span class="c"># Lists all system pods — Traefik, CoreDNS, etc.</span></pre></div>
+      </div>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>k3s vs full Kubernetes:</strong> k3s is fully compatible with standard Kubernetes. Everything you learn here — <code>kubectl</code>, YAML manifests, Helm — transfers directly to AWS EKS, GKE, or any other cluster. It just has a smaller footprint.</div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 7 =================== -->
+  <section class="phase" id="phase-7">
+    <div class="phase-header">
+      <div class="phase-num">07</div>
+      <div>
+        <div class="phase-title">Install Helm</div>
+        <div class="phase-sub">The package manager for Kubernetes</div>
+      </div>
+    </div>
+
+    <p>Helm lets you install complex Kubernetes applications with a single command, using pre-built "charts" (packages). You'll use it to install Gitea, Prometheus, and Grafana.</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <div class="code-content"><pre>curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+helm version   <span class="c"># version.BuildInfo{Version:"v3.x.x"...}</span></pre></div>
+    </div>
+
+    <p>Add the Helm chart repositories you'll need:</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <div class="code-content"><pre>helm repo add gitea-charts https://dl.gitea.com/charts/
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add argo https://argoproj.github.io/argo-helm
+helm repo update</pre></div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 8 =================== -->
+  <section class="phase" id="phase-8">
+    <div class="phase-header">
+      <div class="phase-num">08</div>
+      <div>
+        <div class="phase-title">Deploy Gitea — Your Git Server</div>
+        <div class="phase-sub">Self-hosted GitHub: repos, issues, CI, and more</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Create a namespace and install via Helm</div>
+      <p>Kubernetes namespaces keep your services separated and organised. Each service gets its own:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>kubectl create namespace gitea
+
+helm install gitea gitea-charts/gitea \
+  --namespace gitea \
+  --set gitea.admin.username=admin \
+  --set gitea.admin.password=ChangeThisPassword123 \
+  --set gitea.admin.email=you@opdev.co.uk \
+  --set ingress.enabled=true \
+  --set ingress.className=traefik \
+  --set 'ingress.hosts[0].host=gitea.opdev.co.uk' \
+  --set 'ingress.hosts[0].paths[0].path=/' \
+  --set 'ingress.hosts[0].paths[0].pathType=Prefix'</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Wait for pods to be ready</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>kubectl get pods -n gitea -w
+<span class="c"># -w watches for changes. Wait until STATUS = Running
+# Press Ctrl+C when done</span></pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Test access locally (before public DNS is set up)</div>
+      <p>Forward the Gitea port to your local machine:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — your local machine</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>ssh -L 3000:localhost:3000 oliver@homelab \
+  "kubectl port-forward svc/gitea-http 3000:3000 -n gitea"</pre></div>
+      </div>
+      <p>Open http://localhost:3000 in your browser. Log in with <code>admin</code> and your password.</p>
+    </div>
+
+    <div class="callout callout-warn">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body"><strong>Change the admin password immediately.</strong> The first thing you should do in Gitea is set a strong password. In production, never ship with a default credential.</div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 9 =================== -->
+  <section class="phase" id="phase-9">
+    <div class="phase-header">
+      <div class="phase-num">09</div>
+      <div>
+        <div class="phase-title">Prometheus &amp; Grafana — Monitoring</div>
+        <div class="phase-sub">Collect metrics from your cluster and visualise them</div>
+      </div>
+    </div>
+
+    <p>The <code>kube-prometheus-stack</code> Helm chart installs everything at once: Prometheus (metrics collector), Grafana (dashboards), and AlertManager (alerts), plus automatic collection of Kubernetes cluster metrics.</p>
+
+    <div class="step">
+      <div class="step-title">Install kube-prometheus-stack</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>kubectl create namespace monitoring
+
+helm install monitoring prometheus-community/kube-prometheus-stack \
+  --namespace monitoring \
+  --set grafana.adminPassword=ChangeThisPassword123 \
+  --set grafana.ingress.enabled=true \
+  --set grafana.ingress.ingressClassName=traefik \
+  --set 'grafana.ingress.hosts[0]=grafana.opdev.co.uk'</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Wait and verify</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>kubectl get pods -n monitoring
+<span class="c"># Takes 2-3 minutes. Wait for all pods Running.</span></pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Access Grafana locally</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — server</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>kubectl port-forward svc/monitoring-grafana 3001:80 -n monitoring --address 0.0.0.0</pre></div>
+      </div>
+      <p>Open http://192.168.0.100:3001 in your browser. Log in with <code>admin</code> and your password. Grafana comes pre-loaded with Kubernetes dashboards — explore the "Kubernetes / Compute Resources / Cluster" dashboard.</p>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>What you're seeing:</strong> Prometheus scrapes metrics from your Kubernetes nodes, pods, and system components every 15 seconds. Grafana reads from Prometheus and displays them. When services go public via Cloudflare Tunnel in Phase 11, you'll access Grafana via grafana.opdev.co.uk instead.</div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 10 =================== -->
+  <section class="phase" id="phase-10">
+    <div class="phase-header">
+      <div class="phase-num">10</div>
+      <div>
+        <div class="phase-title">ArgoCD — GitOps Deployments</div>
+        <div class="phase-sub">Deploy applications by pushing to Git — the cluster syncs automatically</div>
+      </div>
+    </div>
+
+    <p>ArgoCD watches a Git repository and keeps your Kubernetes cluster in sync with it. You push a YAML change to Gitea, ArgoCD detects it and applies it. No manual <code>kubectl apply</code>.</p>
+
+    <div class="step">
+      <div class="step-title">Install ArgoCD</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>kubectl create namespace argocd
+kubectl apply -n argocd \
+  -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Wait for ArgoCD to start</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>kubectl wait --for=condition=available deployment/argocd-server \
+  -n argocd --timeout=300s</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Configure ArgoCD for ingress (run in HTTP mode)</div>
+      <p>By default ArgoCD uses HTTPS internally, which conflicts with Traefik. Patch it to run in HTTP mode (Traefik handles TLS):</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>kubectl patch deployment argocd-server -n argocd \
+  --type json \
+  -p='[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--insecure"}]'</pre></div>
+      </div>
+      <p>Create an Ingress for ArgoCD:</p>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">argocd-ingress.yaml</span></div>
+        <div class="file-body"><pre>apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-server
+  namespace: argocd
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: argocd.opdev.co.uk
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-server
+            port:
+              number: 80</pre></div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>kubectl apply -f argocd-ingress.yaml</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Get the initial admin password</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>kubectl -n argocd get secret argocd-initial-admin-secret \
+  -o jsonpath="{.data.password}" | base64 -d && echo</pre></div>
+      </div>
+      <p>Save this password — you'll use it to log into the ArgoCD UI. Username is <code>admin</code>.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Connect ArgoCD to your Gitea instance</div>
+      <p>Once both are publicly accessible (after Phase 11), in the ArgoCD UI go to <strong>Settings → Repositories</strong> and add your Gitea server URL (e.g. <code>https://gitea.opdev.co.uk</code>). Create a Gitea access token under your Gitea profile settings and use it as the password.</p>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 11 =================== -->
+  <section class="phase" id="phase-11">
+    <div class="phase-header">
+      <div class="phase-num">11</div>
+      <div>
+        <div class="phase-title">Public Access via Cloudflare Tunnel</div>
+        <div class="phase-sub">Expose services at opdev.co.uk with no port forwarding and automatic HTTPS</div>
+      </div>
+    </div>
+
+    <p>Cloudflare Tunnel runs a small daemon (<code>cloudflared</code>) on your server. It opens an outbound connection to Cloudflare's network. Requests to your subdomains come in via Cloudflare and flow back through that tunnel to Traefik on your server — Traefik routes to the right service. No open ports on your router required.</p>
+
+    <div class="step">
+      <div class="step-title">Add opdev.co.uk to Cloudflare</div>
+      <p>Sign up at cloudflare.com (free). Add your domain and update your domain's nameservers to point to Cloudflare (your domain registrar's control panel will have this option). This typically takes a few minutes to propagate.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Install cloudflared on your server</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — server</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb \
+  -o cloudflared.deb
+sudo dpkg -i cloudflared.deb
+cloudflared --version</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Login and create a tunnel</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>cloudflared tunnel login
+<span class="c"># Opens a browser to authorise — pick opdev.co.uk</span>
+
+cloudflared tunnel create greenlane
+<span class="c"># Note the tunnel ID it prints — you'll need it</span>
+
+ls ~/.cloudflared/
+<span class="c"># You'll see a .json credentials file with your tunnel ID as the filename</span></pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Create the tunnel config file</div>
+      <p>Replace <code>YOUR-TUNNEL-ID</code> with the ID from above, and <code>oliver</code> with your username:</p>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">~/.cloudflared/config.yaml</span></div>
+        <div class="file-body"><pre>tunnel: YOUR-TUNNEL-ID
+credentials-file: /home/oliver/.cloudflared/YOUR-TUNNEL-ID.json
+
+ingress:
+  - hostname: gitea.opdev.co.uk
+    service: http://127.0.0.1:80
+  - hostname: grafana.opdev.co.uk
+    service: http://127.0.0.1:80
+  - hostname: argocd.opdev.co.uk
+    service: http://127.0.0.1:80
+  - service: http_status:404</pre></div>
+      </div>
+      <p>All three services hit port 80 on localhost — Traefik reads the <code>Host</code> header and routes to the correct Kubernetes service.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Create DNS records for each subdomain</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>cloudflared tunnel route dns greenlane gitea.opdev.co.uk
+cloudflared tunnel route dns greenlane grafana.opdev.co.uk
+cloudflared tunnel route dns greenlane argocd.opdev.co.uk</pre></div>
+      </div>
+      <p>This creates CNAME records in your Cloudflare DNS pointing each subdomain to the tunnel.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Install cloudflared as a system service</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>sudo cloudflared service install
+sudo systemctl start cloudflared
+sudo systemctl enable cloudflared
+sudo systemctl status cloudflared   <span class="c"># should show Active: running</span></pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Test your services</div>
+      <p>Open these URLs in a browser — they should load with a Cloudflare-issued HTTPS certificate:</p>
+      <ul>
+        <li><code>https://gitea.opdev.co.uk</code> → Gitea login page</li>
+        <li><code>https://grafana.opdev.co.uk</code> → Grafana login page</li>
+        <li><code>https://argocd.opdev.co.uk</code> → ArgoCD login page</li>
+      </ul>
+    </div>
+
+    <div class="callout callout-warn">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body"><strong>Cloudflare SSL mode.</strong> In your Cloudflare dashboard under SSL/TLS, set the mode to <strong>Flexible</strong> for now (Cloudflare → your server over HTTP). Later, when you're comfortable, you can move to Full or Full (Strict) with origin certificates for end-to-end encryption.</div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 12 =================== -->
+  <section class="phase" id="phase-12">
+    <div class="phase-header">
+      <div class="phase-num">12</div>
+      <div>
+        <div class="phase-title">Your Stack is Live</div>
+        <div class="phase-sub">What you've built and where to go next</div>
+      </div>
+    </div>
+
+    <p>Here's a summary of everything running on your homelab:</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>Service</th><th>URL</th><th>Type</th><th>What it does</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Gitea</strong></td><td>gitea.opdev.co.uk</td><td><span class="badge k8s">k8s</span></td><td>Self-hosted Git — push your code here</td></tr>
+          <tr><td><strong>Grafana</strong></td><td>grafana.opdev.co.uk</td><td><span class="badge k8s">k8s</span></td><td>Metrics dashboards for your cluster</td></tr>
+          <tr><td><strong>ArgoCD</strong></td><td>argocd.opdev.co.uk</td><td><span class="badge k8s">k8s</span></td><td>GitOps — deploy apps by pushing to Gitea</td></tr>
+          <tr><td><strong>Prometheus</strong></td><td>internal only</td><td><span class="badge k8s">k8s</span></td><td>Scrapes and stores metrics</td></tr>
+          <tr><td><strong>Traefik</strong></td><td>internal</td><td><span class="badge k8s">k8s</span></td><td>Routes requests to the right service</td></tr>
+          <tr><td><strong>Tailscale</strong></td><td>greenlane (MagicDNS)</td><td><span class="badge net">network</span></td><td>Secure SSH from anywhere</td></tr>
+          <tr><td><strong>Cloudflare Tunnel</strong></td><td>*.opdev.co.uk</td><td><span class="badge net">network</span></td><td>Public HTTPS with no port forwarding</td></tr>
+          <tr><td><strong>k3s</strong></td><td>—</td><td><span class="badge sys">system</span></td><td>Kubernetes control plane</td></tr>
+          <tr><td><strong>Docker</strong></td><td>—</td><td><span class="badge sys">system</span></td><td>Container runtime</td></tr>
+          <tr><td><strong>Homepage</strong></td><td>home.opdev.co.uk</td><td><span class="badge k8s">k8s</span></td><td>Dashboard linking to all your services</td></tr>
+          <tr><td><strong>Mealie</strong></td><td>mealie.opdev.co.uk</td><td><span class="badge k8s">k8s</span></td><td>Self-hosted recipe manager</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>The deployment flow you've built</h4>
+    <div class="callout callout-tip">
+      <div class="callout-icon">🔁</div>
+      <div class="callout-body">
+        <strong>Push to Gitea → ArgoCD detects the change → Kubernetes applies it → Traefik routes traffic → Cloudflare serves it → Grafana monitors it.</strong><br><br>
+        That's a real GitOps pipeline running on your desk.
+      </div>
+    </div>
+
+    <h4>Suggested next steps</h4>
+    <ul>
+      <li><strong>cert-manager</strong> — Issue real Let's Encrypt certs inside the cluster for end-to-end TLS</li>
+      <li><strong>Longhorn or NFS</strong> — Persistent storage so data survives pod restarts</li>
+      <li><strong>Gitea Actions</strong> — CI/CD pipelines that run when you push code</li>
+      <li><strong>Tailscale Funnel</strong> — Alternative to Cloudflare Tunnel if you prefer to stay in the Tailscale ecosystem</li>
+      <li><strong>Uptime Kuma</strong> — Self-hosted status page for your services</li>
+      <li><strong>Sealed Secrets or Vault</strong> — Proper secret management (never commit secrets to Gitea)</li>
+      <li><strong>Istio + Kiali</strong> — Service mesh and traffic visualization once you have multiple services talking to each other</li>
+    </ul>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>Learn by doing.</strong> The best next exercise is to create a simple web app (even a static site), push it to Gitea, write a Kubernetes deployment YAML for it, and set up an ArgoCD Application to deploy it automatically. That loop — code, push, watch ArgoCD sync — is the core of modern platform engineering.</div>
+    </div>
+  </section>
+
+
+  <!-- =================== PHASE 13 =================== -->
+  <section class="phase" id="phase-13">
+    <div class="phase-header">
+      <div class="phase-num">13</div>
+      <div>
+        <div class="phase-title">Homepage Dashboard</div>
+        <div class="phase-sub">A single page linking to everything running on your homelab</div>
+      </div>
+    </div>
+
+    <p>Homepage is the most popular homelab dashboard right now. It's a clean start page that shows tiles for all your services, with live widgets that can pull stats directly from Gitea, Grafana, ArgoCD, and hundreds of other apps. You configure it via YAML files.</p>
+
+    <div class="step">
+      <div class="step-title">Create the deployment files</div>
+      <p>Create a folder on your server and write these two files:</p>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">homepage-deployment.yaml</span></div>
+        <div class="file-body"><pre>apiVersion: v1
+kind: Namespace
+metadata:
+  name: homepage
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage-config
+  namespace: homepage
+data:
+  services.yaml: |
+    - Infrastructure:
+        - Gitea:
+            href: https://gitea.opdev.co.uk
+            description: Git server
+            icon: gitea.png
+        - ArgoCD:
+            href: https://argocd.opdev.co.uk
+            description: GitOps deployments
+            icon: argocd.png
+        - Grafana:
+            href: https://grafana.opdev.co.uk
+            description: Monitoring dashboards
+            icon: grafana.png
+    - Apps:
+        - Mealie:
+            href: https://mealie.opdev.co.uk
+            description: Recipe manager
+            icon: mealie.png
+  settings.yaml: |
+    title: greenlane — opdev.co.uk
+    theme: dark
+    color: slate
+  bookmarks.yaml: "[]"
+  widgets.yaml: |
+    - greeting:
+        text_size: xl
+        text: Welcome to opdev.co.uk
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homepage
+  namespace: homepage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homepage
+  template:
+    metadata:
+      labels:
+        app: homepage
+    spec:
+      containers:
+      - name: homepage
+        image: ghcr.io/gethomepage/homepage:latest
+        ports:
+        - containerPort: 3000
+        volumeMounts:
+        - name: config
+          mountPath: /app/config
+      volumes:
+      - name: config
+        configMap:
+          name: homepage-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homepage
+  namespace: homepage
+spec:
+  selector:
+    app: homepage
+  ports:
+  - port: 3000
+    targetPort: 3000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homepage
+  namespace: homepage
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: home.opdev.co.uk
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: homepage
+            port:
+              number: 3000</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Deploy it</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>kubectl apply -f homepage-deployment.yaml
+kubectl get pods -n homepage -w
+<span class="c"># Wait for STATUS = Running</span></pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Add the subdomain to Cloudflare Tunnel</div>
+      <p>Add <code>home.opdev.co.uk</code> to your <code>~/.cloudflared/config.yaml</code> ingress block:</p>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">~/.cloudflared/config.yaml — add this line</span></div>
+        <div class="file-body"><pre>  - hostname: home.opdev.co.uk
+    service: http://127.0.0.1:80</pre></div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>cloudflared tunnel route dns greenlane home.opdev.co.uk
+sudo systemctl restart cloudflared</pre></div>
+      </div>
+      <p>Open <code>https://home.opdev.co.uk</code> — you should see your dashboard with tiles for each service.</p>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>Live widgets.</strong> Homepage can show live stats inside each tile — e.g. the number of Gitea repos, Grafana alert count, ArgoCD sync status. Add an <code>href</code> and a <code>widget</code> block per service in <code>services.yaml</code>. The Homepage docs (gethomepage.dev) have the exact widget config for each app.</div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 14 =================== -->
+  <section class="phase" id="phase-14">
+    <div class="phase-header">
+      <div class="phase-num">14</div>
+      <div>
+        <div class="phase-title">Mealie — Your First ArgoCD App</div>
+        <div class="phase-sub">Deploy a real app the GitOps way: push YAML to Gitea, ArgoCD does the rest</div>
+      </div>
+    </div>
+
+    <p>Mealie is a self-hosted recipe manager with a clean UI. More importantly, it's a great first ArgoCD exercise — you'll write Kubernetes YAML, push it to Gitea, and watch ArgoCD deploy it automatically without ever running <code>kubectl apply</code> yourself.</p>
+
+    <div class="step">
+      <div class="step-title">Create a repo in Gitea for your app manifests</div>
+      <p>In Gitea, create a new repository called <code>homelab-apps</code>. This repo will hold the Kubernetes YAML for every app you deploy. Clone it to your server:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>git clone https://gitea.opdev.co.uk/admin/homelab-apps
+cd homelab-apps
+mkdir -p apps/mealie</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Write the Mealie Kubernetes manifests</div>
+      <p>Create these four files inside <code>apps/mealie/</code>:</p>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">apps/mealie/pvc.yaml</span></div>
+        <div class="file-body"><pre>apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mealie-data
+  namespace: mealie
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi</pre></div>
+      </div>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">apps/mealie/deployment.yaml</span></div>
+        <div class="file-body"><pre>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mealie
+  namespace: mealie
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mealie
+  template:
+    metadata:
+      labels:
+        app: mealie
+    spec:
+      containers:
+      - name: mealie
+        image: ghcr.io/mealie-recipes/mealie:latest
+        ports:
+        - containerPort: 9000
+        env:
+        - name: TZ
+          value: "Europe/London"
+        volumeMounts:
+        - name: data
+          mountPath: /app/data
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: mealie-data</pre></div>
+      </div>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">apps/mealie/service.yaml</span></div>
+        <div class="file-body"><pre>apiVersion: v1
+kind: Service
+metadata:
+  name: mealie
+  namespace: mealie
+spec:
+  selector:
+    app: mealie
+  ports:
+  - port: 9000
+    targetPort: 9000</pre></div>
+      </div>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">apps/mealie/ingress.yaml</span></div>
+        <div class="file-body"><pre>apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mealie
+  namespace: mealie
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: mealie.opdev.co.uk
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: mealie
+            port:
+              number: 9000</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Push to Gitea</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>cd homelab-apps
+git add .
+git commit -m "add mealie recipe manager"
+git push origin main</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Create an ArgoCD Application pointing at the repo</div>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">argocd-app-mealie.yaml</span></div>
+        <div class="file-body"><pre>apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mealie
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://gitea.opdev.co.uk/admin/homelab-apps
+    targetRevision: HEAD
+    path: apps/mealie
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: mealie
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true</pre></div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>kubectl apply -f argocd-app-mealie.yaml</pre></div>
+      </div>
+      <p>Open the ArgoCD UI at <code>https://argocd.opdev.co.uk</code>. You'll see a new "mealie" application appear and sync automatically — pulling the manifests from Gitea and applying them to the cluster.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Add mealie.opdev.co.uk to Cloudflare Tunnel</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>cloudflared tunnel route dns greenlane mealie.opdev.co.uk
+sudo systemctl restart cloudflared</pre></div>
+      </div>
+      <p>Visit <code>https://mealie.opdev.co.uk</code>. The default login is <code>changeme@example.com</code> / <code>MyPassword</code> — change it immediately in Settings.</p>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">🔁</div>
+      <div class="callout-body"><strong>This is the GitOps loop in action.</strong> From now on, to update Mealie (new image tag, config change, extra env var): edit the YAML in <code>homelab-apps</code>, push to Gitea, and ArgoCD applies the change within a few minutes automatically. No SSH, no kubectl — just Git.</div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 15 =================== -->
+  <section class="phase phase-optional" id="phase-15">
+    <div class="phase-header">
+      <div class="phase-num">15</div>
+      <div>
+        <div class="phase-title">Terraform — Infrastructure as Code<span class="optional-badge">Optional</span></div>
+        <div class="phase-sub">Manage your Cloudflare DNS and Tailscale ACLs as versioned, repeatable code</div>
+      </div>
+    </div>
+
+    <p>ArgoCD already handles your Kubernetes resources via GitOps. Terraform fills the gap for everything <em>outside</em> the cluster — your Cloudflare DNS records and Tailscale network policies. Instead of running CLI commands or clicking dashboards, you declare what you want in <code>.tf</code> files, commit them to Gitea, and <code>terraform apply</code> makes it so.</p>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>What this replaces:</strong> every <code>cloudflared tunnel route dns greenlane *.opdev.co.uk</code> command you've run manually. Adding a new subdomain in future becomes a one-line Git commit.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Install Terraform on your server</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — server</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>wget -O- https://apt.releases.hashicorp.com/gpg | \
+  sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
+  https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
+  sudo tee /etc/apt/sources.list.d/hashicorp.list
+
+sudo apt update && sudo apt install -y terraform
+terraform --version</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Create a terraform directory in your homelab-apps repo</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>cd homelab-apps
+mkdir terraform
+cd terraform</pre></div>
+      </div>
+      <p>You'll create four files here. The structure:</p>
+      <ul>
+        <li><code>main.tf</code> — provider config</li>
+        <li><code>variables.tf</code> — variable declarations</li>
+        <li><code>cloudflare.tf</code> — DNS records</li>
+        <li><code>tailscale.tf</code> — ACL rules</li>
+        <li><code>terraform.tfvars</code> — your actual secrets (never committed)</li>
+        <li><code>.gitignore</code> — keeps secrets and state out of Git</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Write the provider config</div>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">terraform/main.tf</span></div>
+        <div class="file-body"><pre>terraform {
+  required_providers {
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 4"
+    }
+    tailscale = {
+      source  = "tailscale/tailscale"
+      version = "~> 0.16"
+    }
+  }
+}
+
+provider "cloudflare" {
+  api_token = var.cloudflare_api_token
+}
+
+provider "tailscale" {
+  api_key = var.tailscale_api_key
+  tailnet = var.tailscale_tailnet
+}</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Declare your variables</div>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">terraform/variables.tf</span></div>
+        <div class="file-body"><pre>variable "cloudflare_api_token" {
+  description = "Cloudflare API token with DNS edit permissions"
+  sensitive   = true
+}
+
+variable "cloudflare_zone_id" {
+  description = "Zone ID for opdev.co.uk (found in Cloudflare dashboard)"
+}
+
+variable "tunnel_id" {
+  description = "Cloudflare Tunnel ID (from: cloudflared tunnel list)"
+}
+
+variable "tailscale_api_key" {
+  description = "Tailscale API key"
+  sensitive   = true
+}
+
+variable "tailscale_tailnet" {
+  description = "Your tailnet name — shown in Tailscale admin under Settings > General"
+}</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Define your Cloudflare DNS records</div>
+      <p>This replaces every <code>cloudflared tunnel route dns</code> command with a single resource block. Adding a new subdomain is a one-line change.</p>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">terraform/cloudflare.tf</span></div>
+        <div class="file-body"><pre>locals {
+  subdomains = toset(["home", "gitea", "grafana", "argocd", "mealie"])
+}
+
+resource "cloudflare_record" "tunnel" {
+  for_each = local.subdomains
+
+  zone_id = var.cloudflare_zone_id
+  name    = each.key
+  value   = "${var.tunnel_id}.cfargotunnel.com"
+  type    = "CNAME"
+  proxied = true
+}</pre></div>
+      </div>
+      <p>To add a new subdomain in future — say <code>uptime.opdev.co.uk</code> — just add <code>"uptime"</code> to the <code>local.subdomains</code> set and run <code>terraform apply</code>.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Define your Tailscale ACL</div>
+      <p>This manages who on your tailnet can reach what. The policy below allows all members to SSH into their own devices — a sensible default to start from.</p>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">terraform/tailscale.tf</span></div>
+        <div class="file-body"><pre>resource "tailscale_acl" "homelab" {
+  acl = jsonencode({
+    acls = [
+      {
+        action = "accept"
+        src    = ["autogroup:member"]
+        dst    = ["autogroup:self:*"]
+      }
+    ]
+    ssh = [
+      {
+        action = "accept"
+        src    = ["autogroup:member"]
+        dst    = ["autogroup:self"]
+        users  = ["autogroup:nonroot", "root"]
+      }
+    ]
+  })
+}</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Set your credentials (not committed to Git)</div>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">terraform/terraform.tfvars</span></div>
+        <div class="file-body"><pre>cloudflare_api_token = "your-cloudflare-api-token"
+cloudflare_zone_id   = "your-zone-id"
+tunnel_id            = "your-tunnel-id"
+tailscale_api_key    = "tskey-api-xxxxxxxxxxxx"
+tailscale_tailnet    = "youremail.gmail.com"</pre></div>
+      </div>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">terraform/.gitignore</span></div>
+        <div class="file-body"><pre>.terraform/
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
+terraform.tfvars</pre></div>
+      </div>
+
+      <h4>Where to find each value</h4>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Variable</th><th>Where to find it</th></tr></thead>
+          <tbody>
+            <tr><td><code>cloudflare_api_token</code></td><td>Cloudflare dashboard → My Profile → API Tokens → Create Token → use the "Edit zone DNS" template</td></tr>
+            <tr><td><code>cloudflare_zone_id</code></td><td>Cloudflare dashboard → opdev.co.uk → right sidebar → Zone ID</td></tr>
+            <tr><td><code>tunnel_id</code></td><td>Run <code>cloudflared tunnel list</code> on your server</td></tr>
+            <tr><td><code>tailscale_api_key</code></td><td>Tailscale admin → Settings → Keys → Generate access token</td></tr>
+            <tr><td><code>tailscale_tailnet</code></td><td>Tailscale admin → Settings → General → Organisation name</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Initialise and apply</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>cd homelab-apps/terraform
+
+terraform init     <span class="c"># downloads providers — only needed once</span>
+terraform plan     <span class="c"># preview what will change, nothing is applied yet</span>
+terraform apply    <span class="c"># type 'yes' to confirm and apply</span></pre></div>
+      </div>
+      <p>Terraform will create all five CNAME records in Cloudflare and set your Tailscale ACL. Check the Cloudflare dashboard — you'll see the DNS records now managed by Terraform.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Commit the code (minus secrets) to Gitea</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>cd homelab-apps
+git add terraform/
+git commit -m "add terraform config for cloudflare dns and tailscale acl"
+git push origin main</pre></div>
+      </div>
+      <p>The <code>.gitignore</code> ensures <code>terraform.tfvars</code> (your secrets) and the local state file are never pushed.</p>
+    </div>
+
+    <div class="callout callout-warn">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body"><strong>State file.</strong> Terraform tracks what it has deployed in a <code>terraform.tfstate</code> file. For a homelab, keeping it local is fine — just don't delete it. If you ever want to collaborate or access state from multiple machines, look into Terraform Cloud's free remote state tier.</div>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>From here, the workflow is:</strong> edit a <code>.tf</code> file → <code>terraform plan</code> to preview → <code>terraform apply</code> to ship. Adding <code>mealie2.opdev.co.uk</code> is one line in <code>cloudflare.tf</code> and a single apply. Removing it is a deletion and another apply — Terraform figures out the diff.</div>
+    </div>
+  </section>
+
+
+  <!-- =================== GOOD TO KNOW =================== -->
+  <section class="phase" id="gtkw">
+    <div class="phase-header">
+      <div class="phase-num" style="font-size:1.75rem;opacity:.4">ref</div>
+      <div>
+        <div class="phase-title">Good to Know</div>
+        <div class="phase-sub">Concepts, gotchas, and commands worth having on hand</div>
+      </div>
+    </div>
+
+    <h4>Pods, Deployments, and Services — what's the difference?</h4>
+    <p>These three things are constantly referenced and easy to confuse at first:</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Object</th><th>What it is</th><th>Analogy</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Pod</strong></td><td>The actual running container(s). Ephemeral — if it dies, it's gone.</td><td>A running process</td></tr>
+          <tr><td><strong>Deployment</strong></td><td>Manages pods. Ensures the right number are running, restarts them if they crash.</td><td>A process supervisor</td></tr>
+          <tr><td><strong>Service</strong></td><td>A stable network endpoint pointing at pods. Pods come and go; the Service address stays fixed.</td><td>A load balancer / DNS name</td></tr>
+          <tr><td><strong>Ingress</strong></td><td>Routes external HTTP traffic to a Service based on hostname or path.</td><td>A reverse proxy rule</td></tr>
+          <tr><td><strong>Namespace</strong></td><td>A logical grouping — keeps services separated so names don't clash.</td><td>A folder</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>How services find each other inside the cluster</h4>
+    <p>Every Service gets a DNS name inside the cluster: <code>service-name.namespace.svc.cluster.local</code>. So Grafana can reach Prometheus at <code>monitoring-prometheus.monitoring.svc.cluster.local</code>. You rarely need to type this in full — within the same namespace, just the service name works.</p>
+
+    <h4>Essential kubectl commands</h4>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <div class="code-content"><pre><span class="c"># See everything running across all namespaces</span>
+kubectl get pods -A
+
+<span class="c"># Watch pods update in real time (Ctrl+C to stop)</span>
+kubectl get pods -n &lt;namespace&gt; -w
+
+<span class="c"># See logs for a pod</span>
+kubectl logs &lt;pod-name&gt; -n &lt;namespace&gt;
+
+<span class="c"># Follow logs live</span>
+kubectl logs &lt;pod-name&gt; -n &lt;namespace&gt; -f
+
+<span class="c"># Detailed info including recent events (great for debugging)</span>
+kubectl describe pod &lt;pod-name&gt; -n &lt;namespace&gt;
+
+<span class="c"># Open a shell inside a running pod</span>
+kubectl exec -it &lt;pod-name&gt; -n &lt;namespace&gt; -- sh
+
+<span class="c"># See recent cluster events (what's been happening)</span>
+kubectl get events -n &lt;namespace&gt; --sort-by='.lastTimestamp'
+
+<span class="c"># Check CPU and memory usage</span>
+kubectl top nodes
+kubectl top pods -A
+
+<span class="c"># List all services and their ports</span>
+kubectl get svc -A</pre></div>
+    </div>
+
+    <h4>Common pod error states</h4>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Status</th><th>What it means</th><th>First thing to check</th></tr></thead>
+        <tbody>
+          <tr><td><code>CrashLoopBackOff</code></td><td>Pod keeps starting and crashing. Kubernetes keeps retrying with a backoff delay.</td><td><code>kubectl logs &lt;pod&gt; -n &lt;ns&gt;</code> — the crash reason is usually there</td></tr>
+          <tr><td><code>ImagePullBackOff</code></td><td>Can't pull the container image — wrong name, tag doesn't exist, or auth required.</td><td><code>kubectl describe pod &lt;pod&gt;</code> — check the Events section</td></tr>
+          <tr><td><code>Pending</code></td><td>Pod is waiting to be scheduled — not enough CPU/memory, or storage not ready.</td><td><code>kubectl describe pod &lt;pod&gt;</code> — look at the Events section</td></tr>
+          <tr><td><code>OOMKilled</code></td><td>Pod ran out of memory and was killed by the kernel.</td><td>Add or increase <code>resources.limits.memory</code> in the deployment</td></tr>
+          <tr><td><code>Terminating</code> stuck</td><td>Pod won't finish shutting down.</td><td><code>kubectl delete pod &lt;pod&gt; -n &lt;ns&gt; --grace-period=0 --force</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Helm cheatsheet</h4>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <div class="code-content"><pre><span class="c"># List all installed Helm releases</span>
+helm list -A
+
+<span class="c"># Update chart repos then upgrade a release</span>
+helm repo update
+helm upgrade &lt;release&gt; &lt;chart&gt; -n &lt;namespace&gt;
+
+<span class="c"># Roll back to previous version</span>
+helm rollback &lt;release&gt; -n &lt;namespace&gt;
+
+<span class="c"># See all configurable values for a chart</span>
+helm show values &lt;chart&gt;
+
+<span class="c"># Remove a release entirely</span>
+helm uninstall &lt;release&gt; -n &lt;namespace&gt;</pre></div>
+    </div>
+
+    <h4>What restarts automatically after a reboot</h4>
+    <p>Everything critical is a systemd service and will start on boot without you doing anything:</p>
+    <ul>
+      <li><strong>k3s</strong> — starts automatically, brings all your pods back up</li>
+      <li><strong>cloudflared</strong> — tunnel reconnects, subdomains come back online</li>
+      <li><strong>Tailscale</strong> — reconnects to your tailnet, SSH available again</li>
+      <li><strong>Docker</strong> — starts automatically</li>
+    </ul>
+    <p>Pods managed by Deployments restart themselves if they crash. The only things that don't come back on their own are things you ran manually (like one-off <code>kubectl port-forward</code> commands).</p>
+
+    <h4>UFW and k3s — a common gotcha</h4>
+    <p>k3s uses iptables for pod networking. UFW can sometimes block traffic between pods on the same node. If pods can't talk to each other after you enable UFW, run:</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <div class="code-content"><pre>sudo ufw allow in on cni0
+sudo ufw allow in on flannel.1
+sudo ufw reload</pre></div>
+    </div>
+
+    <h4>Keeping everything up to date</h4>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <div class="code-content"><pre><span class="c"># OS — run periodically</span>
+sudo apt update && sudo apt upgrade -y
+
+<span class="c"># Helm releases — update repos then upgrade each release</span>
+helm repo update
+helm upgrade gitea gitea-charts/gitea -n gitea
+helm upgrade monitoring prometheus-community/kube-prometheus-stack -n monitoring
+
+<span class="c"># k3s — use the official upgrade method, don't reinstall</span>
+curl -sfL https://get.k3s.io | sh -   <span class="c"># re-running the installer upgrades in place</span></pre></div>
+    </div>
+
+    <h4>What to back up</h4>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>What</th><th>Where it lives on greenlane</th><th>How critical</th></tr></thead>
+        <tbody>
+          <tr><td>Tunnel credentials</td><td><code>~/.cloudflared/</code></td><td>High — losing this breaks your tunnel</td></tr>
+          <tr><td>kubeconfig</td><td><code>~/.kube/config</code></td><td>Medium — re-generatable from k3s but annoying</td></tr>
+          <tr><td>PersistentVolume data (Gitea, Mealie)</td><td><code>/var/lib/rancher/k3s/storage/</code></td><td>High — this is your actual app data</td></tr>
+          <tr><td>Terraform state</td><td><code>homelab-apps/terraform/terraform.tfstate</code></td><td>Medium — losing it means Terraform loses track of what it manages</td></tr>
+          <tr><td>App manifests</td><td>Gitea repo <code>homelab-apps</code></td><td>Low — already in Git, safe by design</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Security reminders</h4>
+    <ul>
+      <li><strong>Never commit secrets to Gitea.</strong> API tokens, passwords, and keys belong in <code>terraform.tfvars</code> (gitignored) or Kubernetes Secrets. When you're ready, look into Sealed Secrets or Vault for proper secret management.</li>
+      <li><strong>Disable Gitea open registration.</strong> Your Gitea is public via Cloudflare — by default anyone can sign up. Go to Gitea Admin Panel → Site Administration → Authentication Sources and disable registration, or set it to require admin approval.</li>
+      <li><strong>Rotate credentials periodically.</strong> Cloudflare API tokens, Tailscale keys, and Gitea tokens should be rotated every few months.</li>
+      <li><strong>Keep your OS patched.</strong> <code>sudo apt update && sudo apt upgrade -y</code> once a week is a good habit. Enable automatic security updates with <code>sudo dpkg-reconfigure -plow unattended-upgrades</code>.</li>
+    </ul>
+
+    <h4>YAML gotchas</h4>
+    <ul>
+      <li><strong>Indentation is everything.</strong> YAML uses spaces, not tabs. Two spaces per level is the convention. One wrong space breaks the whole file.</li>
+      <li><strong>Validate before applying.</strong> Use <code>kubectl apply --dry-run=client -f file.yaml</code> to catch errors before they hit the cluster.</li>
+      <li><strong>Quotes matter for strings that look like numbers.</strong> <code>version: 1.0</code> is a float; <code>version: "1.0"</code> is a string. Most Helm values need strings.</li>
+    </ul>
+
+    <h4>Quick port-forward for testing</h4>
+    <p>Any time you want to access a service directly without going through Cloudflare or Traefik — for debugging, or before you've set up a subdomain — use port-forward:</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">bash — on greenlane</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <div class="code-content"><pre><span class="c"># Access a service at localhost:8080</span>
+kubectl port-forward svc/&lt;service-name&gt; 8080:&lt;service-port&gt; -n &lt;namespace&gt; --address 0.0.0.0</pre></div>
+    </div>
+    <p>The <code>--address 0.0.0.0</code> flag makes it reachable from your laptop at <code>http://192.168.0.100:8080</code>, not just from greenlane itself.</p>
+
+  </section>
+
+</main>
+</div>
+
+<script>
+function copyCode(btn) {
+  var block = btn.closest('.code-block');
+  var pre = block.querySelector('pre');
+  var text = pre.innerText;
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+  }).catch(function() {
+    btn.textContent = 'Failed';
+    setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+  });
+}
+
+// Highlight active nav item on scroll
+var phases = document.querySelectorAll('.phase[id]');
+var navItems = document.querySelectorAll('.nav-item');
+
+function onScroll() {
+  var scrollY = window.scrollY + 120;
+  var current = '';
+  phases.forEach(function(phase) {
+    if (phase.offsetTop <= scrollY) current = phase.id;
+  });
+  navItems.forEach(function(item) {
+    item.classList.toggle('active', item.getAttribute('href') === '#' + current);
+  });
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+</script>
