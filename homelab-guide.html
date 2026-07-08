@@ -204,7 +204,8 @@ tr:last-child td{border-bottom:none}
 
   <div class="nav-group">
     <div class="nav-group-label">Services</div>
-    <a class="nav-item" href="#phase-8"><span class="nav-num">08</span>Gitea — Git Server</a>
+    <a class="nav-item" href="#phase-8a"><span class="nav-num">8a</span>Gitea — Git Server</a>
+    <a class="nav-item" href="#phase-8b"><span class="nav-num">8b</span>GitHub (alternative)</a>
     <a class="nav-item" href="#phase-9"><span class="nav-num">09</span>Prometheus &amp; Grafana</a>
     <a class="nav-item" href="#phase-10"><span class="nav-num">10</span>ArgoCD — GitOps</a>
   </div>
@@ -217,13 +218,16 @@ tr:last-child td{border-bottom:none}
 
   <div class="nav-group">
     <div class="nav-group-label">Apps</div>
-    <a class="nav-item" href="#phase-13"><span class="nav-num">13</span>Homepage Dashboard</a>
+    <a class="nav-item" href="#phase-13a"><span class="nav-num">13a</span>Homepage Dashboard</a>
+    <a class="nav-item" href="#phase-13b"><span class="nav-num">13b</span>Homarr (alternative)</a>
     <a class="nav-item" href="#phase-14"><span class="nav-num">14</span>Mealie via ArgoCD</a>
   </div>
 
   <div class="nav-group">
     <div class="nav-group-label">Going Further</div>
     <a class="nav-item" href="#phase-15"><span class="nav-num">15</span>Terraform IaC<span class="opt-tag">opt</span></a>
+    <a class="nav-item" href="#phase-16"><span class="nav-num">16</span>kubectl from Laptop</a>
+    <a class="nav-item" href="#phase-17"><span class="nav-num">17</span>Gitea Actions CI/CD<span class="opt-tag">opt</span></a>
   </div>
 
   <div class="nav-group">
@@ -235,10 +239,15 @@ tr:last-child td{border-bottom:none}
 <!-- MAIN -->
 <main class="main">
 
+  <!-- CROSS-LINK BANNER -->
+  <div style="background:var(--accent-dim);border:1px solid var(--border);border-radius:8px;padding:.75rem 1.25rem;margin-bottom:1.5rem;font-size:.85rem;color:var(--muted)">
+    New to self-hosting? Start simpler with Docker Compose &rarr; <a href="homelab-guide-docker.html" style="color:var(--accent);font-weight:600">Docker Edition Guide</a>
+  </div>
+
   <!-- HERO -->
   <div class="hero">
-    <div class="hero-eyebrow">Step-by-Step Setup Guide</div>
-    <div class="hero-title">Build your homelab from bare metal</div>
+    <div class="hero-eyebrow">Kubernetes Setup Guide</div>
+    <div class="hero-title">Build your homelab with Kubernetes</div>
     <div class="hero-desc">
       You have a capable mini PC and want to turn it into a real infrastructure learning platform — your own Git server, Kubernetes cluster, monitoring stack, GitOps pipeline, and publicly accessible services via <strong>opdev.co.uk</strong>. This guide walks you through every step.
     </div>
@@ -281,10 +290,11 @@ tr:last-child td{border-bottom:none}
       <p>Work through the Ubuntu installer, making these choices:</p>
       <ul>
         <li><strong>Language &amp; keyboard:</strong> choose your locale</li>
-        <li><strong>Network:</strong> connect via ethernet if possible — more reliable than Wi-Fi</li>
+        <li><strong>Network:</strong> see the dedicated step below — don't skip this</li>
+        <li><strong>Proxy:</strong> leave blank</li>
         <li><strong>Storage:</strong> use the entire disk (this wipes Proxmox)</li>
-        <li><strong>Profile setup:</strong> choose a username (e.g. <code>oliver</code>) and a strong password</li>
-        <li><strong>Server name:</strong> set to <code>homelab</code></li>
+        <li><strong>Profile setup:</strong> set your name, username to <code>oli</code>, and a strong password</li>
+        <li><strong>Server name:</strong> set to <code>greenlane</code></li>
         <li><strong>SSH setup:</strong> tick "Install OpenSSH server" — critical</li>
         <li><strong>Featured snaps:</strong> skip all of them</li>
       </ul>
@@ -292,20 +302,32 @@ tr:last-child td{border-bottom:none}
     </div>
 
     <div class="step">
-      <div class="step-title">Find your server's IP address</div>
-      <p>Once booted, log in at the console. Find your local IP:</p>
-      <div class="code-block">
-        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-        <div class="code-content"><pre>ip addr show
-<span class="c"># Look for inet x.x.x.x under eth0 or eno1</span>
-<span class="c"># It'll be something like 192.168.0.100</span></pre></div>
+      <div class="step-title">Configure your static IP during the network step</div>
+      <p>When the installer reaches the <strong>Network connections</strong> screen you'll see your interface (likely <code>enp3s0</code>) listed with a DHCP address. You need to set it manually to <code>192.168.0.100</code> so it matches your router reservation.</p>
+      <ol>
+        <li>Select your interface (e.g. <code>enp3s0</code>) and press <strong>Enter</strong></li>
+        <li>Select <strong>Edit IPv4</strong></li>
+        <li>Change the method from <strong>Automatic (DHCP)</strong> to <strong>Manual</strong></li>
+        <li>Fill in the fields:</li>
+      </ol>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Field</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Subnet</strong></td><td><code>192.168.0.0/24</code></td></tr>
+            <tr><td><strong>Address</strong></td><td><code>192.168.0.100</code></td></tr>
+            <tr><td><strong>Gateway</strong></td><td><code>192.168.0.1</code> (your router — check the back of it if unsure)</td></tr>
+            <tr><td><strong>Name servers</strong></td><td><code>1.1.1.1,1.0.0.1</code> (Cloudflare DNS — faster and private)</td></tr>
+            <tr><td><strong>Search domains</strong></td><td>leave blank</td></tr>
+          </tbody>
+        </table>
       </div>
-      <p>Write this IP down — you'll use it from your other machine to SSH in.</p>
+      <p>Select <strong>Save</strong> then <strong>Done</strong>. The interface should now show <code>192.168.0.100/24</code> — continue the installer.</p>
     </div>
 
     <div class="callout callout-tip">
       <div class="callout-icon">💡</div>
-      <div class="callout-body"><strong>You've already reserved 192.168.0.100.</strong> Your router's DHCP reservation means the server will always receive this address automatically. No extra configuration needed — just make sure the server is connected via ethernet when it boots and it will pick up the reserved IP.</div>
+      <div class="callout-body"><strong>Why Cloudflare DNS?</strong> <code>1.1.1.1</code> is consistently the fastest public DNS resolver globally and doesn't log or sell your queries. Since you're already using Cloudflare for your domain and tunnel, it's a natural fit.</div>
     </div>
   </section>
 
@@ -324,7 +346,7 @@ tr:last-child td{border-bottom:none}
       <p>From your laptop or desktop, open a terminal:</p>
       <div class="code-block">
         <div class="code-header"><span class="code-lang">bash — your local machine</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-        <div class="code-content"><pre>ssh oliver@192.168.0.100   <span class="c"># use your actual username and IP</span></pre></div>
+        <div class="code-content"><pre>ssh oli@192.168.0.100   <span class="c"># use your actual username and IP</span></pre></div>
       </div>
       <p>Type <code>yes</code> to accept the fingerprint and enter your password. You're now on your server.</p>
     </div>
@@ -346,6 +368,17 @@ tr:last-child td{border-bottom:none}
     </div>
 
     <div class="step">
+      <div class="step-title">Add greenlane to /etc/hosts on your local machine</div>
+      <p>Run this on your <strong>laptop/desktop</strong> so you can use <code>greenlane</code> as a hostname instead of typing the IP every time:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — your local machine</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>echo "192.168.0.100 greenlane" | sudo tee -a /etc/hosts
+ping -c 2 greenlane   <span class="c"># should resolve and reply</span></pre></div>
+      </div>
+      <p>After this, <code>ssh oli@greenlane</code> works just like <code>ssh oli@192.168.0.100</code>.</p>
+    </div>
+
+    <div class="step">
       <div class="step-title">Configure UFW firewall</div>
       <p>UFW (Uncomplicated Firewall) is simple and effective. Allow SSH first so you don't lock yourself out:</p>
       <div class="code-block">
@@ -362,6 +395,11 @@ sudo ufw status</pre></div>
     <div class="callout callout-warn">
       <div class="callout-icon">⚠️</div>
       <div class="callout-body"><strong>Always allow SSH before enabling UFW.</strong> If you enable the firewall without allowing port 22 first, you'll be locked out and will need to access the machine directly.</div>
+    </div>
+
+    <div class="callout callout-warn">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body"><strong>k3s and UFW conflict.</strong> k3s manages its own iptables rules for pod networking. UFW can interfere with inter-pod traffic. If you see pods that can't reach each other after enabling UFW, run <code>sudo ufw disable</code> to verify. For a homelab behind a NAT router, relying on the router's firewall and Tailscale ACLs is often sufficient — UFW is mainly useful for defence-in-depth if the server is directly exposed.</div>
     </div>
   </section>
 
@@ -391,13 +429,13 @@ sudo ufw status</pre></div>
       <div class="step-title">Copy your public key to the server</div>
       <div class="code-block">
         <div class="code-header"><span class="code-lang">bash — your local machine</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-        <div class="code-content"><pre>ssh-copy-id oliver@192.168.0.100
+        <div class="code-content"><pre>ssh-copy-id oli@192.168.0.100
 <span class="c"># Enter your server password one last time</span></pre></div>
       </div>
       <p>Test that key auth works before disabling passwords:</p>
       <div class="code-block">
         <div class="code-header"><span class="code-lang">bash — local</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-        <div class="code-content"><pre>ssh oliver@192.168.0.100   <span class="c"># should log in WITHOUT asking for password</span></pre></div>
+        <div class="code-content"><pre>ssh oli@192.168.0.100   <span class="c"># should log in WITHOUT asking for password</span></pre></div>
       </div>
     </div>
 
@@ -421,6 +459,34 @@ PubkeyAuthentication yes</pre></div>
 sudo systemctl status ssh   <span class="c"># should show Active: running</span></pre></div>
       </div>
       <p>Open a <strong>new terminal window</strong> and test SSH still works before closing your current session.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Configure fail2ban</div>
+      <p>fail2ban was installed earlier. Now configure it to ban IPs that fail SSH login repeatedly:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — server</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>sudo nano /etc/fail2ban/jail.local</pre></div>
+      </div>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">/etc/fail2ban/jail.local</span></div>
+        <div class="file-body"><pre>[DEFAULT]
+bantime  = 1h
+findtime = 10m
+maxretry = 5
+
+[sshd]
+enabled = true
+port    = ssh
+logpath = %(sshd_log)s
+backend = %(sshd_backend)s</pre></div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>sudo systemctl enable fail2ban
+sudo systemctl start fail2ban
+sudo fail2ban-client status sshd   <span class="c"># should show jail is active</span></pre></div>
+      </div>
     </div>
   </section>
 
@@ -466,9 +532,9 @@ sudo tailscale up</pre></div>
       <p>Download from tailscale.com/download for your OS. Sign in with the same account. Now from anywhere:</p>
       <div class="code-block">
         <div class="code-header"><span class="code-lang">bash — your laptop, anywhere in the world</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-        <div class="code-content"><pre>ssh oliver@greenlane          <span class="c"># MagicDNS hostname</span>
+        <div class="code-content"><pre>ssh oli@greenlane          <span class="c"># MagicDNS hostname</span>
 <span class="c"># or</span>
-ssh oliver@100.x.x.x       <span class="c"># Your Tailscale IP</span></pre></div>
+ssh oli@100.x.x.x       <span class="c"># Your Tailscale IP</span></pre></div>
       </div>
     </div>
 
@@ -531,24 +597,21 @@ docker run hello-world    <span class="c"># should print "Hello from Docker!"</s
     <p>k3s is a certified Kubernetes distribution that's packaged as a single binary. It's perfect for homelabs — it has everything you need including an ingress controller (Traefik) and storage provisioner built in.</p>
 
     <div class="step">
-      <div class="step-title">Install k3s</div>
+      <div class="step-title">Install k3s with a system-wide kubeconfig</div>
+      <p>k3s writes its kubeconfig to <code>/etc/rancher/k3s/k3s.yaml</code>. Configure it system-wide from the start so it works for any user, cron jobs, and scripts — the right approach for a server.</p>
       <div class="code-block">
         <div class="code-header"><span class="code-lang">bash — server</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-        <div class="code-content"><pre>curl -sfL https://get.k3s.io | sh -
-sudo systemctl status k3s   <span class="c"># should show Active: running</span></pre></div>
-      </div>
-    </div>
+        <div class="code-content"><pre><span class="c"># Install k3s with a system-readable kubeconfig</span>
+curl -sfL https://get.k3s.io | sh -s - --write-kubeconfig-mode=644
+sudo systemctl status k3s   <span class="c"># should show Active: running</span>
 
-    <div class="step">
-      <div class="step-title">Configure kubectl for your user</div>
-      <p><code>kubectl</code> is the command-line tool for talking to Kubernetes. k3s installs it, but the config needs to be accessible:</p>
-      <div class="code-block">
-        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-        <div class="code-content"><pre>mkdir -p ~/.kube
-sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
-sudo chown $(id -u):$(id -g) ~/.kube/config
-echo 'export KUBECONFIG=~/.kube/config' >> ~/.bashrc
-source ~/.bashrc</pre></div>
+<span class="c"># Set KUBECONFIG system-wide (all users, scripts, cron)</span>
+echo 'KUBECONFIG=/etc/rancher/k3s/k3s.yaml' | sudo tee -a /etc/environment
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml</pre></div>
+      </div>
+      <div class="callout callout-tip">
+        <div class="callout-icon">💡</div>
+        <div class="callout-body"><strong>Why not ~/.kube/config?</strong> Copying to a home directory means only your user can run kubectl. Setting it via <code>/etc/environment</code> and pointing directly at the k3s file means it works system-wide — no duplication, no sync issues if the cert rotates.</div>
       </div>
     </div>
 
@@ -562,6 +625,17 @@ source ~/.bashrc</pre></div>
 
 </span>kubectl get pods -A
 <span class="c"># Lists all system pods — Traefik, CoreDNS, etc.</span></pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Install k9s — terminal UI for Kubernetes</div>
+      <p>k9s is an interactive terminal dashboard for your cluster. Browse pods, view logs, exec into containers, and delete resources — all without typing long kubectl commands.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — server</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>curl -sS https://webinstall.dev/k9s | bash
+source ~/.config/envman/PATH.env
+k9s   <span class="c"># press ? for help, q to quit</span></pre></div>
       </div>
     </div>
 
@@ -600,12 +674,12 @@ helm repo update</pre></div>
   </section>
 
   <!-- =================== PHASE 8 =================== -->
-  <section class="phase" id="phase-8">
+  <section class="phase" id="phase-8a">
     <div class="phase-header">
-      <div class="phase-num">08</div>
+      <div class="phase-num">8a</div>
       <div>
-        <div class="phase-title">Deploy Gitea — Your Git Server</div>
-        <div class="phase-sub">Self-hosted GitHub: repos, issues, CI, and more</div>
+        <div class="phase-title">Deploy Gitea — Self-hosted Git</div>
+        <div class="phase-sub">Your own GitHub running on greenlane — pick this or 8b, not both</div>
       </div>
     </div>
 
@@ -644,7 +718,7 @@ helm install gitea gitea-charts/gitea \
       <p>Forward the Gitea port to your local machine:</p>
       <div class="code-block">
         <div class="code-header"><span class="code-lang">bash — your local machine</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-        <div class="code-content"><pre>ssh -L 3000:localhost:3000 oliver@homelab \
+        <div class="code-content"><pre>ssh -L 3000:localhost:3000 oli@greenlane \
   "kubectl port-forward svc/gitea-http 3000:3000 -n gitea"</pre></div>
       </div>
       <p>Open http://localhost:3000 in your browser. Log in with <code>admin</code> and your password.</p>
@@ -653,6 +727,71 @@ helm install gitea gitea-charts/gitea \
     <div class="callout callout-warn">
       <div class="callout-icon">⚠️</div>
       <div class="callout-body"><strong>Change the admin password immediately.</strong> The first thing you should do in Gitea is set a strong password. In production, never ship with a default credential.</div>
+    </div>
+
+    <div class="callout callout-warn">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body"><strong>Disable open registration.</strong> Once Gitea is exposed publicly via Cloudflare Tunnel, anyone on the internet can register an account by default. After logging in as admin, go to <strong>Site Administration → Users → User Management</strong> and disable registration, or add this to your Helm values: <code>--set gitea.config.service.DISABLE_REGISTRATION=true</code>.</div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 8b =================== -->
+  <section class="phase" id="phase-8b">
+    <div class="phase-header">
+      <div class="phase-num">8b</div>
+      <div>
+        <div class="phase-title">GitHub as your Git server</div>
+        <div class="phase-sub">Managed Git with no server maintenance — pick this or 8a, not both</div>
+      </div>
+    </div>
+
+    <p>If you'd rather not maintain a Gitea instance, GitHub works perfectly with ArgoCD. You lose the fully self-hosted aspect, but gain GitHub Actions (more mature than Gitea Actions), no maintenance overhead, and a UI most developers already know.</p>
+
+    <div class="step">
+      <div class="step-title">Create a repository on GitHub</div>
+      <p>Sign up at github.com if you don't have an account. Create a new private repository called <code>homelab-apps</code> — this is where your Kubernetes manifests will live.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Generate a Personal Access Token</div>
+      <p>ArgoCD needs credentials to pull from your private repo:</p>
+      <ol>
+        <li>GitHub → your profile → <strong>Settings</strong></li>
+        <li><strong>Developer settings</strong> → <strong>Personal access tokens</strong> → <strong>Tokens (classic)</strong></li>
+        <li>Click <strong>Generate new token (classic)</strong></li>
+        <li>Give it a name (e.g. <code>greenlane-argocd</code>), set an expiry, and tick the <strong>repo</strong> scope</li>
+        <li>Copy the token — you only see it once</li>
+      </ol>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Push your manifests to GitHub</div>
+      <p>On greenlane, clone your new repo and push any manifests you create:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — server</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>git clone https://github.com/yourusername/homelab-apps
+cd homelab-apps
+mkdir -p apps
+git add .
+git commit -m "initial commit"
+git push origin main</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Connect ArgoCD to GitHub (after Phase 10)</div>
+      <p>In the ArgoCD UI go to <strong>Settings → Repositories → Connect Repo</strong> and enter:</p>
+      <ul>
+        <li><strong>Repository URL:</strong> <code>https://github.com/yourusername/homelab-apps</code></li>
+        <li><strong>Username:</strong> your GitHub username</li>
+        <li><strong>Password:</strong> your Personal Access Token</li>
+      </ul>
+      <p>Everything else in the guide (Mealie, ArgoCD Applications, Terraform) works identically whether you use Gitea or GitHub — just swap the repo URL.</p>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>GitHub Actions vs Gitea Actions.</strong> If you choose GitHub, your CI/CD (Phase 16) uses GitHub Actions, which has a larger ecosystem of pre-built actions and free runner minutes for public repos. For private repos you get 2,000 minutes/month free.</div>
     </div>
   </section>
 
@@ -701,6 +840,16 @@ helm install monitoring prometheus-community/kube-prometheus-stack \
       <p>Open http://192.168.0.100:3001 in your browser. Log in with <code>admin</code> and your password. Grafana comes pre-loaded with Kubernetes dashboards — explore the "Kubernetes / Compute Resources / Cluster" dashboard.</p>
     </div>
 
+    <div class="step">
+      <div class="step-title">Access Prometheus directly</div>
+      <p>Prometheus has its own UI for exploring raw metrics and testing queries (PromQL). Forward it to your local machine:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — server</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>kubectl port-forward svc/monitoring-kube-prometheus-prometheus 9090:9090 -n monitoring --address 0.0.0.0</pre></div>
+      </div>
+      <p>Open http://192.168.0.100:9090 in your browser. Try a query like <code>up</code> to see all scraped targets, or <code>container_cpu_usage_seconds_total</code> for CPU metrics.</p>
+    </div>
+
     <div class="callout callout-tip">
       <div class="callout-icon">💡</div>
       <div class="callout-body"><strong>What you're seeing:</strong> Prometheus scrapes metrics from your Kubernetes nodes, pods, and system components every 15 seconds. Grafana reads from Prometheus and displays them. When services go public via Cloudflare Tunnel in Phase 11, you'll access Grafana via grafana.opdev.co.uk instead.</div>
@@ -717,63 +866,30 @@ helm install monitoring prometheus-community/kube-prometheus-stack \
       </div>
     </div>
 
-    <p>ArgoCD watches a Git repository and keeps your Kubernetes cluster in sync with it. You push a YAML change to Gitea, ArgoCD detects it and applies it. No manual <code>kubectl apply</code>.</p>
+    <p>ArgoCD watches a Git repository and keeps your Kubernetes cluster in sync with it. You push a YAML change to Gitea (or GitHub), ArgoCD detects it and applies it. No manual <code>kubectl apply</code>.</p>
 
     <div class="step">
-      <div class="step-title">Install ArgoCD</div>
+      <div class="step-title">Install ArgoCD via Helm</div>
+      <p>Using the Helm chart means insecure mode and ingress are set in values — no manual patching, and upgrades are a single <code>helm upgrade</code>:</p>
       <div class="code-block">
         <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
         <div class="code-content"><pre>kubectl create namespace argocd
-kubectl apply -n argocd \
-  -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml</pre></div>
+
+helm install argocd argo/argo-cd \
+  --namespace argocd \
+  --set server.insecure=true \
+  --set server.ingress.enabled=true \
+  --set server.ingress.ingressClassName=traefik \
+  --set 'server.ingress.hosts[0]=argocd.opdev.co.uk'</pre></div>
       </div>
     </div>
 
     <div class="step">
-      <div class="step-title">Wait for ArgoCD to start</div>
+      <div class="step-title">Wait for pods to be ready</div>
       <div class="code-block">
         <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-        <div class="code-content"><pre>kubectl wait --for=condition=available deployment/argocd-server \
-  -n argocd --timeout=300s</pre></div>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-title">Configure ArgoCD for ingress (run in HTTP mode)</div>
-      <p>By default ArgoCD uses HTTPS internally, which conflicts with Traefik. Patch it to run in HTTP mode (Traefik handles TLS):</p>
-      <div class="code-block">
-        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-        <div class="code-content"><pre>kubectl patch deployment argocd-server -n argocd \
-  --type json \
-  -p='[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--insecure"}]'</pre></div>
-      </div>
-      <p>Create an Ingress for ArgoCD:</p>
-      <div class="file-block">
-        <div class="file-header"><span class="file-name">argocd-ingress.yaml</span></div>
-        <div class="file-body"><pre>apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: argocd-server
-  namespace: argocd
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: web
-spec:
-  ingressClassName: traefik
-  rules:
-  - host: argocd.opdev.co.uk
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: argocd-server
-            port:
-              number: 80</pre></div>
-      </div>
-      <div class="code-block">
-        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-        <div class="code-content"><pre>kubectl apply -f argocd-ingress.yaml</pre></div>
+        <div class="code-content"><pre>kubectl get pods -n argocd -w
+<span class="c"># Wait until all pods show Running. Press Ctrl+C when done.</span></pre></div>
       </div>
     </div>
 
@@ -784,12 +900,25 @@ spec:
         <div class="code-content"><pre>kubectl -n argocd get secret argocd-initial-admin-secret \
   -o jsonpath="{.data.password}" | base64 -d && echo</pre></div>
       </div>
-      <p>Save this password — you'll use it to log into the ArgoCD UI. Username is <code>admin</code>.</p>
+      <p>Username is <code>admin</code>. Change this password immediately after first login via <strong>User Info → Update Password</strong>.</p>
     </div>
 
     <div class="step">
-      <div class="step-title">Connect ArgoCD to your Gitea instance</div>
-      <p>Once both are publicly accessible (after Phase 11), in the ArgoCD UI go to <strong>Settings → Repositories</strong> and add your Gitea server URL (e.g. <code>https://gitea.opdev.co.uk</code>). Create a Gitea access token under your Gitea profile settings and use it as the password.</p>
+      <div class="step-title">Connect ArgoCD to your Git repository</div>
+      <p>In the ArgoCD UI go to <strong>Settings → Repositories → Connect Repo</strong>:</p>
+      <ul>
+        <li><strong>If using Gitea (8a):</strong> URL is <code>https://gitea.opdev.co.uk/admin/homelab-apps</code> — create a Gitea access token under your profile and use it as the password</li>
+        <li><strong>If using GitHub (8b):</strong> URL is <code>https://github.com/yourusername/homelab-apps</code> — use your GitHub Personal Access Token as the password</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Upgrading ArgoCD in future</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>helm repo update
+helm upgrade argocd argo/argo-cd -n argocd</pre></div>
+      </div>
     </div>
   </section>
 
@@ -838,11 +967,11 @@ ls ~/.cloudflared/
 
     <div class="step">
       <div class="step-title">Create the tunnel config file</div>
-      <p>Replace <code>YOUR-TUNNEL-ID</code> with the ID from above, and <code>oliver</code> with your username:</p>
+      <p>Replace <code>YOUR-TUNNEL-ID</code> with the ID from above:</p>
       <div class="file-block">
         <div class="file-header"><span class="file-name">~/.cloudflared/config.yaml</span></div>
         <div class="file-body"><pre>tunnel: YOUR-TUNNEL-ID
-credentials-file: /home/oliver/.cloudflared/YOUR-TUNNEL-ID.json
+credentials-file: /home/oli/.cloudflared/YOUR-TUNNEL-ID.json
 
 ingress:
   - hostname: gitea.opdev.co.uk
@@ -875,6 +1004,10 @@ cloudflared tunnel route dns greenlane argocd.opdev.co.uk</pre></div>
 sudo systemctl start cloudflared
 sudo systemctl enable cloudflared
 sudo systemctl status cloudflared   <span class="c"># should show Active: running</span></pre></div>
+      </div>
+      <div class="callout callout-warn">
+        <div class="callout-icon">⚠️</div>
+        <div class="callout-body"><strong>Credentials move after service install.</strong> <code>sudo cloudflared service install</code> copies your config and credentials to <code>/etc/cloudflared/</code>. If you edit the config after this point, edit <code>/etc/cloudflared/config.yaml</code> — not the one in your home directory. The credentials file path in the config also becomes <code>/etc/cloudflared/YOUR-TUNNEL-ID.json</code>.</div>
       </div>
     </div>
 
@@ -955,12 +1088,12 @@ sudo systemctl status cloudflared   <span class="c"># should show Active: runnin
 
 
   <!-- =================== PHASE 13 =================== -->
-  <section class="phase" id="phase-13">
+  <section class="phase" id="phase-13a">
     <div class="phase-header">
-      <div class="phase-num">13</div>
+      <div class="phase-num">13a</div>
       <div>
         <div class="phase-title">Homepage Dashboard</div>
-        <div class="phase-sub">A single page linking to everything running on your homelab</div>
+        <div class="phase-sub">YAML-configured start page with live service widgets — pick this or 13b</div>
       </div>
     </div>
 
@@ -1101,6 +1234,121 @@ sudo systemctl restart cloudflared</pre></div>
     <div class="callout callout-tip">
       <div class="callout-icon">💡</div>
       <div class="callout-body"><strong>Live widgets.</strong> Homepage can show live stats inside each tile — e.g. the number of Gitea repos, Grafana alert count, ArgoCD sync status. Add an <code>href</code> and a <code>widget</code> block per service in <code>services.yaml</code>. The Homepage docs (gethomepage.dev) have the exact widget config for each app.</div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 13b =================== -->
+  <section class="phase" id="phase-13b">
+    <div class="phase-header">
+      <div class="phase-num">13b</div>
+      <div>
+        <div class="phase-title">Homarr Dashboard</div>
+        <div class="phase-sub">Drag-and-drop dashboard — no YAML config, everything done in the browser</div>
+      </div>
+    </div>
+
+    <p>Homarr takes a different approach to Homepage — instead of YAML files, you configure everything through a visual drag-and-drop UI in the browser. Better for people who'd rather click than edit config files. Same end result: a tile-based start page for all your services.</p>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>Pick one, not both.</strong> Homepage and Homarr would both sit at <code>home.opdev.co.uk</code> — choose whichever suits your preference. Homepage if you like YAML and want live data widgets. Homarr if you want to configure things visually.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Deploy Homarr</div>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">homarr-deployment.yaml</span></div>
+        <div class="file-body"><pre>apiVersion: v1
+kind: Namespace
+metadata:
+  name: homarr
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: homarr-data
+  namespace: homarr
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homarr
+  namespace: homarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homarr
+  template:
+    metadata:
+      labels:
+        app: homarr
+    spec:
+      containers:
+      - name: homarr
+        image: ghcr.io/ajnart/homarr:latest
+        ports:
+        - containerPort: 7575
+        volumeMounts:
+        - name: data
+          mountPath: /app/data/configs
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: homarr-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homarr
+  namespace: homarr
+spec:
+  selector:
+    app: homarr
+  ports:
+  - port: 7575
+    targetPort: 7575
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homarr
+  namespace: homarr
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: home.opdev.co.uk
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: homarr
+            port:
+              number: 7575</pre></div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>kubectl apply -f homarr-deployment.yaml
+kubectl get pods -n homarr -w</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Add to Cloudflare Tunnel and open</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>cloudflared tunnel route dns greenlane home.opdev.co.uk
+sudo systemctl restart cloudflared</pre></div>
+      </div>
+      <p>Open <code>https://home.opdev.co.uk</code>. You'll land in a visual editor — drag tiles onto the canvas, search for your apps by name, and configure each one with its URL. No YAML required.</p>
     </div>
   </section>
 
@@ -1255,6 +1503,10 @@ spec:
         <div class="code-content"><pre>kubectl apply -f argocd-app-mealie.yaml</pre></div>
       </div>
       <p>Open the ArgoCD UI at <code>https://argocd.opdev.co.uk</code>. You'll see a new "mealie" application appear and sync automatically — pulling the manifests from Gitea and applying them to the cluster.</p>
+      <div class="callout callout-tip">
+        <div class="callout-icon">💡</div>
+        <div class="callout-body"><strong>Using GitHub (Phase 8b) instead of Gitea?</strong> Change the <code>repoURL</code> to <code>https://github.com/yourusername/homelab-apps</code>. You'll also need to add the repo credentials in ArgoCD: <strong>Settings → Repositories → Connect Repo</strong> using your GitHub Personal Access Token as the password.</div>
+      </div>
     </div>
 
     <div class="step">
@@ -1501,6 +1753,160 @@ git push origin main</pre></div>
   </section>
 
 
+  <!-- =================== PHASE 16 =================== -->
+  <section class="phase" id="phase-16">
+    <div class="phase-header">
+      <div class="phase-num">16</div>
+      <div>
+        <div class="phase-title">kubectl from Your Laptop</div>
+        <div class="phase-sub">Manage greenlane's cluster from your local machine — no SSH required</div>
+      </div>
+    </div>
+
+    <p>Once your cluster is running you don't need to SSH into greenlane to run kubectl commands. Copy the kubeconfig to your laptop and manage everything remotely — including using k9s locally for a fast TUI dashboard.</p>
+
+    <div class="step">
+      <div class="step-title">Copy the kubeconfig to your laptop</div>
+      <p>Run this on your <strong>laptop/desktop</strong>. It copies greenlane's kubeconfig and rewrites the server address so your laptop can reach it:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — your local machine (macOS/Linux)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>mkdir -p ~/.kube
+scp oli@greenlane:/etc/rancher/k3s/k3s.yaml ~/.kube/greenlane.yaml
+
+<span class="c"># Rewrite 127.0.0.1 → greenlane so your laptop hits the right address</span>
+sed -i '' 's/127.0.0.1/greenlane/g' ~/.kube/greenlane.yaml   <span class="c"># macOS</span>
+<span class="c"># sed -i 's/127.0.0.1/greenlane/g' ~/.kube/greenlane.yaml   # Linux</span>
+
+export KUBECONFIG=~/.kube/greenlane.yaml
+kubectl get nodes   <span class="c"># should show greenlane Ready</span></pre></div>
+      </div>
+      <p>To make this persistent across sessions, add the export to your shell profile (<code>~/.zshrc</code> or <code>~/.bashrc</code>).</p>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>You need greenlane reachable from your laptop.</strong> This works on your home network directly, or from anywhere via Tailscale (Phase 4) since Tailscale assigns greenlane a stable IP. Make sure port 6443 is open in UFW if you enabled it.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Install k9s on your laptop</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — your local machine</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre><span class="c"># macOS</span>
+brew install derailed/k9s/k9s
+
+<span class="c"># Linux / WSL</span>
+curl -sS https://webinstall.dev/k9s | bash
+source ~/.config/envman/PATH.env</pre></div>
+      </div>
+      <p>With <code>KUBECONFIG</code> pointing at greenlane, running <code>k9s</code> on your laptop gives you a full interactive dashboard into the remote cluster.</p>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>Multiple clusters?</strong> You can merge multiple kubeconfigs using <code>KUBECONFIG=~/.kube/greenlane.yaml:~/.kube/work.yaml</code> and switch between them with <code>kubectl config use-context &lt;name&gt;</code>. Tools like <code>kubectx</code> make this even easier.</div>
+    </div>
+  </section>
+
+
+  <!-- =================== PHASE 17 =================== -->
+  <section class="phase phase-optional" id="phase-17">
+    <div class="phase-header">
+      <div class="phase-num">17</div>
+      <div>
+        <div class="phase-title">Gitea Actions — CI/CD Pipeline<span class="optional-badge">Optional</span></div>
+        <div class="phase-sub">Build and push Docker images automatically on every git push</div>
+      </div>
+    </div>
+
+    <p>Gitea ships with a built-in CI/CD system compatible with GitHub Actions syntax. Combined with ArgoCD, you get a full GitOps loop: push code to Gitea → Gitea Actions builds and pushes a Docker image → updates the image tag in your manifests repo → ArgoCD deploys the new version automatically.</p>
+
+    <div class="step">
+      <div class="step-title">Deploy an act_runner into your cluster</div>
+      <p>The act_runner executes your workflow jobs. Deploy it in the <code>gitea</code> namespace:</p>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">apps/act-runner/deployment.yaml</span></div>
+        <div class="file-body"><pre>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: act-runner
+  namespace: gitea
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: act-runner
+  template:
+    metadata:
+      labels:
+        app: act-runner
+    spec:
+      containers:
+      - name: act-runner
+        image: gitea/act_runner:latest
+        env:
+        - name: GITEA_INSTANCE_URL
+          value: "https://gitea.opdev.co.uk"
+        - name: GITEA_RUNNER_REGISTRATION_TOKEN
+          value: "your-runner-token"
+        volumeMounts:
+        - name: docker-sock
+          mountPath: /var/run/docker.sock
+      volumes:
+      - name: docker-sock
+        hostPath:
+          path: /var/run/docker.sock</pre></div>
+      </div>
+      <p>Get the registration token from Gitea: <strong>Site Administration → Runners → Create new Runner</strong>. Replace <code>your-runner-token</code> above, then apply:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>kubectl apply -f apps/act-runner/deployment.yaml
+kubectl get pods -n gitea -w   <span class="c"># wait for act-runner to be Running</span></pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Add a workflow to your app repo</div>
+      <p>Create <code>.gitea/workflows/build.yaml</code> in any repo you want to auto-build:</p>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">.gitea/workflows/build.yaml</span></div>
+        <div class="file-body"><pre>on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t gitea.opdev.co.uk/admin/myapp:${{ gitea.sha }} .
+          docker push gitea.opdev.co.uk/admin/myapp:${{ gitea.sha }}
+
+      - name: Update image tag in homelab-apps
+        run: |
+          git clone https://gitea.opdev.co.uk/admin/homelab-apps
+          cd homelab-apps
+          sed -i "s|image: gitea.opdev.co.uk/admin/myapp:.*|image: gitea.opdev.co.uk/admin/myapp:${{ gitea.sha }}|" apps/myapp/deployment.yaml
+          git commit -am "ci: update myapp to ${{ gitea.sha }}"
+          git push</pre></div>
+      </div>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">🔁</div>
+      <div class="callout-body"><strong>The full GitOps loop:</strong> push code → Gitea Actions builds &amp; pushes image → updates image tag in <code>homelab-apps</code> → ArgoCD detects the manifest change → rolls out the new version. Zero manual steps from commit to production.</div>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>Using GitHub instead?</strong> Replace the workflow file path with <code>.github/workflows/build.yaml</code>, use <code>github.sha</code> instead of <code>gitea.sha</code>, and set up GitHub Actions — it has a larger ecosystem of pre-built actions and doesn't require a self-hosted runner for simple builds.</div>
+    </div>
+  </section>
+
+
   <!-- =================== GOOD TO KNOW =================== -->
   <section class="phase" id="gtkw">
     <div class="phase-header">
@@ -1625,8 +2031,8 @@ helm repo update
 helm upgrade gitea gitea-charts/gitea -n gitea
 helm upgrade monitoring prometheus-community/kube-prometheus-stack -n monitoring
 
-<span class="c"># k3s — use the official upgrade method, don't reinstall</span>
-curl -sfL https://get.k3s.io | sh -   <span class="c"># re-running the installer upgrades in place</span></pre></div>
+<span class="c"># k3s — re-running the installer with the same flags upgrades in place</span>
+curl -sfL https://get.k3s.io | sh -s - --write-kubeconfig-mode=644</pre></div>
     </div>
 
     <h4>What to back up</h4>
@@ -1635,7 +2041,7 @@ curl -sfL https://get.k3s.io | sh -   <span class="c"># re-running the installer
         <thead><tr><th>What</th><th>Where it lives on greenlane</th><th>How critical</th></tr></thead>
         <tbody>
           <tr><td>Tunnel credentials</td><td><code>~/.cloudflared/</code></td><td>High — losing this breaks your tunnel</td></tr>
-          <tr><td>kubeconfig</td><td><code>~/.kube/config</code></td><td>Medium — re-generatable from k3s but annoying</td></tr>
+          <tr><td>kubeconfig</td><td><code>/etc/rancher/k3s/k3s.yaml</code></td><td>Medium — re-generatable from k3s but annoying</td></tr>
           <tr><td>PersistentVolume data (Gitea, Mealie)</td><td><code>/var/lib/rancher/k3s/storage/</code></td><td>High — this is your actual app data</td></tr>
           <tr><td>Terraform state</td><td><code>homelab-apps/terraform/terraform.tfstate</code></td><td>Medium — losing it means Terraform loses track of what it manages</td></tr>
           <tr><td>App manifests</td><td>Gitea repo <code>homelab-apps</code></td><td>Low — already in Git, safe by design</td></tr>

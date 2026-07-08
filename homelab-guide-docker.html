@@ -1,0 +1,1455 @@
+
+<title>Homelab Setup Guide — Docker Edition — opdev.co.uk</title>
+<style>
+:root {
+  --bg: #F4F7FB;
+  --surface: #FFFFFF;
+  --surface-alt: #EBF2FA;
+  --border: #C9D8EA;
+  --text: #0D1B2A;
+  --muted: #4E6070;
+  --light: #8299AC;
+  --accent: #0C7282;
+  --accent-dim: #D6EEF2;
+  --accent-bright: #0BB3C8;
+  --warn-bg: #FFF8E6;
+  --warn-border: #F59E0B;
+  --warn-text: #7C4A00;
+  --tip-bg: #E9F7F4;
+  --tip-border: #0C7282;
+  --tip-text: #0A4A42;
+  --code-bg: #0D1117;
+  --code-fg: #C9D6E3;
+  --sidebar-w: 265px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.7;font-size:16px;
+}
+
+/* Layout */
+.layout{display:flex;min-height:100vh}
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;background:var(--surface);
+  border-right:1px solid var(--border);position:fixed;top:0;left:0;
+  height:100vh;overflow-y:auto;padding:1.75rem 1.25rem;
+}
+.main{margin-left:var(--sidebar-w);flex:1;padding:3rem 3rem 6rem;max-width:calc(var(--sidebar-w) + 820px)}
+
+/* Sidebar */
+.sidebar-eyebrow{
+  font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:.4rem;
+}
+.sidebar-heading{
+  font-size:1rem;font-weight:800;color:var(--text);margin-bottom:1.75rem;line-height:1.3;
+}
+.nav-group{margin-bottom:1.25rem}
+.nav-group-label{
+  font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--light);margin-bottom:.35rem;padding-left:.25rem;
+}
+.nav-item{
+  display:flex;align-items:flex-start;gap:.5rem;padding:.28rem .25rem;
+  text-decoration:none;color:var(--muted);font-size:.82rem;line-height:1.4;
+  border-radius:4px;transition:color .15s,background .15s;
+}
+.nav-item:hover,.nav-item.active{color:var(--accent);background:var(--accent-dim)}
+.nav-num{font-size:.7rem;font-weight:700;color:var(--accent);width:1.4em;flex-shrink:0;margin-top:.05em;font-variant-numeric:tabular-nums}
+
+/* Hero */
+.hero{
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:2.5rem;margin-bottom:3rem;
+}
+.hero-eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.6rem}
+.hero-title{font-size:2rem;font-weight:900;color:var(--text);margin-bottom:.9rem;line-height:1.15;text-wrap:balance}
+.hero-desc{color:var(--muted);font-size:1rem;max-width:580px;line-height:1.7;margin-bottom:1.5rem}
+.stack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:.75rem}
+.stack-card{
+  background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;
+  padding:.875rem 1rem;
+}
+.stack-card-cat{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:.2rem}
+.stack-card-name{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:.15rem}
+.stack-card-desc{font-size:.75rem;color:var(--muted);line-height:1.4}
+
+/* Phase */
+.phase{margin-bottom:4.5rem;scroll-margin-top:2rem}
+.phase-header{display:flex;align-items:flex-start;gap:1.25rem;margin-bottom:1.75rem;padding-bottom:1.25rem;border-bottom:2px solid var(--border)}
+.phase-num{font-size:2.75rem;font-weight:900;color:var(--accent);line-height:1;flex-shrink:0;font-variant-numeric:tabular-nums;opacity:.55}
+.phase-title{font-size:1.5rem;font-weight:800;color:var(--text);text-wrap:balance}
+.phase-sub{font-size:.85rem;color:var(--muted);margin-top:.3rem}
+
+/* Steps */
+.step{margin-bottom:2rem}
+.step-title{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.6rem}
+p{color:var(--muted);margin-bottom:.6rem;line-height:1.7}
+p:last-child{margin-bottom:0}
+h4{font-size:.9rem;font-weight:700;color:var(--text);margin:.75rem 0 .4rem}
+
+/* Code */
+.code-block{background:var(--code-bg);border-radius:8px;overflow:hidden;margin:.75rem 0;font-size:.84rem}
+.code-header{
+  background:rgba(255,255,255,.04);padding:.45rem 1rem;
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.code-lang{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#4A9BB5}
+.copy-btn{
+  background:none;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.45);
+  font-size:.68rem;padding:.18rem .6rem;border-radius:3px;cursor:pointer;
+  font-family:inherit;transition:all .15s;
+}
+.copy-btn:hover{background:rgba(255,255,255,.1);color:rgba(255,255,255,.8)}
+.code-content{overflow-x:auto;padding:.9rem 1.1rem}
+.code-content pre{
+  color:var(--code-fg);
+  font-family:'SF Mono','Cascadia Code','Fira Code',Consolas,'Courier New',monospace;
+  white-space:pre;line-height:1.65;
+}
+.c{color:#546E7A}
+
+/* File block */
+.file-block{border:1px solid var(--border);border-radius:8px;overflow:hidden;margin:.75rem 0}
+.file-header{
+  background:var(--surface-alt);padding:.5rem 1rem;display:flex;align-items:center;
+  gap:.5rem;border-bottom:1px solid var(--border);
+}
+.file-name{font-family:'SF Mono',Consolas,monospace;font-size:.78rem;font-weight:600;color:var(--text)}
+.file-body{background:var(--code-bg);overflow-x:auto;padding:.9rem 1.1rem}
+.file-body pre{
+  color:var(--code-fg);
+  font-family:'SF Mono','Cascadia Code','Fira Code',Consolas,'Courier New',monospace;
+  font-size:.84rem;white-space:pre;line-height:1.65;
+}
+
+/* Callouts */
+.callout{border-radius:8px;padding:.9rem 1.1rem;margin:.9rem 0;display:flex;gap:.75rem;align-items:flex-start}
+.callout-warn{background:var(--warn-bg);border-left:3px solid var(--warn-border)}
+.callout-tip{background:var(--tip-bg);border-left:3px solid var(--tip-border)}
+.callout-icon{flex-shrink:0;font-size:.95rem;margin-top:.15rem}
+.callout-body{font-size:.84rem;line-height:1.6}
+.callout-warn .callout-body{color:var(--warn-text)}
+.callout-tip .callout-body{color:var(--tip-text)}
+.callout-body strong{font-weight:700}
+code{
+  font-family:'SF Mono',Consolas,monospace;font-size:.82em;
+  background:var(--accent-dim);color:var(--accent);padding:.1em .3em;border-radius:3px;
+}
+pre code{background:none;color:inherit;padding:0;font-size:inherit}
+ul,ol{padding-left:1.4rem;margin:.4rem 0;color:var(--muted)}
+li{margin:.2rem 0;font-size:.9rem}
+
+/* Table */
+.tbl-wrap{overflow-x:auto;margin:.75rem 0}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+th{text-align:left;font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--light);font-weight:700;padding:.5rem .75rem;border-bottom:2px solid var(--border)}
+td{padding:.55rem .75rem;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.badge{display:inline-block;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:.15em .5em;border-radius:3px}
+.dkr{background:#E0F2FE;color:#0369A1}
+.sys{background:#F3F4F6;color:#374151}
+.net{background:#ECFDF5;color:#065F46}
+.mon{background:#FDF4FF;color:#6B21A8}
+
+/* Divider */
+.section-divider{border:none;border-top:1px solid var(--border);margin:2.5rem 0}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .main{margin-left:0;padding:1.5rem 1rem 4rem}
+  .hero-title{font-size:1.5rem}
+  .stack-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<nav class="sidebar" aria-label="Guide navigation">
+  <div class="sidebar-eyebrow">Homelab Guide</div>
+  <div class="sidebar-heading">Docker Edition</div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Foundation</div>
+    <a class="nav-item" href="#phase-1"><span class="nav-num">01</span>Install Ubuntu Server</a>
+    <a class="nav-item" href="#phase-2"><span class="nav-num">02</span>First Boot &amp; Essentials</a>
+    <a class="nav-item" href="#phase-3"><span class="nav-num">03</span>Secure SSH Access</a>
+    <a class="nav-item" href="#phase-4"><span class="nav-num">04</span>Tailscale — Access Anywhere</a>
+    <a class="nav-item" href="#phase-5"><span class="nav-num">05</span>Install Docker</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Platform</div>
+    <a class="nav-item" href="#phase-6"><span class="nav-num">06</span>Shared Docker Network</a>
+    <a class="nav-item" href="#phase-7"><span class="nav-num">07</span>Caddy — Reverse Proxy</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Services</div>
+    <a class="nav-item" href="#phase-8a"><span class="nav-num">8a</span>Gitea — Git Server</a>
+    <a class="nav-item" href="#phase-8b"><span class="nav-num">8b</span>GitHub (alternative)</a>
+    <a class="nav-item" href="#phase-9"><span class="nav-num">09</span>Prometheus &amp; Grafana</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Networking</div>
+    <a class="nav-item" href="#phase-10"><span class="nav-num">10</span>Public Subdomains</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Apps</div>
+    <a class="nav-item" href="#phase-11a"><span class="nav-num">11a</span>Homepage Dashboard</a>
+    <a class="nav-item" href="#phase-11b"><span class="nav-num">11b</span>Homarr (alternative)</a>
+    <a class="nav-item" href="#phase-12"><span class="nav-num">12</span>Mealie — First App</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Summary</div>
+    <a class="nav-item" href="#phase-13"><span class="nav-num">13</span>Your Stack is Live</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Reference</div>
+    <a class="nav-item" href="#gtkw">Good to Know</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- CROSS-LINK BANNER -->
+  <div style="background:var(--accent-dim);border:1px solid var(--border);border-radius:8px;padding:.75rem 1.25rem;margin-bottom:1.5rem;font-size:.85rem;color:var(--muted)">
+    Ready to go further? Step up to the full Kubernetes setup &rarr; <a href="homelab-guide.html" style="color:var(--accent);font-weight:600">Advanced Guide (k3s + ArgoCD)</a>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Docker Setup Guide</div>
+    <div class="hero-title">Self-host without the complexity</div>
+    <div class="hero-desc">
+      Everything you need for a capable homelab — Git server, monitoring, reverse proxy, and public subdomains — using Docker Compose. No Kubernetes, no cluster to manage. A practical foundation on your server <strong>greenlane</strong> at <strong>opdev.co.uk</strong>.
+    </div>
+
+    <div class="stack-grid">
+      <div class="stack-card"><div class="stack-card-cat">OS</div><div class="stack-card-name">Ubuntu Server 24.04</div><div class="stack-card-desc">Your base — stable LTS, huge community</div></div>
+      <div class="stack-card"><div class="stack-card-cat">Networking</div><div class="stack-card-name">Tailscale</div><div class="stack-card-desc">Secure SSH from anywhere, zero port forwarding</div></div>
+      <div class="stack-card"><div class="stack-card-cat">Containers</div><div class="stack-card-name">Docker + Compose</div><div class="stack-card-desc">Run services with simple YAML files</div></div>
+      <div class="stack-card"><div class="stack-card-cat">Reverse Proxy</div><div class="stack-card-name">Caddy</div><div class="stack-card-desc">Routes traffic to containers by hostname</div></div>
+      <div class="stack-card"><div class="stack-card-cat">Git</div><div class="stack-card-name">Gitea</div><div class="stack-card-desc">Self-hosted GitHub alternative</div></div>
+      <div class="stack-card"><div class="stack-card-cat">Monitoring</div><div class="stack-card-name">Prometheus + Grafana</div><div class="stack-card-desc">Metrics collection and dashboards</div></div>
+      <div class="stack-card"><div class="stack-card-cat">Public Access</div><div class="stack-card-name">Cloudflare Tunnel</div><div class="stack-card-desc">No port forwarding, automatic HTTPS</div></div>
+      <div class="stack-card"><div class="stack-card-cat">Dashboard</div><div class="stack-card-name">Homepage</div><div class="stack-card-desc">Start page linking to all your services</div></div>
+    </div>
+  </div>
+
+  <!-- =================== PHASE 1 =================== -->
+  <section class="phase" id="phase-1">
+    <div class="phase-header">
+      <div class="phase-num">01</div>
+      <div>
+        <div class="phase-title">Install Ubuntu Server 24.04 LTS</div>
+        <div class="phase-sub">Wiping Proxmox and starting fresh on Ubuntu</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Download the ISO</div>
+      <p>Get Ubuntu Server 24.04 LTS from ubuntu.com/download/server. You want the <strong>Ubuntu Server 24.04 LTS</strong> ISO (not Desktop). It's around 2.6 GB.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Create a bootable USB</div>
+      <p>Download <strong>balenaEtcher</strong> (etcher.balena.io) on your existing computer. Open it, select the Ubuntu ISO, select your USB drive (8 GB+), and flash it. This will wipe the USB.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Boot from USB and install</div>
+      <p>Plug the USB into your mini PC and boot. You may need to press a key (F2, F12, Del, or Esc depending on your hardware) to enter the boot menu. Select the USB drive.</p>
+      <p>Work through the Ubuntu installer, making these choices:</p>
+      <ul>
+        <li><strong>Language &amp; keyboard:</strong> choose your locale</li>
+        <li><strong>Network:</strong> see the dedicated step below — don't skip this</li>
+        <li><strong>Proxy:</strong> leave blank</li>
+        <li><strong>Storage:</strong> use the entire disk (this wipes Proxmox)</li>
+        <li><strong>Profile setup:</strong> set your name, username to <code>oli</code>, and a strong password</li>
+        <li><strong>Server name:</strong> set to <code>greenlane</code></li>
+        <li><strong>SSH setup:</strong> tick "Install OpenSSH server" — critical</li>
+        <li><strong>Featured snaps:</strong> skip all of them</li>
+      </ul>
+      <p>Confirm and let it install. When done, remove the USB and reboot.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Configure your static IP during the network step</div>
+      <p>When the installer reaches the <strong>Network connections</strong> screen you'll see your interface (likely <code>enp3s0</code>) listed with a DHCP address. You need to set it manually to <code>192.168.0.100</code> so it matches your router reservation.</p>
+      <ol>
+        <li>Select your interface (e.g. <code>enp3s0</code>) and press <strong>Enter</strong></li>
+        <li>Select <strong>Edit IPv4</strong></li>
+        <li>Change the method from <strong>Automatic (DHCP)</strong> to <strong>Manual</strong></li>
+        <li>Fill in the fields:</li>
+      </ol>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Field</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Subnet</strong></td><td><code>192.168.0.0/24</code></td></tr>
+            <tr><td><strong>Address</strong></td><td><code>192.168.0.100</code></td></tr>
+            <tr><td><strong>Gateway</strong></td><td><code>192.168.0.1</code> (your router — check the back of it if unsure)</td></tr>
+            <tr><td><strong>Name servers</strong></td><td><code>1.1.1.1,1.0.0.1</code> (Cloudflare DNS — faster and private)</td></tr>
+            <tr><td><strong>Search domains</strong></td><td>leave blank</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Select <strong>Save</strong> then <strong>Done</strong>. The interface should now show <code>192.168.0.100/24</code> — continue the installer.</p>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>Why Cloudflare DNS?</strong> <code>1.1.1.1</code> is consistently the fastest public DNS resolver globally and doesn't log or sell your queries. Since you're already using Cloudflare for your domain and tunnel, it's a natural fit.</div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 2 =================== -->
+  <section class="phase" id="phase-2">
+    <div class="phase-header">
+      <div class="phase-num">02</div>
+      <div>
+        <div class="phase-title">First Boot &amp; Basic Setup</div>
+        <div class="phase-sub">Update the system, install tools, configure the firewall</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">SSH in from your main machine</div>
+      <p>From your laptop or desktop, open a terminal:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — your local machine</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>ssh oli@192.168.0.100   <span class="c"># use your actual username and IP</span></pre></div>
+      </div>
+      <p>Type <code>yes</code> to accept the fingerprint and enter your password. You're now on your server.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Update everything</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — server</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>sudo apt update && sudo apt upgrade -y</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Install essential tools</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>sudo apt install -y curl wget git vim htop ufw fail2ban net-tools unzip</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Add greenlane to /etc/hosts on your local machine</div>
+      <p>Run this on your <strong>laptop/desktop</strong> so you can use <code>greenlane</code> as a hostname instead of typing the IP every time:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — your local machine</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>echo "192.168.0.100 greenlane" | sudo tee -a /etc/hosts
+ping -c 2 greenlane   <span class="c"># should resolve and reply</span></pre></div>
+      </div>
+      <p>After this, <code>ssh oli@greenlane</code> works just like <code>ssh oli@192.168.0.100</code>.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Configure UFW firewall</div>
+      <p>UFW (Uncomplicated Firewall) is simple and effective. Allow SSH first so you don't lock yourself out:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>sudo ufw allow 22/tcp    <span class="c"># SSH</span>
+sudo ufw allow 80/tcp    <span class="c"># HTTP (Caddy reverse proxy)</span>
+sudo ufw allow 443/tcp   <span class="c"># HTTPS</span>
+sudo ufw enable          <span class="c"># confirm with 'y'</span>
+sudo ufw status</pre></div>
+      </div>
+    </div>
+
+    <div class="callout callout-warn">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body"><strong>Always allow SSH before enabling UFW.</strong> If you enable the firewall without allowing port 22 first, you'll be locked out and will need to access the machine directly.</div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 3 =================== -->
+  <section class="phase" id="phase-3">
+    <div class="phase-header">
+      <div class="phase-num">03</div>
+      <div>
+        <div class="phase-title">Secure SSH Access</div>
+        <div class="phase-sub">SSH keys instead of passwords — much safer</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Generate an SSH key pair on your local machine</div>
+      <p>Run this on your laptop/desktop — not the server:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — your local machine</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>ssh-keygen -t ed25519 -C "homelab"
+<span class="c"># Press enter to accept default path (~/.ssh/id_ed25519)
+# Set a passphrase (recommended) or leave empty</span></pre></div>
+      </div>
+      <p>This creates two files: <code>~/.ssh/id_ed25519</code> (private — never share) and <code>~/.ssh/id_ed25519.pub</code> (public — safe to share).</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Copy your public key to the server</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — your local machine</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>ssh-copy-id oli@192.168.0.100
+<span class="c"># Enter your server password one last time</span></pre></div>
+      </div>
+      <p>Test that key auth works before disabling passwords:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — local</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>ssh oli@192.168.0.100   <span class="c"># should log in WITHOUT asking for password</span></pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Harden the SSH daemon</div>
+      <p>Now that key auth works, disable password login on the server:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — server</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>sudo nano /etc/ssh/sshd_config</pre></div>
+      </div>
+      <p>Find and change these lines (add them if they don't exist):</p>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">/etc/ssh/sshd_config</span></div>
+        <div class="file-body"><pre>PasswordAuthentication no
+PermitRootLogin no
+PubkeyAuthentication yes</pre></div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>sudo systemctl restart ssh
+sudo systemctl status ssh   <span class="c"># should show Active: running</span></pre></div>
+      </div>
+      <p>Open a <strong>new terminal window</strong> and test SSH still works before closing your current session.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Configure fail2ban</div>
+      <p>fail2ban was installed earlier. Now configure it to ban IPs that fail SSH login repeatedly:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — server</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>sudo nano /etc/fail2ban/jail.local</pre></div>
+      </div>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">/etc/fail2ban/jail.local</span></div>
+        <div class="file-body"><pre>[DEFAULT]
+bantime  = 1h
+findtime = 10m
+maxretry = 5
+
+[sshd]
+enabled = true
+port    = ssh
+logpath = %(sshd_log)s
+backend = %(sshd_backend)s</pre></div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>sudo systemctl enable fail2ban
+sudo systemctl start fail2ban
+sudo fail2ban-client status sshd   <span class="c"># should show jail is active</span></pre></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 4 =================== -->
+  <section class="phase" id="phase-4">
+    <div class="phase-header">
+      <div class="phase-num">04</div>
+      <div>
+        <div class="phase-title">Tailscale — SSH from Anywhere</div>
+        <div class="phase-sub">VPN mesh that lets you securely reach your server from any network</div>
+      </div>
+    </div>
+
+    <p>Tailscale creates an encrypted mesh network between your devices. Once set up, you can SSH into your homelab from a coffee shop, on holiday, anywhere — with no port forwarding, no dynamic DNS, and no VPN complexity.</p>
+
+    <div class="step">
+      <div class="step-title">Create a Tailscale account</div>
+      <p>Go to tailscale.com and sign up (free for personal use). You'll connect devices to your "tailnet."</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Install Tailscale on the server</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — server</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>curl -fsSL https://tailscale.com/install.sh | sh
+sudo tailscale up</pre></div>
+      </div>
+      <p>You'll see a URL — open it in your browser to authenticate the server with your Tailscale account.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Enable Tailscale SSH</div>
+      <p>Tailscale can manage SSH authentication for you, which is even more secure:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>sudo tailscale up --ssh</pre></div>
+      </div>
+      <p>In the Tailscale admin console (login.tailscale.com/admin), go to <strong>Machines</strong> and you'll see your server listed with a Tailscale IP (e.g. <code>100.x.x.x</code>) and a MagicDNS hostname like <code>greenlane</code>.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Install Tailscale on your laptop</div>
+      <p>Download from tailscale.com/download for your OS. Sign in with the same account. Now from anywhere:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — your laptop, anywhere in the world</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>ssh oli@greenlane          <span class="c"># MagicDNS hostname</span>
+<span class="c"># or</span>
+ssh oli@100.x.x.x       <span class="c"># Your Tailscale IP</span></pre></div>
+      </div>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>Tailscale is your secure backbone.</strong> Even once your services are public via Cloudflare Tunnel later, you'll keep using Tailscale for SSH. It's zero-trust: your SSH port is invisible to the public internet.</div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 5 =================== -->
+  <section class="phase" id="phase-5">
+    <div class="phase-header">
+      <div class="phase-num">05</div>
+      <div>
+        <div class="phase-title">Install Docker</div>
+        <div class="phase-sub">The foundation for everything — all services run as containers</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Install Docker Engine</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — server</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>curl -fsSL https://get.docker.com | sh</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Add your user to the docker group</div>
+      <p>This lets you run <code>docker</code> commands without <code>sudo</code>:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>sudo usermod -aG docker $USER
+newgrp docker   <span class="c"># apply without logging out</span></pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Install Docker Compose and verify</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>sudo apt install -y docker-compose-plugin
+docker --version          <span class="c"># Docker version 27.x.x</span>
+docker compose version    <span class="c"># Docker Compose version v2.x.x</span>
+docker run hello-world    <span class="c"># should print "Hello from Docker!"</span></pre></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 6 =================== -->
+  <section class="phase" id="phase-6">
+    <div class="phase-header">
+      <div class="phase-num">06</div>
+      <div>
+        <div class="phase-title">Shared Docker Network</div>
+        <div class="phase-sub">Containers need a shared network so Caddy can route between them</div>
+      </div>
+    </div>
+
+    <p>In Docker, containers on the same custom network can reach each other by container name. Create one shared network that all your services will join — Caddy sits on this network and proxies requests to the right container.</p>
+
+    <div class="step">
+      <div class="step-title">Create the shared network and services directory</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — server</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>docker network create web
+mkdir -p ~/services
+ls ~/services   <span class="c"># empty for now</span></pre></div>
+      </div>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>Every service in this guide joins the <code>web</code> network.</strong> Each <code>docker-compose.yml</code> declares <code>networks: web: external: true</code> — this attaches it to the network you just created. Caddy is also on this network, which is how it reaches containers like <code>gitea:3000</code> by name.</div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 7 =================== -->
+  <section class="phase" id="phase-7">
+    <div class="phase-header">
+      <div class="phase-num">07</div>
+      <div>
+        <div class="phase-title">Caddy — Reverse Proxy</div>
+        <div class="phase-sub">Routes incoming requests to the right container by hostname</div>
+      </div>
+    </div>
+
+    <p>Caddy is the reverse proxy that sits in front of all your services. It reads the <code>Host</code> header on every incoming request and routes it to the correct container. Since Cloudflare Tunnel handles HTTPS externally, Caddy just needs to route HTTP on port 80 — the Caddyfile below uses <code>http://</code> prefixes to disable Caddy's auto-TLS for this setup.</p>
+
+    <div class="step">
+      <div class="step-title">Create the Caddy directory and config</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>mkdir -p ~/services/caddy</pre></div>
+      </div>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">~/services/caddy/Caddyfile</span></div>
+        <div class="file-body"><pre>{
+    admin off
+}
+
+http://gitea.opdev.co.uk {
+    reverse_proxy gitea:3000
+}
+
+http://grafana.opdev.co.uk {
+    reverse_proxy grafana:3000
+}
+
+http://home.opdev.co.uk {
+    reverse_proxy homepage:3000
+}
+
+http://mealie.opdev.co.uk {
+    reverse_proxy mealie:9000
+}</pre></div>
+      </div>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">~/services/caddy/docker-compose.yml</span></div>
+        <div class="file-body"><pre>services:
+  caddy:
+    image: caddy:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - web
+
+volumes:
+  caddy_data:
+  caddy_config:
+
+networks:
+  web:
+    external: true</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Start Caddy</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>cd ~/services/caddy
+docker compose up -d
+docker compose logs -f   <span class="c"># watch for "serving initial configuration"</span></pre></div>
+      </div>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>Adding a new service is one line.</strong> Add <code>http://newservice.opdev.co.uk { reverse_proxy newservice:PORT }</code> to the Caddyfile, then run <code>docker compose exec caddy caddy reload --config /etc/caddy/Caddyfile</code> — no restart needed, Caddy picks up changes live.</div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 8a =================== -->
+  <section class="phase" id="phase-8a">
+    <div class="phase-header">
+      <div class="phase-num">8a</div>
+      <div>
+        <div class="phase-title">Gitea — Self-hosted Git</div>
+        <div class="phase-sub">Your own GitHub running on greenlane — pick this or 8b</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Create the Gitea directory and compose file</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>mkdir -p ~/services/gitea</pre></div>
+      </div>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">~/services/gitea/docker-compose.yml</span></div>
+        <div class="file-body"><pre>services:
+  gitea:
+    image: gitea/gitea:latest
+    restart: unless-stopped
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - GITEA__server__DOMAIN=gitea.opdev.co.uk
+      - GITEA__server__ROOT_URL=https://gitea.opdev.co.uk
+      - GITEA__service__DISABLE_REGISTRATION=true
+    volumes:
+      - gitea_data:/data
+    networks:
+      - web
+
+volumes:
+  gitea_data:
+
+networks:
+  web:
+    external: true</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Start Gitea</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>cd ~/services/gitea
+docker compose up -d
+docker compose logs -f   <span class="c"># watch for "Starting new Web server"</span></pre></div>
+      </div>
+      <p>Once Cloudflare Tunnel is running (Phase 10), visit <code>https://gitea.opdev.co.uk</code>. On first load you'll see the Gitea setup wizard — create your admin account and complete the setup.</p>
+    </div>
+
+    <div class="callout callout-warn">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body"><strong>Registration is disabled by default.</strong> <code>DISABLE_REGISTRATION=true</code> is set in the compose file above, so strangers can't sign up once your Gitea is public. Create your admin account during the initial setup wizard before this takes effect.</div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 8b =================== -->
+  <section class="phase" id="phase-8b">
+    <div class="phase-header">
+      <div class="phase-num">8b</div>
+      <div>
+        <div class="phase-title">GitHub as your Git server</div>
+        <div class="phase-sub">Managed Git with no server maintenance — pick this or 8a</div>
+      </div>
+    </div>
+
+    <p>If you'd rather not self-host Git, GitHub is the obvious alternative. No server to maintain, free for public and private repos, and all your services can clone from it just as easily.</p>
+
+    <div class="step">
+      <div class="step-title">Create a GitHub account and repository</div>
+      <p>Sign up at github.com if you don't have an account. Create a new repository — call it <code>homelab</code> or similar. This will store your service configs (docker-compose files, configs) in version control.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Generate a Personal Access Token</div>
+      <p>Go to <strong>Settings → Developer settings → Personal access tokens → Tokens (classic)</strong>. Click <strong>Generate new token</strong> and give it <code>repo</code> scope. Copy the token — you'll only see it once.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — server</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>git config --global user.email "your@email.com"
+git config --global user.name "Your Name"
+<span class="c"># When prompted for a password during git push, use your PAT</span></pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Store your services in Git</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>cd ~/services
+git init
+git remote add origin https://github.com/yourusername/homelab.git
+git add .
+git commit -m "initial homelab services"
+git push -u origin main</pre></div>
+      </div>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>Version your configs, not your data.</strong> Store your <code>docker-compose.yml</code> and config files in Git. Never commit secrets or <code>.env</code> files. Docker volumes (where actual data lives) are separate from the config and aren't tracked in Git.</div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 9 =================== -->
+  <section class="phase" id="phase-9">
+    <div class="phase-header">
+      <div class="phase-num">09</div>
+      <div>
+        <div class="phase-title">Prometheus &amp; Grafana — Monitoring</div>
+        <div class="phase-sub">Container and host metrics with dashboards</div>
+      </div>
+    </div>
+
+    <p>The monitoring stack has four parts: <strong>cAdvisor</strong> scrapes per-container metrics automatically, <strong>Node Exporter</strong> collects host-level metrics (CPU, RAM, disk), <strong>Prometheus</strong> stores everything, and <strong>Grafana</strong> visualises it.</p>
+
+    <div class="step">
+      <div class="step-title">Create monitoring directory and Prometheus config</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>mkdir -p ~/services/monitoring</pre></div>
+      </div>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">~/services/monitoring/prometheus.yml</span></div>
+        <div class="file-body"><pre>global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+
+  - job_name: 'node'
+    static_configs:
+      - targets: ['node-exporter:9100']
+
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']</pre></div>
+      </div>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">~/services/monitoring/docker-compose.yml</span></div>
+        <div class="file-body"><pre>services:
+  prometheus:
+    image: prom/prometheus:latest
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=30d'
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    networks:
+      - web
+
+  grafana:
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=ChangeThisPassword123
+      - GF_SERVER_DOMAIN=grafana.opdev.co.uk
+      - GF_SERVER_ROOT_URL=https://grafana.opdev.co.uk
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - web
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    restart: unless-stopped
+    privileged: true
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      - web
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    restart: unless-stopped
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    networks:
+      - web
+
+volumes:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  web:
+    external: true</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Start monitoring</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>cd ~/services/monitoring
+docker compose up -d
+docker compose ps   <span class="c"># all four containers should show "running"</span></pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Configure Grafana data source</div>
+      <p>Once Cloudflare Tunnel is up, open <code>https://grafana.opdev.co.uk</code>. Log in with <strong>admin</strong> / <strong>ChangeThisPassword123</strong> — change the password immediately. Then:</p>
+      <ol>
+        <li>Go to <strong>Connections → Data Sources → Add data source → Prometheus</strong></li>
+        <li>Set the URL to <code>http://prometheus:9090</code> — the container name resolves on the shared <code>web</code> network</li>
+        <li>Click <strong>Save &amp; test</strong></li>
+      </ol>
+      <p>Import pre-built dashboards from Grafana's library by going to <strong>Dashboards → Import</strong> and entering a dashboard ID:</p>
+      <ul>
+        <li><strong>ID 193</strong> — Docker and system overview</li>
+        <li><strong>ID 1860</strong> — Node Exporter full host metrics</li>
+      </ul>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>cAdvisor scrapes every container automatically.</strong> You don't need to configure anything per-service — cAdvisor reads from the Docker socket and exposes metrics for every running container. Once Grafana is connected to Prometheus, dashboard ID 193 shows per-container CPU, memory, and network without any extra work.</div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 10 =================== -->
+  <section class="phase" id="phase-10">
+    <div class="phase-header">
+      <div class="phase-num">10</div>
+      <div>
+        <div class="phase-title">Public Access via Cloudflare Tunnel</div>
+        <div class="phase-sub">Expose services at opdev.co.uk with no port forwarding and automatic HTTPS</div>
+      </div>
+    </div>
+
+    <p>Cloudflare Tunnel runs a small daemon (<code>cloudflared</code>) on your server. It opens an outbound connection to Cloudflare's network. Requests to your subdomains come in via Cloudflare and flow back through that tunnel to Caddy on your server — Caddy routes to the right container by hostname. No open ports on your router required.</p>
+
+    <div class="step">
+      <div class="step-title">Add opdev.co.uk to Cloudflare</div>
+      <p>Sign up at cloudflare.com (free). Add your domain and update your domain's nameservers to point to Cloudflare (your domain registrar's control panel will have this option). This typically takes a few minutes to propagate.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Install cloudflared on your server</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash — server</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb \
+  -o cloudflared.deb
+sudo dpkg -i cloudflared.deb
+cloudflared --version</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Login and create a tunnel</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>cloudflared tunnel login
+<span class="c"># Opens a browser to authorise — pick opdev.co.uk</span>
+
+cloudflared tunnel create greenlane
+<span class="c"># Note the tunnel ID it prints — you'll need it</span>
+
+ls ~/.cloudflared/
+<span class="c"># You'll see a .json credentials file with your tunnel ID as the filename</span></pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Create the tunnel config file</div>
+      <p>Replace <code>YOUR-TUNNEL-ID</code> with the ID from above. All services hit port 80 on localhost — Caddy reads the <code>Host</code> header and routes to the correct container.</p>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">~/.cloudflared/config.yaml</span></div>
+        <div class="file-body"><pre>tunnel: YOUR-TUNNEL-ID
+credentials-file: /home/oli/.cloudflared/YOUR-TUNNEL-ID.json
+
+ingress:
+  - hostname: gitea.opdev.co.uk
+    service: http://127.0.0.1:80
+  - hostname: grafana.opdev.co.uk
+    service: http://127.0.0.1:80
+  - hostname: home.opdev.co.uk
+    service: http://127.0.0.1:80
+  - hostname: mealie.opdev.co.uk
+    service: http://127.0.0.1:80
+  - service: http_status:404</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Create DNS records for each subdomain</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>cloudflared tunnel route dns greenlane gitea.opdev.co.uk
+cloudflared tunnel route dns greenlane grafana.opdev.co.uk
+cloudflared tunnel route dns greenlane home.opdev.co.uk
+cloudflared tunnel route dns greenlane mealie.opdev.co.uk</pre></div>
+      </div>
+      <p>This creates CNAME records in your Cloudflare DNS pointing each subdomain to the tunnel.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Install cloudflared as a system service</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>sudo cloudflared service install
+sudo systemctl start cloudflared
+sudo systemctl enable cloudflared
+sudo systemctl status cloudflared   <span class="c"># should show Active: running</span></pre></div>
+      </div>
+      <div class="callout callout-warn">
+        <div class="callout-icon">⚠️</div>
+        <div class="callout-body"><strong>Credentials move after service install.</strong> <code>sudo cloudflared service install</code> copies your config and credentials to <code>/etc/cloudflared/</code>. If you edit the config after this point, edit <code>/etc/cloudflared/config.yaml</code> — not the one in your home directory.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Adding a new subdomain later</div>
+      <p>The pattern for any new service is always the same three steps:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre><span class="c"># 1. Add to Caddy (then reload)</span>
+<span class="c"># 2. Add to /etc/cloudflared/config.yaml ingress block</span>
+<span class="c"># 3. Create the DNS record</span>
+cloudflared tunnel route dns greenlane newservice.opdev.co.uk
+sudo systemctl restart cloudflared</pre></div>
+      </div>
+    </div>
+
+    <div class="callout callout-warn">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body"><strong>Cloudflare SSL mode.</strong> In your Cloudflare dashboard under SSL/TLS, set the mode to <strong>Flexible</strong> (Cloudflare handles HTTPS externally; your server receives HTTP). This is correct because Caddy is running HTTP-only on port 80 in this setup.</div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 11a =================== -->
+  <section class="phase" id="phase-11a">
+    <div class="phase-header">
+      <div class="phase-num">11a</div>
+      <div>
+        <div class="phase-title">Homepage Dashboard</div>
+        <div class="phase-sub">YAML-configured start page with live service widgets — pick this or 11b</div>
+      </div>
+    </div>
+
+    <p>Homepage is the most popular homelab dashboard right now. It's a clean start page showing tiles for all your services, with live widgets that can pull stats from Gitea, Grafana, and hundreds of other apps. You configure it via YAML files.</p>
+
+    <div class="step">
+      <div class="step-title">Create the Homepage directory</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>mkdir -p ~/services/homepage/config</pre></div>
+      </div>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">~/services/homepage/docker-compose.yml</span></div>
+        <div class="file-body"><pre>services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    restart: unless-stopped
+    volumes:
+      - ./config:/app/config
+    networks:
+      - web
+
+networks:
+  web:
+    external: true</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Create the config files</div>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">~/services/homepage/config/settings.yaml</span></div>
+        <div class="file-body"><pre>title: greenlane
+headerStyle: clean
+layout:
+  - Infrastructure:
+      style: row
+  - Services:
+      style: row</pre></div>
+      </div>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">~/services/homepage/config/services.yaml</span></div>
+        <div class="file-body"><pre>- Infrastructure:
+    - Grafana:
+        href: https://grafana.opdev.co.uk
+        description: Metrics and dashboards
+        icon: grafana.png
+    - Gitea:
+        href: https://gitea.opdev.co.uk
+        description: Self-hosted Git
+        icon: gitea.png
+
+- Services:
+    - Mealie:
+        href: https://mealie.opdev.co.uk
+        description: Recipe manager
+        icon: mealie.png</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Start Homepage</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>cd ~/services/homepage
+docker compose up -d</pre></div>
+      </div>
+      <p>Visit <code>https://home.opdev.co.uk</code> — you should see your service tiles. Edit the YAML files at any time and Homepage reloads automatically.</p>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 11b =================== -->
+  <section class="phase" id="phase-11b">
+    <div class="phase-header">
+      <div class="phase-num">11b</div>
+      <div>
+        <div class="phase-title">Homarr Dashboard</div>
+        <div class="phase-sub">Drag-and-drop dashboard with a web UI — pick this or 11a</div>
+      </div>
+    </div>
+
+    <p>Homarr is a beginner-friendly alternative to Homepage. No YAML config files — everything is configured through a drag-and-drop web interface. Tiles, widgets, and layout all done in the browser.</p>
+
+    <div class="step">
+      <div class="step-title">Create and start Homarr</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>mkdir -p ~/services/homarr</pre></div>
+      </div>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">~/services/homarr/docker-compose.yml</span></div>
+        <div class="file-body"><pre>services:
+  homarr:
+    image: ghcr.io/ajnart/homarr:latest
+    restart: unless-stopped
+    volumes:
+      - homarr_data:/app/data/configs
+    networks:
+      - web
+
+volumes:
+  homarr_data:
+
+networks:
+  web:
+    external: true</pre></div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>cd ~/services/homarr
+docker compose up -d</pre></div>
+      </div>
+      <p>Visit <code>https://home.opdev.co.uk</code> and configure your dashboard through the web UI — add tiles, arrange them, and add widgets for each service.</p>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>Pick one, not both.</strong> Both Homepage and Homarr are routed through <code>home.opdev.co.uk</code> in the Caddyfile. Only one should be running at a time. Homepage is better if you like code-based config and reproducibility; Homarr is better if you prefer clicking over editing YAML.</div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 12 =================== -->
+  <section class="phase" id="phase-12">
+    <div class="phase-header">
+      <div class="phase-num">12</div>
+      <div>
+        <div class="phase-title">Mealie — Your First App</div>
+        <div class="phase-sub">A worked example of adding any new service</div>
+      </div>
+    </div>
+
+    <p>Adding any new service to your stack follows the same four-step pattern. Mealie — a recipe manager — demonstrates the full loop from compose file to live subdomain.</p>
+
+    <div class="step">
+      <div class="step-title">Step 1 — Write the compose file</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>mkdir -p ~/services/mealie</pre></div>
+      </div>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">~/services/mealie/docker-compose.yml</span></div>
+        <div class="file-body"><pre>services:
+  mealie:
+    image: ghcr.io/mealie-recipes/mealie:latest
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - mealie_data:/app/data
+    networks:
+      - web
+
+volumes:
+  mealie_data:
+
+networks:
+  web:
+    external: true</pre></div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>cd ~/services/mealie
+docker compose up -d</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Step 2 — Add to Caddyfile and reload</div>
+      <p>The Caddyfile already includes Mealie from Phase 7. If you're adding a brand new service, add a block to <code>~/services/caddy/Caddyfile</code>, then reload:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>cd ~/services/caddy
+docker compose exec caddy caddy reload --config /etc/caddy/Caddyfile</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Step 3 — Register the DNS record</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>cloudflared tunnel route dns greenlane mealie.opdev.co.uk</pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">Step 4 — Add to cloudflared config and restart</div>
+      <p>Edit <code>/etc/cloudflared/config.yaml</code> and add the new ingress entry above the catchall:</p>
+      <div class="file-block">
+        <div class="file-header"><span class="file-name">/etc/cloudflared/config.yaml (add before the last line)</span></div>
+        <div class="file-body"><pre>  - hostname: mealie.opdev.co.uk
+    service: http://127.0.0.1:80</pre></div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-content"><pre>sudo systemctl restart cloudflared</pre></div>
+      </div>
+      <p>Visit <code>https://mealie.opdev.co.uk</code>. Default credentials are <strong>changeme@example.com</strong> / <strong>MyPassword</strong> — change them immediately after first login.</p>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 13 =================== -->
+  <section class="phase" id="phase-13">
+    <div class="phase-header">
+      <div class="phase-num">13</div>
+      <div>
+        <div class="phase-title">Your Stack is Live</div>
+        <div class="phase-sub">What you've built and where to go next</div>
+      </div>
+    </div>
+
+    <p>Here's a summary of everything running on greenlane:</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>Service</th><th>URL</th><th>Type</th><th>What it does</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Ubuntu Server 24.04</strong></td><td>192.168.0.100</td><td><span class="badge sys">system</span></td><td>The base OS for everything</td></tr>
+          <tr><td><strong>Tailscale</strong></td><td>greenlane (MagicDNS)</td><td><span class="badge net">network</span></td><td>Secure SSH from anywhere</td></tr>
+          <tr><td><strong>Docker + Compose</strong></td><td>—</td><td><span class="badge dkr">docker</span></td><td>Container runtime for all services</td></tr>
+          <tr><td><strong>Caddy</strong></td><td>port 80 on greenlane</td><td><span class="badge dkr">docker</span></td><td>Routes traffic to containers by hostname</td></tr>
+          <tr><td><strong>Gitea</strong></td><td>gitea.opdev.co.uk</td><td><span class="badge dkr">docker</span></td><td>Self-hosted Git server</td></tr>
+          <tr><td><strong>Prometheus</strong></td><td>internal</td><td><span class="badge dkr">docker</span></td><td>Metrics collection and storage</td></tr>
+          <tr><td><strong>Grafana</strong></td><td>grafana.opdev.co.uk</td><td><span class="badge dkr">docker</span></td><td>Dashboards and visualisations</td></tr>
+          <tr><td><strong>Cloudflare Tunnel</strong></td><td>*.opdev.co.uk</td><td><span class="badge net">network</span></td><td>Public HTTPS with no port forwarding</td></tr>
+          <tr><td><strong>Homepage</strong></td><td>home.opdev.co.uk</td><td><span class="badge dkr">docker</span></td><td>Dashboard linking to all your services</td></tr>
+          <tr><td><strong>Mealie</strong></td><td>mealie.opdev.co.uk</td><td><span class="badge dkr">docker</span></td><td>Recipe manager — example of any new app</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>The pattern for any new service</h4>
+    <ol>
+      <li>Write a <code>docker-compose.yml</code> in <code>~/services/&lt;name&gt;/</code> with <code>networks: web: external: true</code></li>
+      <li><code>docker compose up -d</code></li>
+      <li>Add a <code>http://name.opdev.co.uk { reverse_proxy name:PORT }</code> block to the Caddyfile, then reload Caddy</li>
+      <li>Add an ingress entry to <code>/etc/cloudflared/config.yaml</code>, run <code>cloudflared tunnel route dns greenlane name.opdev.co.uk</code>, then restart cloudflared</li>
+    </ol>
+
+    <h4>Where to go next</h4>
+    <ul>
+      <li><strong>Watchtower</strong> — automatically pull and recreate containers when new image versions are released</li>
+      <li><strong>Portainer</strong> — web UI for managing all your containers without SSH</li>
+      <li><strong>Uptime Kuma</strong> — self-hosted status page that pings your services and alerts you if they go down</li>
+      <li><strong>Vaultwarden</strong> — self-hosted Bitwarden-compatible password manager</li>
+      <li><strong>Immich</strong> — self-hosted Google Photos alternative</li>
+      <li><strong>Kubernetes</strong> — when Docker Compose starts feeling limiting, the <a href="homelab-guide.html" style="color:var(--accent)">Advanced Guide</a> covers k3s, Helm, and GitOps with ArgoCD</li>
+    </ul>
+  </section>
+
+  <!-- =================== GOOD TO KNOW =================== -->
+  <section class="phase" id="gtkw">
+    <div class="phase-header">
+      <div class="phase-num" style="font-size:1.5rem;opacity:.4">ref</div>
+      <div>
+        <div class="phase-title">Good to Know</div>
+        <div class="phase-sub">Docker commands, patterns, and self-hosting essentials</div>
+      </div>
+    </div>
+
+    <h4>Essential Docker commands</h4>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <div class="code-content"><pre><span class="c"># See all running containers</span>
+docker ps
+
+<span class="c"># See all containers including stopped ones</span>
+docker ps -a
+
+<span class="c"># View logs for a container</span>
+docker logs &lt;container-name&gt;
+
+<span class="c"># Follow logs live (Ctrl+C to exit)</span>
+docker logs &lt;container-name&gt; -f
+
+<span class="c"># Restart a single service in a stack</span>
+docker compose restart &lt;service&gt;
+
+<span class="c"># Pull latest images and recreate containers</span>
+docker compose pull && docker compose up -d
+
+<span class="c"># Stop everything in a compose stack</span>
+docker compose down
+
+<span class="c"># Stop and remove volumes — deletes data, be careful</span>
+docker compose down -v
+
+<span class="c"># See resource usage (CPU, RAM) for all containers</span>
+docker stats</pre></div>
+    </div>
+
+    <h4>Docker Compose cheatsheet</h4>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <div class="code-content"><pre><span class="c"># Start services in the background</span>
+docker compose up -d
+
+<span class="c"># Recreate containers after changing the compose file</span>
+docker compose up -d --force-recreate
+
+<span class="c"># See status of services in the current directory's stack</span>
+docker compose ps
+
+<span class="c"># Run a command inside a running container</span>
+docker exec -it &lt;container-name&gt; sh
+
+<span class="c"># View the compose config with interpolated values</span>
+docker compose config</pre></div>
+    </div>
+
+    <h4>Where your data lives</h4>
+    <p>Docker named volumes live at <code>/var/lib/docker/volumes/</code> on the host. Each volume is a directory named after the volume. Back these up — they contain your Gitea repos, Mealie recipes, and Grafana dashboards.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <div class="code-content"><pre><span class="c"># List all volumes</span>
+docker volume ls
+
+<span class="c"># See where a volume is on disk</span>
+docker volume inspect &lt;volume-name&gt;
+
+<span class="c"># Quick backup of a volume to a tar file</span>
+docker run --rm -v &lt;volume-name&gt;:/data -v $(pwd):/backup \
+  alpine tar czf /backup/&lt;volume-name&gt;-backup.tar.gz /data</pre></div>
+    </div>
+
+    <h4>Keeping everything up to date</h4>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <div class="code-content"><pre><span class="c"># Update a single stack manually</span>
+cd ~/services/&lt;service&gt;
+docker compose pull
+docker compose up -d
+
+<span class="c"># Or run Watchtower to auto-update all containers on a schedule</span>
+docker run -d \
+  --name watchtower \
+  --restart unless-stopped \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  containrrr/watchtower --schedule "0 0 4 * * *"</pre></div>
+    </div>
+
+    <div class="callout callout-warn">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body"><strong>Test updates before auto-applying them.</strong> Watchtower is convenient but can break things if an image has a breaking change. For critical services like Gitea, consider pinning a specific version tag (<code>gitea/gitea:1.22</code>) instead of <code>latest</code> so you control when to upgrade.</div>
+    </div>
+
+    <h4>Restart policies</h4>
+    <p>All compose files in this guide use <code>restart: unless-stopped</code>. This means containers restart automatically after a reboot or crash — unless you explicitly ran <code>docker compose down</code>. Alternatives:</p>
+    <ul>
+      <li><code>always</code> — restarts even after you explicitly stopped it (usually not what you want)</li>
+      <li><code>on-failure</code> — restarts only on non-zero exit code</li>
+      <li><code>no</code> — never restarts (default if you omit the field)</li>
+    </ul>
+
+    <h4>Quick service access for debugging</h4>
+    <p>While a service isn't yet public via Cloudflare Tunnel — or to bypass Caddy entirely — access it directly on the LAN by port-mapping to the host temporarily:</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <div class="code-content"><pre><span class="c"># Find the container's internal port</span>
+docker inspect &lt;container-name&gt; | grep -A5 Ports
+
+<span class="c"># Check what's exposed on the host already</span>
+ss -tlnp | grep LISTEN</pre></div>
+    </div>
+    <p>Or for a quick test, add a <code>ports</code> entry to the compose file temporarily — e.g. <code>"3000:3000"</code> — then access <code>http://192.168.0.100:3000</code> from your laptop.</p>
+
+    <h4>Security reminders</h4>
+    <ul>
+      <li><strong>Change default passwords immediately.</strong> Grafana ships with <code>admin/admin</code>, Mealie with a known default. Change these on first login.</li>
+      <li><strong>Never expose Docker's socket to untrusted containers.</strong> <code>/var/run/docker.sock</code> gives root-level access to the host. cAdvisor and Watchtower both need it legitimately — be careful with anything else.</li>
+      <li><strong>Use <code>.env</code> files for secrets.</strong> Put passwords and API keys in a <code>.env</code> file alongside <code>docker-compose.yml</code> and reference them as <code>${MY_SECRET}</code>. Never commit <code>.env</code> files to Git — add it to <code>.gitignore</code>.</li>
+      <li><strong>Keep images updated.</strong> Security patches come through image updates. <code>docker compose pull &amp;&amp; docker compose up -d</code> is your friend.</li>
+      <li><strong>Disable open registration on Gitea</strong> before it goes public — already set in the compose file in Phase 8a.</li>
+    </ul>
+
+    <h4>Backup summary</h4>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>What to back up</th><th>Where it lives</th><th>How often</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Gitea repos and data</td><td><code>docker volume inspect gitea_gitea_data</code></td><td>Daily</td></tr>
+          <tr><td>Grafana dashboards</td><td><code>docker volume inspect monitoring_grafana_data</code></td><td>Weekly</td></tr>
+          <tr><td>Prometheus metrics</td><td><code>docker volume inspect monitoring_prometheus_data</code></td><td>Optional (regenerates over time)</td></tr>
+          <tr><td>Mealie recipes</td><td><code>docker volume inspect mealie_mealie_data</code></td><td>Weekly</td></tr>
+          <tr><td>Compose files and configs</td><td><code>~/services/</code></td><td>Every change (Git it)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </section>
+
+</main>
+</div>
+
+<script>
+function copyCode(btn) {
+  var block = btn.closest('.code-block');
+  var pre = block.querySelector('pre');
+  var text = pre.innerText;
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+  }).catch(function() {
+    btn.textContent = 'Failed';
+    setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+  });
+}
+
+var phases = document.querySelectorAll('.phase[id]');
+var navItems = document.querySelectorAll('.nav-item');
+
+function onScroll() {
+  var scrollY = window.scrollY + 120;
+  var current = '';
+  phases.forEach(function(phase) {
+    if (phase.offsetTop <= scrollY) current = phase.id;
+  });
+  navItems.forEach(function(item) {
+    item.classList.toggle('active', item.getAttribute('href') === '#' + current);
+  });
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+</script>
